@@ -1,5 +1,7 @@
 package ifm8.main;
 
+import ifm8.lib.Methods;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -12,6 +14,9 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
 public class ImageFileManager8Activity extends ListActivity {
@@ -135,4 +140,57 @@ public class ImageFileManager8Activity extends ListActivity {
 		
 		
 	}//private void set_initial_dir_list()
+
+	@Override
+	protected void onDestroy() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onDestroy();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// 
+		MenuInflater mi = getMenuInflater();
+		mi.inflate(R.menu.main_menu, menu);
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.main_opt_menu_create_folder:
+			
+			Methods.dlg_createFolder(this);
+			
+			break;
+		}//switch (item.getItemId())
+		
+		return super.onOptionsItemSelected(item);
+		
+	}//public boolean onOptionsItemSelected(MenuItem item)
+
+	@Override
+	protected void onPause() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onResume();
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onStart();
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onStop();
+	}
 }

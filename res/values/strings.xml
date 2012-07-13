@@ -4,5 +4,22 @@
     <string name="hello">Hello World, ImageFileManager8Activity!</string>
     <string name="app_name">ImageFileManager8</string>
     <string name="v1_tv_dir_path">Directory path</string>
+    
+    <!-- main_menu.xml -->
+    <string name="main_opt_menu_create_folder">フォルダ作成</string>
 
+    <!-- Generic items -->
+    <string name="generic_bt_ok">OK</string>
+    <string name="generic_bt_cancel">キャンセル</string>
+    
+    <!-- dlg_create_folder.xml -->
+    <string name="dlg_create_folder_title">フォルダ作成</string>
+    <string name="dlg_create_folder_tv_message">フォルダ名を入れてください</string>
+    
+    <!-- dlg_input_empty.xml -->
+    <string name="dlg_input_empty_title">注意！</string>
+    <string name="dlg_input_empty_message">入力がありません</string>
+    <string name="dlg_input_empty_reenter">もう一度入力</string>
+    <string name="dlg_input_empty_cancel">取りやめ</string>
+    
 </resources>
