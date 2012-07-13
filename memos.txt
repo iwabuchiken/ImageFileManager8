@@ -1,0 +1,26 @@
+a
+cd C:\WORKS\WORKSPACES_ANDROID\ImageFileManager8
+C:\WORKS\WORKSPACES_ANDROID\FM\a
+C:\WORKS\PROGRAMS\FreeMind\FreeMind.exe C:\WORKS\WORKSPACES_ANDROID\FM\ImageFileManager8\ImageFileManager8.mm
+gitk
+
+
+[Git]
+copy ..\ImageFileManager6\.gitignore .
+
+g init
+g a .
+
+git log --grep=B4 -3
+git log --grep=B5 -3
+
+
+[Git for mm]
+pushd C:\WORKS\WORKSPACES_ANDROID\FM
+
+[svn]
+pushd C:\WORKS\WORKSPACES_ANDROID\Sample\05_Techbooster
+svn co https://techbooster.googlecode.com/svn/trunk/ContextMenu/ ContextMenu
+
+[GIMP]
+C:\WORKS\WORKSPACES_ANDROID\GIMP\Icons
