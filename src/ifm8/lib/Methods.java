@@ -34,6 +34,9 @@ public class Methods {
 		// dlg_input_empty.xml
 		dlg_input_empty_reenter, dlg_input_empty_cancel,
 		
+		// dlg_confirm_create_folder.xml
+		dlg_confirm_create_folder_ok, dlg_confirm_create_folder_cancel,
+		
 	}//public static enum DialogTags
 	
 	public static enum ButtonTags {
@@ -105,11 +108,13 @@ public class Methods {
 			/*----------------------------
 			 * 2. If yes, go to Methods.createFolder()
 				----------------------------*/
-			dlg.dismiss();
+//			dlg.dismiss();
 			
 //			createFolder(actv, folderName);
+			dlg_confirm_createFolder(actv, dlg);
 			
 			return;
+			
 		}//if (!folderName.equals(""))
 		
 		/*----------------------------
@@ -153,4 +158,65 @@ public class Methods {
 		dlg2.show();
 		
 	}//public static void dlg_isEmpty(Activity actv, Dialog dlg)
+
+	private static void dlg_confirm_createFolder(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Set up
+		 * 2. Set folder name to text view
+			----------------------------*/
+		
+		// 
+		Dialog dlg2 = new Dialog(actv);
+		
+		//
+		dlg2.setContentView(R.layout.dlg_confirm_create_folder);
+		
+		// Title
+		dlg2.setTitle(R.string.generic_tv_confirm);
+		
+		/*----------------------------
+		 * 2. Set folder name to text view
+			----------------------------*/
+		EditText et = (EditText) dlg.findViewById(R.id.dlg_create_folder_et);
+		
+		TextView tv = (TextView) dlg2.findViewById(R.id.dlg_confirm_create_folder_tv_table_name);
+		
+		tv.setText(et.getText().toString());
+		
+		/*----------------------------
+		 * 3. Add listeners => OnTouch
+			----------------------------*/
+		//
+		Button btn_ok = (Button) dlg2.findViewById(R.id.dlg_confirm_create_folder_btn_ok);
+		Button btn_cancel = (Button) dlg2.findViewById(R.id.dlg_confirm_create_folder_btn_cancel);
+		
+		//
+		btn_ok.setTag(DialogTags.dlg_confirm_create_folder_ok);
+		btn_cancel.setTag(DialogTags.dlg_confirm_create_folder_cancel);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		
+		/*----------------------------
+		 * 4. Add listeners => OnClick
+			----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+		
+		/*----------------------------
+		 * 5. Show dialog
+			----------------------------*/
+		dlg2.show();
+		
+	}//private static void dlg_confirm_createFolder
+
+	public static void createFolder(Activity actv, Dialog dlg) {
+		// 
+		
+		
+	}//public static void createFolder(Activity actv, Dialog dlg)
+	
 }//public class Methods

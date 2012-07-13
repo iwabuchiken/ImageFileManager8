@@ -63,11 +63,26 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		
 		// dlg_input_empty.xml
 		case dlg_input_empty_reenter:
+			
+			dlg2.dismiss();
+//			dlg.dismiss();
+			
+			
+			
 			break;
 		case dlg_input_empty_cancel:
 			
 			dlg2.dismiss();
 			dlg.dismiss();
+			
+			break;
+		
+		// dlg_confirm_create_folder.xml
+		case dlg_confirm_create_folder_ok:
+			break;
+		case dlg_confirm_create_folder_cancel:
+			
+			dlg2.dismiss();
 			
 			break;
 			

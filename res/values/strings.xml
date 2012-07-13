@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Generic items -->
+    <string name="generic_bt_ok">OK</string>
+    <string name="generic_bt_cancel">キャンセル</string>
+    <string name="generic_tv_confirm">確認</string>
+    
     <string name="hello">Hello World, ImageFileManager8Activity!</string>
     <string name="app_name">ImageFileManager8</string>
     <string name="v1_tv_dir_path">Directory path</string>
@@ -8,10 +13,6 @@
     <!-- main_menu.xml -->
     <string name="main_opt_menu_create_folder">フォルダ作成</string>
 
-    <!-- Generic items -->
-    <string name="generic_bt_ok">OK</string>
-    <string name="generic_bt_cancel">キャンセル</string>
-    
     <!-- dlg_create_folder.xml -->
     <string name="dlg_create_folder_title">フォルダ作成</string>
     <string name="dlg_create_folder_tv_message">フォルダ名を入れてください</string>
@@ -21,5 +22,8 @@
     <string name="dlg_input_empty_message">入力がありません</string>
     <string name="dlg_input_empty_reenter">もう一度入力</string>
     <string name="dlg_input_empty_cancel">取りやめ</string>
+    
+    <!-- dlg_confirm_create_folder.xml -->
+    <string name="dlg_confirm_create_folder_tv_message">このフォルダを作りますか？</string>
     
 </resources>
