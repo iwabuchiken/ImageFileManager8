@@ -26,6 +26,9 @@ public class ImageFileManager8Activity extends ListActivity {
 	public static String baseDirName = "IFM8";
 	public static String listFileName = "list.txt";
 	
+	public static List<String> file_names = null;
+
+	public static ArrayAdapter<String> adapter = null;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,7 +120,8 @@ public class ImageFileManager8Activity extends ListActivity {
 		
 //		File[] files = dir.listFiles();
 		
-		List<String> file_names = new ArrayList<String>();
+//		List<String> file_names = new ArrayList<String>();
+		file_names = new ArrayList<String>();
 		
 		for (File item : files) {
 			file_names.add(item.getName());
@@ -126,7 +130,8 @@ public class ImageFileManager8Activity extends ListActivity {
 		/*----------------------------
 		 * 4. Set list to adapter
 			----------------------------*/
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+		adapter = new ArrayAdapter<String>(
 									this,
 									android.R.layout.simple_list_item_1,
 									file_names
@@ -137,6 +142,26 @@ public class ImageFileManager8Activity extends ListActivity {
 		 * 5. Set adapter to list view
 			----------------------------*/
 		this.setListAdapter(adapter);
+		
+		// Log
+		Log.d("ImageFileManager8Activity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "adapter => set");
+		
+		if (adapter == null) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "adapter => null");
+
+		} else {//if (adapter == null)
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "adapter => Not null");
+		}//if (adapter == null)
+		
+		
 		
 		
 	}//private void set_initial_dir_list()

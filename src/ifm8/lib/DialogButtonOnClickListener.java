@@ -79,6 +79,9 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		
 		// dlg_confirm_create_folder.xml
 		case dlg_confirm_create_folder_ok:
+			
+			Methods.createFolder(actv, dlg, dlg2);
+			
 			break;
 		case dlg_confirm_create_folder_cancel:
 			
