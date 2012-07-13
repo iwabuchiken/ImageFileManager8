@@ -453,6 +453,7 @@ public class Methods {
 	}
 
 	public static void sortFileList(File[] files) {
+		// REF=> http://android-coding.blogspot.jp/2011/10/sort-file-list-in-order-by-implementing.html
 		Comparator<? super File> filecomparator = new Comparator<File>(){
 			
 			public int compare(File file1, File file2) {
