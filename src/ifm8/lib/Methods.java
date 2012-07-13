@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import android.app.Activity;
@@ -360,6 +362,7 @@ public class Methods {
 		/*----------------------------
 		 * Steps
 		 * 1. Get file list
+		 * 1-2. Sort list
 		 * 2. Clear => ImageFileManager8Activity.file_names
 		 * 3. Add file names to => ImageFileManager8Activity.file_names
 		 * 4. Notify adapter of changes
@@ -369,6 +372,11 @@ public class Methods {
 		File currentDir = new File(ImageFileManager8Activity.currentDirPath);
 		
 		File[] files = currentDir.listFiles();
+		
+		/*----------------------------
+		 * 1-2. Sort list
+			----------------------------*/
+		sortFileList(files);
 		
 //		File[] files = dir.listFiles();
 		
@@ -417,5 +425,50 @@ public class Methods {
 			
 		
 	}//private static void refreshListView()
-	
+
+	/*----------------------------
+	 * makeComparator(Comparator comparator)
+	 * 
+	 * REF=> C:\WORKS\WORKSPACES_ANDROID\Sample\09_Matsuoka\プロジェクト
+	 * 					\Step10\10_LiveWallpaper\src\sample\step10\livewallpaper\FilePicker.java
+		----------------------------*/
+	public static void makeComparator(Comparator comparator){
+		
+		comparator=new Comparator<Object>(){
+			
+			public int compare(Object object1, Object object2) {
+			
+				int pad1=0;
+				int pad2=0;
+				
+				File file1=(File)object1;
+				File file2=(File)object2;
+				
+				if(file1.isDirectory())pad1=-65536;
+				if(file2.isDirectory())pad2=-65536;
+				
+				return pad1-pad2+file1.getName().compareToIgnoreCase(file2.getName());
+			}
+		};
+	}
+
+	public static void sortFileList(File[] files) {
+		Comparator<? super File> filecomparator = new Comparator<File>(){
+			
+			public int compare(File file1, File file2) {
+				int pad1=0;
+				int pad2=0;
+				
+				if(file1.isDirectory())pad1=-65536;
+				if(file2.isDirectory())pad2=-65536;
+				
+				return pad1-pad2+file1.getName().compareToIgnoreCase(file2.getName());
+//				return String.valueOf(file1.getName()).compareTo(file2.getName());
+			} 
+		 };//Comparator<? super File> filecomparator = new Comparator<File>()
+		 
+		 //
+		Arrays.sort(files, filecomparator);
+
+	}//public static void sortFileList(File[] files)
 }//public class Methods

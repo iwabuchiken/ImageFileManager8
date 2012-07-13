@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
@@ -29,6 +31,10 @@ public class ImageFileManager8Activity extends ListActivity {
 	public static List<String> file_names = null;
 
 	public static ArrayAdapter<String> adapter = null;
+	
+	static Comparator fileNameComparator;
+	
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,7 @@ public class ImageFileManager8Activity extends ListActivity {
 		 * 1-2. Create "list.txt"
 		 * 2. Set variables => currentDirPath, baseDirPath
 		 * 3. Get file list
+		 * 3-1. Sort file list
 		 * 4. Set list to adapter
 		 * 5. Set adapter to list view
 			----------------------------*/
@@ -115,10 +122,18 @@ public class ImageFileManager8Activity extends ListActivity {
 		
 		/*----------------------------
 		 * 3. Get file list
+		 * 3-1. Sort file list
 			----------------------------*/
 		File[] files = file.listFiles();
 		
 //		File[] files = dir.listFiles();
+		
+//		Methods.makeComparator(fileNameComparator);
+		
+//		Collections.sort(files, fileNameComparator);
+		
+		// Sort
+		Methods.sortFileList(files);
 		
 //		List<String> file_names = new ArrayList<String>();
 		file_names = new ArrayList<String>();

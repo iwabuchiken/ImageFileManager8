@@ -103,6 +103,7 @@
                 android:src="@drawable/ifm8_forward_disenabled"
                 />
         </LinearLayout>
+        
     </LinearLayout>
 
 </LinearLayout>
