@@ -88,6 +88,19 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			dlg2.dismiss();
 			
 			break;
+
+		// dlg_confirm_remove_folder.xml
+		case dlg_confirm_remove_folder_ok:
+			
+			Methods.removeFolder(actv, dlg);
+			
+			break;
+			
+		case dlg_confirm_remove_folder_cancel:
+			
+			dlg.dismiss();
+			
+			break;
 			
 		default:
 			break;
