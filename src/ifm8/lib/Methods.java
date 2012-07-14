@@ -727,6 +727,8 @@ public class Methods {
 		 * 1. Update the current path
 		 * 2. Refresh list view
 		 * 3. "Up" button => Enable
+		 * 
+		 * 4. Update path view
 			----------------------------*/
 		ImageFileManager8Activity.currentDirPath = newDir.getAbsolutePath();
 		
@@ -746,5 +748,134 @@ public class Methods {
 			
 		}//if (!ib.isEnabled())
 		
+		/*----------------------------
+		 * 4. Update path view
+			----------------------------*/
+		getCurrentPathLabel(actv);
+		
+		
 	}//public static void enterDir(Activity actv, File newDir)
+
+	public static String getCurrentPathLabel(Activity actv) {
+		// 
+		String[] pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);		
+		String currentBaseDirName = pathArray[pathArray.length - 1];
+		
+		
+//		ArrayList<String> newPath = new ArrayList<String>();
+		
+		int location = -1;
+		
+		for (int i = 0; i < pathArray.length; i++) {
+			if (pathArray[i].equals(ImageFileManager8Activity.baseDirName)) {
+				location = i;
+				break;
+			}//if (pathArray[i].equals(ImageFileManager8Activity.baseDirName))
+		}//for (int i = 0; i < pathArray.length; i++)
+		
+		//REF=> http://stackoverflow.com/questions/4439595/how-to-create-a-sub-array-from-another-array-in-java
+//		String[] newPath = Arrays.copyOfRange(pathArray, location, pathArray.length - 1);
+		String[] newPath = Arrays.copyOfRange(pathArray, location, pathArray.length);
+		
+		String s_newPath = StringUtils.join(newPath, new File("abc").separator);
+		
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "s_newPath => " + s_newPath);
+		
+		return s_newPath;
+		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "location => " + location);
+//		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", 
+//				"ImageFileManager8Activity.currentDirPath => " + 
+//				ImageFileManager8Activity.currentDirPath);
+//		
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "pathArray.length => " + pathArray.length);
+		
+		
+		
+//		return null;
+		
+//		String[] tempArray = ImageFileManager8Activity.baseDirPath.split(new File("abc").separator);
+//		String projectBaseDirName = tempArray[tempArray.length - 1];
+		
+		
+		
+//
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "pathArray[pathArray.length] => " + pathArray[pathArray.length - 1]);
+		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "pathSeparator => " + new File("abc").pathSeparator);
+//		
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "Separator => " + new File("abc").separator);
+		
+//		return null;
+	}//public static String getCurrentPathLabel(Activity actv)
+
+	public static void upDirectory(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Vibrate
+		 * 2. Is the current path "roof"?
+		 * 3. Go up the path
+		 * 3-2. New path => Equal to base dir path?
+		 * 4. Refresh list
+		 * 5. Update path view
+			----------------------------*/
+		ImageFileManager8Activity.vib.vibrate(ImageFileManager8Activity.vibLength_click);
+		
+		/*----------------------------
+		 * 2. Is the current path "roof"?
+			----------------------------*/
+		if (ImageFileManager8Activity.currentDirPath == ImageFileManager8Activity.baseDirPath) {
+			
+			Methods.toastAndLog(actv, "No more upward directory", 3000);
+		
+			return;
+		}//if (ImageFileManager8Activity.currentDirPath == ImageFileManager8Activity.baseDirPath)
+		
+		/*----------------------------
+		 * 3. Go up the path
+			----------------------------*/
+//		ImageFileManager8Activity.currentDirPath = 
+//						(new File(ImageFileManager8Activity.currentDirPath))
+		
+		File f = new File(ImageFileManager8Activity.currentDirPath);
+		
+		ImageFileManager8Activity.currentDirPath = f.getParent();
+		
+//		Methods.toastAndLog(actv, "f.getParent() => " + f.getParent(), 3000);
+		
+		/*----------------------------
+		 * 3-2. New path => Equal to base dir path?
+			----------------------------*/
+		
+		
+		/*----------------------------
+		 * 4. Refresh list
+			----------------------------*/
+		Methods.refreshListView(actv);
+		
+		/*----------------------------
+		 * 5. Update path view
+			----------------------------*/
+		getCurrentPathLabel(actv);
+		
+	}//public static void upDirectory(Activity actv)
+	
 }//public class Methods

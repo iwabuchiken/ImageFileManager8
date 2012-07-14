@@ -29,6 +29,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ImageFileManager8Activity extends ListActivity {
@@ -44,7 +45,7 @@ public class ImageFileManager8Activity extends ListActivity {
 	
 	static Comparator fileNameComparator;
 
-	static Vibrator vib;
+	public static Vibrator vib;
 
 	public static final int vibLength_click = 40;
 	
@@ -105,6 +106,8 @@ public class ImageFileManager8Activity extends ListActivity {
 		 * 5. Set adapter to list view
 		 * 
 		 * 6. Set listener to list
+		 * 
+		 * 7. Set path label to text view
 			----------------------------*/
 		
 		// TODO 自動生成されたメソッド・スタブ
@@ -252,6 +255,21 @@ public class ImageFileManager8Activity extends ListActivity {
 //				
 //				return false;
 //			}});
+		
+		/*----------------------------
+		 * 7. Set path label to text view
+			----------------------------*/
+		
+		
+		TextView tv = (TextView) findViewById(R.id.v1_tv_dir_path);
+		
+		String currentPathLabel = Methods.getCurrentPathLabel(this);
+		
+		// Log
+		Log.d("ImageFileManager8Activity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "currentPathLabel => " + currentPathLabel);
+		
 		
 	}//private void set_initial_dir_list()
 
