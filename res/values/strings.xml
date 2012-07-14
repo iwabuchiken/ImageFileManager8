@@ -26,4 +26,7 @@
     <!-- dlg_confirm_create_folder.xml -->
     <string name="dlg_confirm_create_folder_tv_message">このフォルダを作りますか？</string>
     
+    <!-- dlg_confirm_remove_folder.xml -->
+    <string name="dlg_confirm_remove_folder_tv_message">このフォルダを削除しますか？</string>
+    
 </resources>

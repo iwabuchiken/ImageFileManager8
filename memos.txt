@@ -14,6 +14,8 @@ g a .
 git log --grep=B4 -3
 git log --grep=B5 -3
 
+git log --grep=master -3
+
 
 [Git for mm]
 pushd C:\WORKS\WORKSPACES_ANDROID\FM

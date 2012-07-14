@@ -41,31 +41,36 @@ public final class R {
         public static final int dlg_confirm_create_folder_btn_ok=0x7f070002;
         public static final int dlg_confirm_create_folder_tv_message=0x7f070000;
         public static final int dlg_confirm_create_folder_tv_table_name=0x7f070001;
-        public static final int dlg_create_folder_bt_ok=0x7f070006;
-        public static final int dlg_create_folder_cancel=0x7f070007;
-        public static final int dlg_create_folder_et=0x7f070005;
-        public static final int dlg_create_folder_tv_message=0x7f070004;
-        public static final int dlg_input_empty_LL_buttons=0x7f07000b;
-        public static final int dlg_input_empty_LL_message=0x7f070009;
-        public static final int dlg_input_empty_LL_root=0x7f070008;
-        public static final int dlg_input_empty_btn_cancel=0x7f07000d;
-        public static final int dlg_input_empty_btn_reenter=0x7f07000c;
-        public static final int dlg_input_empty_tv=0x7f07000a;
-        public static final int main_opt_menu_create_folder=0x7f070014;
-        public static final int v1_LL_debug=0x7f070010;
-        public static final int v1_bt_back=0x7f070011;
-        public static final int v1_bt_forward=0x7f070013;
-        public static final int v1_bt_up=0x7f070012;
-        public static final int v1_sv_dir_path=0x7f07000e;
-        public static final int v1_tv_dir_path=0x7f07000f;
+        public static final int dlg_confirm_remove_folder_btn_cancel=0x7f070007;
+        public static final int dlg_confirm_remove_folder_btn_ok=0x7f070006;
+        public static final int dlg_confirm_remove_folder_tv_message=0x7f070004;
+        public static final int dlg_confirm_remove_folder_tv_table_name=0x7f070005;
+        public static final int dlg_create_folder_bt_ok=0x7f07000a;
+        public static final int dlg_create_folder_cancel=0x7f07000b;
+        public static final int dlg_create_folder_et=0x7f070009;
+        public static final int dlg_create_folder_tv_message=0x7f070008;
+        public static final int dlg_input_empty_LL_buttons=0x7f07000f;
+        public static final int dlg_input_empty_LL_message=0x7f07000d;
+        public static final int dlg_input_empty_LL_root=0x7f07000c;
+        public static final int dlg_input_empty_btn_cancel=0x7f070011;
+        public static final int dlg_input_empty_btn_reenter=0x7f070010;
+        public static final int dlg_input_empty_tv=0x7f07000e;
+        public static final int main_opt_menu_create_folder=0x7f070018;
+        public static final int v1_LL_debug=0x7f070014;
+        public static final int v1_bt_back=0x7f070015;
+        public static final int v1_bt_forward=0x7f070017;
+        public static final int v1_bt_up=0x7f070016;
+        public static final int v1_sv_dir_path=0x7f070012;
+        public static final int v1_tv_dir_path=0x7f070013;
     }
     public static final class layout {
         public static final int dlg_confirm_create_folder=0x7f030000;
         public static final int dlg_confirm_drop_table=0x7f030001;
-        public static final int dlg_create_folder=0x7f030002;
-        public static final int dlg_input_empty=0x7f030003;
-        public static final int main=0x7f030004;
-        public static final int v1=0x7f030005;
+        public static final int dlg_confirm_remove_folder=0x7f030002;
+        public static final int dlg_create_folder=0x7f030003;
+        public static final int dlg_input_empty=0x7f030004;
+        public static final int main=0x7f030005;
+        public static final int v1=0x7f030006;
     }
     public static final class menu {
         public static final int main_menu=0x7f060000;
@@ -75,6 +80,9 @@ public final class R {
         /**  dlg_confirm_create_folder.xml 
          */
         public static final int dlg_confirm_create_folder_tv_message=0x7f05000d;
+        /**  dlg_confirm_remove_folder.xml 
+         */
+        public static final int dlg_confirm_remove_folder_tv_message=0x7f05000e;
         /**  dlg_create_folder.xml 
          */
         public static final int dlg_create_folder_title=0x7f050007;

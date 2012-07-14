@@ -1,5 +1,6 @@
 package ifm8.main;
 
+import ifm8.lib.CustomOnItemLongClickListener;
 import ifm8.lib.Methods;
 
 import java.io.BufferedWriter;
@@ -15,11 +16,17 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class ImageFileManager8Activity extends ListActivity {
 	
@@ -33,13 +40,16 @@ public class ImageFileManager8Activity extends ListActivity {
 	public static ArrayAdapter<String> adapter = null;
 	
 	static Comparator fileNameComparator;
-	
+
+	static Vibrator vib;
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.v1);
+        
+        vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
         
         set_initial_dir_list();
     }
@@ -54,6 +64,8 @@ public class ImageFileManager8Activity extends ListActivity {
 		 * 3-1. Sort file list
 		 * 4. Set list to adapter
 		 * 5. Set adapter to list view
+		 * 
+		 * 6. Set listener to list
 			----------------------------*/
 		
 		// TODO 自動生成されたメソッド・スタブ
@@ -176,8 +188,31 @@ public class ImageFileManager8Activity extends ListActivity {
 					+ "]", "adapter => Not null");
 		}//if (adapter == null)
 		
+		/*----------------------------
+		 * 6. Set listener to list
+			----------------------------*/
+		ListView lv = this.getListView();
 		
+		lv.setTag(Methods.ItemTags.dir_list);
 		
+		lv.setOnItemLongClickListener(new CustomOnItemLongClickListener(this));
+//				new OnItemLongClickListener(){
+//
+//			@Override
+//			public boolean onItemLongClick(AdapterView<?> parent, View v,
+//					int position, long id) {
+//				// TODO 自動生成されたメソッド・スタブ
+//				
+//				String name = (String) parent.getItemAtPosition(position);
+//				
+//				//
+////				vib.vibrate(400);
+//				vib.vibrate(40);
+//
+//				Methods.dlg_removeFolder(this);
+//				
+//				return false;
+//			}});
 		
 	}//private void set_initial_dir_list()
 

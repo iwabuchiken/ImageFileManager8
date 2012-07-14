@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,11 +43,20 @@ public class Methods {
 		
 		// dlg_confirm_create_folder.xml
 		dlg_confirm_create_folder_ok, dlg_confirm_create_folder_cancel,
+
+		// dlg_confirm_remove_folder.xml
+		dlg_confirm_remove_folder_ok, dlg_confirm_remove_folder_cancel,
 		
 	}//public static enum DialogTags
 	
 	public static enum ButtonTags {
 		
+	}
+	
+	public static enum ItemTags {
+		
+		// ImageFileManager8Activity.java
+		dir_list,
 	}
 	
 	public static void dlg_createFolder(Activity actv) {
@@ -90,7 +100,6 @@ public class Methods {
 		//
 		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
 		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
-		
 		
 		//
 		dlg.show();
@@ -453,6 +462,7 @@ public class Methods {
 	}
 
 	public static void sortFileList(File[] files) {
+		// REF=> http://android-coding.blogspot.jp/2011/10/sort-file-list-in-order-by-implementing.html
 		Comparator<? super File> filecomparator = new Comparator<File>(){
 			
 			public int compare(File file1, File file2) {
@@ -462,7 +472,12 @@ public class Methods {
 				if(file1.isDirectory())pad1=-65536;
 				if(file2.isDirectory())pad2=-65536;
 				
-				return pad1-pad2+file1.getName().compareToIgnoreCase(file2.getName());
+				// Order => folders, files
+//				return pad1-pad2+file1.getName().compareToIgnoreCase(file2.getName());
+				
+				// Order => files, folders
+				return pad2-pad1+file1.getName().compareToIgnoreCase(file2.getName());
+				
 //				return String.valueOf(file1.getName()).compareTo(file2.getName());
 			} 
 		 };//Comparator<? super File> filecomparator = new Comparator<File>()
@@ -471,4 +486,198 @@ public class Methods {
 		Arrays.sort(files, filecomparator);
 
 	}//public static void sortFileList(File[] files)
+
+	public static void dlg_removeFolder(Activity actv, String folderName) {
+		/*----------------------------
+		 * Steps
+		 * 1. Set up
+		 * 2. Set folder name to text view
+			----------------------------*/
+		// 
+		Dialog dlg = new Dialog(actv);
+		
+		//
+		dlg.setContentView(R.layout.dlg_confirm_remove_folder);
+		
+		// Title
+		dlg.setTitle(R.string.generic_tv_confirm);
+		
+		/*----------------------------
+		 * 2. Set folder name to text view
+			----------------------------*/
+		TextView tv = (TextView) dlg.findViewById(R.id.dlg_confirm_remove_folder_tv_table_name);
+		
+		tv.setText(folderName);
+		
+		/*----------------------------
+		 * 3. Add listeners => OnTouch
+			----------------------------*/
+		//
+		Button btn_ok = (Button) dlg.findViewById(R.id.dlg_confirm_remove_folder_btn_ok);
+		Button btn_cancel = (Button) dlg.findViewById(R.id.dlg_confirm_remove_folder_btn_cancel);
+		
+		//
+		btn_ok.setTag(DialogTags.dlg_confirm_remove_folder_ok);
+		btn_cancel.setTag(DialogTags.dlg_confirm_remove_folder_cancel);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		/*----------------------------
+		 * 4. Add listeners => OnClick
+			----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		
+		/*----------------------------
+		 * 5. Show dialog
+			----------------------------*/
+		dlg.show();
+
+		
+	}//public static void dlg_removeFolder(Activity actv)
+
+	public static void removeFolder(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get folder name
+		 * 2. Validate
+		 * 3. Remove
+		 * 4. Refresh list
+		 * 5. Dismiss dialog
+			----------------------------*/
+		
+		//
+		TextView tv = (TextView) dlg.findViewById(R.id.dlg_confirm_remove_folder_tv_table_name);
+		String folderName = tv.getText().toString();
+		
+		//
+		File targetDir = new File(ImageFileManager8Activity.currentDirPath, folderName);
+		
+		if (!targetDir.exists()) {
+			// debug
+			Toast.makeText(actv, "‘¶Ý‚µ‚Ü‚¹‚ñ", 2000).show();
+			
+			return;
+		}
+		
+		if (!targetDir.isDirectory()) {
+			// debug
+			Toast.makeText(actv, "ƒtƒHƒ‹ƒ_‚Å‚Í‚ ‚è‚Ü‚¹‚ñ", 2000).show();
+			
+			return;
+		}//if (!targetDir.exists() || !targetDir.isDirectory())
+		
+		/*----------------------------
+		 * 3. Remove
+			----------------------------*/
+		String path = targetDir.getAbsolutePath();
+		
+		boolean result = deleteDirectory(targetDir);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "result => " + result);
+
+		if (result == true) {
+			/*----------------------------
+			 * 5. Dismiss dialog
+				----------------------------*/
+			dlg.dismiss();
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Dir => Removed: " + path);
+			
+			// debug
+			Toast.makeText(actv, "íœ‚µ‚Ü‚µ‚½" + path, 3000).show();
+		} else {//if (result == true)
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Remove dir => Failed: " + path);
+			
+			// debug
+			Toast.makeText(actv, "íœ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½: " + path, 3000).show();
+		}//if (result == true)
+		
+		
+		
+//		try {
+//			targetDir.delete();
+//			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Dir => Removed: " + path);
+//			
+//			// debug
+//			Toast.makeText(actv, "íœ‚µ‚Ü‚µ‚½" + path, 3000).show();
+//			
+//			/*----------------------------
+//			 * 5. Dismiss dialog
+//				----------------------------*/
+//			dlg.dismiss();
+//			
+//		} catch (Exception e) {
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Remove dir => Failed: " + path);
+//			
+//			// debug
+//			Toast.makeText(actv, "íœ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½: " + path, 3000).show();
+//			
+//		}//try
+		
+		/*----------------------------
+		 * 4. Refresh list
+			----------------------------*/
+		refreshListView(actv);
+		
+		return;
+		
+	}//public static void removeFolder(Activity actv, Dialog dlg)
+
+	/*----------------------------
+	 * deleteDirectory(File target)()
+	 * 
+	 * 1. REF=> http://www.rgagnon.com/javadetails/java-0483.html
+		----------------------------*/
+	public static boolean deleteDirectory(File target) {
+		
+		if(target.exists()) {
+			//
+			File[] files = target.listFiles();
+			
+			//
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isDirectory()) {
+					
+					deleteDirectory(files[i]);
+					
+				} else {//if (files[i].isDirectory())
+					
+					String path = files[i].getAbsolutePath();
+					
+					files[i].delete();
+					
+					// Log
+					Log.d("Methods.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "Removed => " + path);
+					
+					
+				}//if (files[i].isDirectory())
+				
+			}//for (int i = 0; i < files.length; i++)
+			
+		}//if(target.exists())
+		
+		return (target.delete());
+	}
 }//public class Methods
