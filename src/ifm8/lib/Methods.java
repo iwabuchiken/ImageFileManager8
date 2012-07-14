@@ -370,7 +370,7 @@ public class Methods {
 		
 	}//public static void createFolder(Activity actv, Dialog dlg, Dialog dlg2)
 
-	private static void refreshListView(Activity actv) {
+	public static void refreshListView(Activity actv) {
 		/*----------------------------
 		 * Steps
 		 * 1. Get file list
@@ -378,6 +378,8 @@ public class Methods {
 		 * 2. Clear => ImageFileManager8Activity.file_names
 		 * 3. Add file names to => ImageFileManager8Activity.file_names
 		 * 4. Notify adapter of changes
+		 * 
+		 * 5. Update image buttons
 			----------------------------*/
 		
 		// 
@@ -434,7 +436,29 @@ public class Methods {
 
 		}//if (condition)
 		
+		/*----------------------------
+		 * 5. Update image buttons
+			----------------------------*/
+//		if (ImageFileManager8Activity.currentDirPath == ImageFileManager8Activity.baseDirPath) {
+		if (ImageFileManager8Activity.currentDirPath.equals(ImageFileManager8Activity.baseDirPath)) {
 			
+//			//debug
+//			toastAndLog(actv, 
+//					"ImageFileManager8Activity.currentDirPath.equals(ImageFileManager8Activity.baseDirPath)", 
+//					3000 );
+			
+			//
+			ImageButton ib = (ImageButton) actv.findViewById(R.id.v1_bt_up);
+			
+			ib.setImageResource(R.drawable.ifm8_up_disenabled);
+			ib.setEnabled(false);
+			
+		} else {//if (ImageFileManager8Activity.currentDirPath.equals(ImageFileManager8Activity.baseDirPath))
+//			//debug
+//			toastAndLog(actv, 
+//					"!ImageFileManager8Activity.currentDirPath.equals(ImageFileManager8Activity.baseDirPath)", 
+//					3000 );
+		}//if (ImageFileManager8Activity.currentDirPath.equals(ImageFileManager8Activity.baseDirPath))
 		
 	}//private static void refreshListView()
 

@@ -1,5 +1,6 @@
 package ifm8.main;
 
+import ifm8.lib.ButtonOnClickListener;
 import ifm8.lib.ButtonOnTouchListener;
 import ifm8.lib.CustomOnItemLongClickListener;
 import ifm8.lib.Methods;
@@ -45,7 +46,7 @@ public class ImageFileManager8Activity extends ListActivity {
 
 	static Vibrator vib;
 
-	static final int vibLength_click = 40;
+	public static final int vibLength_click = 40;
 	
     /** Called when the activity is first created. */
     @Override
@@ -84,7 +85,7 @@ public class ImageFileManager8Activity extends ListActivity {
 		ib_up.setTag(Methods.ButtonTags.ib_up);
 		
 		ib_up.setOnTouchListener(new ButtonOnTouchListener(this));
-		
+		ib_up.setOnClickListener(new ButtonOnClickListener(this));
 		
 		
 //		ib_back.setEnabled(false);
@@ -306,6 +307,7 @@ public class ImageFileManager8Activity extends ListActivity {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onStop();
 	}
+
 
 	@Override
 	protected void onListItemClick(ListView lv, View v, int position, long id) {
