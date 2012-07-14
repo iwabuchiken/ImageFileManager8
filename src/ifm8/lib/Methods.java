@@ -27,6 +27,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,8 @@ public class Methods {
 	}//public static enum DialogTags
 	
 	public static enum ButtonTags {
+		// ImageFileManager8Activity.java
+		ib_up,
 		
 	}
 	
@@ -680,4 +683,44 @@ public class Methods {
 		
 		return (target.delete());
 	}
+
+	public static void toastAndLog(Activity actv, String message, int duration) {
+		// 
+		// debug
+		Toast.makeText(actv, message, duration)
+				.show();
+		
+		// Log
+		Log.d("ImageFileManager8Activity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "]", 
+				message);
+		
+	}//public static void toastAndLog(Activity actv, String message)
+
+	public static void enterDir(Activity actv, File newDir) {
+		/*----------------------------
+		 * Steps
+		 * 1. Update the current path
+		 * 2. Refresh list view
+		 * 3. "Up" button => Enable
+			----------------------------*/
+		ImageFileManager8Activity.currentDirPath = newDir.getAbsolutePath();
+		
+		refreshListView(actv);
+		
+		/*----------------------------
+		 * 3. "Up" button => Enable
+			----------------------------*/
+		ImageButton ib = (ImageButton) actv.findViewById(R.id.v1_bt_up);
+		
+		if (!ib.isEnabled()) {
+			
+			ib.setEnabled(true);
+			
+			ib.setImageResource(R.drawable.ifm8_up);
+			
+			
+		}//if (!ib.isEnabled())
+		
+	}//public static void enterDir(Activity actv, File newDir)
 }//public class Methods

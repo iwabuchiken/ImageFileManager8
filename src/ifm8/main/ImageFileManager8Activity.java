@@ -1,5 +1,6 @@
 package ifm8.main;
 
+import ifm8.lib.ButtonOnTouchListener;
 import ifm8.lib.CustomOnItemLongClickListener;
 import ifm8.lib.Methods;
 
@@ -25,6 +26,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -42,6 +44,8 @@ public class ImageFileManager8Activity extends ListActivity {
 	static Comparator fileNameComparator;
 
 	static Vibrator vib;
+
+	static final int vibLength_click = 40;
 	
     /** Called when the activity is first created. */
     @Override
@@ -52,7 +56,41 @@ public class ImageFileManager8Activity extends ListActivity {
         vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
         
         set_initial_dir_list();
+        
+        setup_image_buttons();
     }
+
+	private void setup_image_buttons() {
+		/*----------------------------
+		 * Steps
+		 * 1. Get views
+		 * 2. "Up" button => Set up
+		 * 3. Listeners => Click
+			----------------------------*/
+		
+		ImageButton ib_up = (ImageButton) findViewById(R.id.v1_bt_up);
+//		ImageButton ib_back = (ImageButton) findViewById(R.id.v1_bt_back);
+//		ImageButton ib_forward = (ImageButton) findViewById(R.id.v1_bt_forward);
+		
+		if (this.currentDirPath == this.baseDirPath) {
+			
+			ib_up.setEnabled(false);
+			
+		}//if (this.currentDirPath == this.baseDirPath)
+		
+		/*----------------------------
+		 * 3. Listeners => Click
+			----------------------------*/
+		ib_up.setTag(Methods.ButtonTags.ib_up);
+		
+		ib_up.setOnTouchListener(new ButtonOnTouchListener(this));
+		
+		
+		
+//		ib_back.setEnabled(false);
+//		ib_forward.setEnabled(false);
+		
+	}//private void setup_image_button()
 
 	private void set_initial_dir_list() {
 		/*----------------------------
@@ -268,4 +306,68 @@ public class ImageFileManager8Activity extends ListActivity {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onStop();
 	}
-}
+
+	@Override
+	protected void onListItemClick(ListView lv, View v, int position, long id) {
+		/*----------------------------
+		 * Steps
+		 * 0. Vibrate
+		 * 1. Get item name
+		 * 2. Get file object
+		 * 3. Is a directory?
+		 * 		=> If yes, update the current path
+			----------------------------*/
+		//
+		vib.vibrate(vibLength_click);
+		
+		String itemName = (String) lv.getItemAtPosition(position);
+		
+		// Log
+		Log.d("ImageFileManager8Activity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "itemName => " + itemName);
+		
+		// debug
+		Toast.makeText(ImageFileManager8Activity.this, itemName, 2000)
+				.show();
+		
+		/*----------------------------
+		 * 2. Get file object
+			----------------------------*/
+		File target = new File(this.currentDirPath, itemName);
+		
+		
+		/*----------------------------
+		 * 3. Is a directory?
+			----------------------------*/
+		if (!target.exists()) {
+			// debug
+			Toast.makeText(ImageFileManager8Activity.this, 
+					"This item doesn't exist in the directory: " + itemName, 
+					2000)
+					.show();
+			
+			// Log
+			Log.d("ImageFileManager8Activity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", 
+					"This item doesn't exist in the directory: " + itemName);
+
+			return;
+		}//if (!target.exists())
+		
+		//
+		if (target.isDirectory()) {
+			
+			Methods.enterDir(this, target);
+			
+		} else if (target.isFile()) {//if (target.isDirectory())
+			
+			Methods.toastAndLog(this, "This is a file: " + itemName, 2000);
+			
+		}//if (target.isDirectory())
+		
+		
+		super.onListItemClick(lv, v, position, id);
+	}//protected void onListItemClick(ListView l, View v, int position, long id)
+}//public class ImageFileManager8Activity extends ListActivity
