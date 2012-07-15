@@ -633,6 +633,8 @@ public class Methods {
 		 * 3. Remove
 		 * 4. Refresh list
 		 * 5. Dismiss dialog
+		 * 
+		 * 6. Drop table
 			----------------------------*/
 		
 		//
@@ -724,9 +726,79 @@ public class Methods {
 			----------------------------*/
 		refreshListView(actv);
 		
+		/*----------------------------
+		 * 6. Drop table
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase db = dbu.getWritableDatabase();
+		
+		String tableName = Methods.convertPathIntoTableName(actv, targetDir);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tableName => " + tableName);
+		
+		dbu.dropTable(actv, db, tableName);
+
+		db.close();
+		
 		return;
 		
 	}//public static void removeFolder(Activity actv, Dialog dlg)
+
+	private static String convertPathIntoTableName(Activity actv, File targetDir) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get table name => Up to the current path
+		 * 2. Add name => Target folder name
+			----------------------------*/
+		
+		String[] currentPathArray = getCurrentPathLabel(actv).split(new File("aaa").separator);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "currentPathArray.length => " + currentPathArray.length);
+		
+		String tableName = null;
+		StringBuilder sb = new StringBuilder();
+		
+		if (currentPathArray.length > 1) {
+			
+			tableName = StringUtils.join(currentPathArray, "__");
+			
+			sb.append(tableName);
+			sb.append("__");
+			
+		} else {//if (currentPathArray.length > 1)
+			
+			sb.append(currentPathArray[0]);
+			sb.append("__");
+			
+		}//if (currentPathArray.length > 1)
+		
+//			tableName = StringUtils.join(currentPathArray, "__");
+		
+		/*----------------------------
+		 * 2. Add name => Target folder name
+			----------------------------*/
+		String targetDirPath = targetDir.getAbsolutePath();
+		
+		String[] a_targetDirPath = targetDirPath.split(new File("aaa").separator);
+		
+		String folderName = a_targetDirPath[a_targetDirPath.length - 1];
+		
+//		sb.append(tableName);
+//		sb.append("__");
+		sb.append(folderName);
+		
+		tableName = sb.toString();
+
+		
+		return tableName;
+	}//private static String convertPathIntoTableName(String absolutePath)
 
 	/*----------------------------
 	 * deleteDirectory(File target)()
@@ -776,6 +848,27 @@ public class Methods {
 		// Log
 		Log.d("ImageFileManager8Activity.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "]", 
+				message);
+		
+	}//public static void toastAndLog(Activity actv, String message)
+
+	public static void toastAndLog(Activity actv, String fileName, String message, int duration) {
+		// 
+		// debug
+		Toast.makeText(actv, message, duration)
+				.show();
+		
+		// Log
+		Log.d(fileName + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "]", 
+				message);
+		
+	}//public static void toastAndLog(Activity actv, String fileName, String message, int duration)
+
+	public static void recordLog(Activity actv, String fileName, String message) {
+		// Log
+		Log.d(fileName + 
+				"[" + Thread.currentThread().getStackTrace()[2].getLineNumber() + "]", 
 				message);
 		
 	}//public static void toastAndLog(Activity actv, String message)

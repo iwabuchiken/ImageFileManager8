@@ -75,6 +75,10 @@ public class DBUtils extends SQLiteOpenHelper{
 		
 	}//public DBUtils(Context context)
 
+//	public DBUtils() {
+//		// TODO 自動生成されたコンストラクター・スタブ
+//	}
+
 	/*******************************************************
 	 * Methods
 	 *******************************************************/
@@ -205,6 +209,76 @@ public class DBUtils extends SQLiteOpenHelper{
 	public String[] get_col_types() {
 		return col_types;
 	}
+
+	public boolean dropTable(Activity actv, SQLiteDatabase db, String tableName) {
+		/*------------------------------
+		 * The table exists?
+		 *------------------------------*/
+		// The table exists?
+		boolean tempBool = tableExists(db, tableName);
+		
+		if (tempBool == true) {
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table exists: " + tableName);
+			
+//			Methods.recordLog(actv, 
+//					"DBUtils.java", 
+//					"Table exists: " + tableName);
+			
+		} else {//if (tempBool == true)
+			// Log
+			Log.e("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + tableName);
+
+//			Methods.recordLog(actv, 
+//					"DBUtils.java", 
+//					"Table doesn't exist: " + tableName);
+
+			return false;
+		}
+
+		/*------------------------------
+		 * Drop the table
+		 *------------------------------*/
+		// Define the sql
+        String sql 
+             = "DROP TABLE " + tableName;
+        
+        // Execute
+        try {
+			db.execSQL(sql);
+			
+			// Vacuum
+			db.execSQL("VACUUM");
+			
+			// Log
+			Log.d("DBManager.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "The table dropped => " + tableName);
+			
+			// Return
+			return true;
+			
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			// Log
+			Log.e("DBManager.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "DROP TABLE => failed (table=" + tableName + "): " + e.toString());
+			
+			// debug
+			Toast.makeText(actv, 
+						"DROP TABLE => failed(table=" + tableName, 
+						3000).show();
+			
+			// Return
+			return false;
+		}//try
+
+	}//public boolean dropTable(String tableName) 
 
 
 }//public class DBUtils
