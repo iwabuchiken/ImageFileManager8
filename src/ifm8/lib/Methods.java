@@ -256,6 +256,8 @@ public class Methods {
 		 * 5. If successful, dismiss dialog. Otherwise, toast a message
 		 * 6. Create a "list.txt"
 		 * 7. Refresh list view 
+		 * 
+		 * 8. Create a new table
 			----------------------------*/
 		//
 		TextView tv_folderName = (TextView) dlg2.findViewById(R.id.dlg_confirm_create_folder_tv_table_name);
@@ -367,6 +369,63 @@ public class Methods {
 			----------------------------*/
 		refreshListView(actv);
 		
+		/*----------------------------
+		 * 8. Create a new table
+		 * 		8.1. Build a table name
+		 * 		8.2. Create a table
+			----------------------------*/
+//		String[] currentPathArray = ImageFileManager8Activity.currentDirPath.split(newDir.separator);
+		String[] currentPathArray = getCurrentPathLabel(actv).split(newDir.separator);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "currentPathArray.length => " + currentPathArray.length);
+		
+		String tableName = null;
+		StringBuilder sb = new StringBuilder();
+		
+		if (currentPathArray.length > 1) {
+			
+			tableName = StringUtils.join(currentPathArray, "__");
+			
+			sb.append(tableName);
+			sb.append("__");
+			
+		} else {//if (currentPathArray.length > 1)
+			
+			sb.append(currentPathArray[0]);
+			sb.append("__");
+			
+		}//if (currentPathArray.length > 1)
+		
+//			tableName = StringUtils.join(currentPathArray, "__");
+		
+		
+		
+//		sb.append(tableName);
+//		sb.append("__");
+		sb.append(folderName);
+		
+		tableName = sb.toString();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tableName => " + tableName);
+		
+		/*----------------------------
+		 * 8.2. Create a table
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase db = dbu.getWritableDatabase();
+		
+		dbu.createTable(db, tableName, 
+//					dbu.get_cols_with_index(), dbu.get_col_types_with_index());
+				dbu.get_cols(), dbu.get_col_types());
+		
+		db.close();
 		
 	}//public static void createFolder(Activity actv, Dialog dlg, Dialog dlg2)
 

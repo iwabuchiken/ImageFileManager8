@@ -1,9 +1,11 @@
 package ifm8.main;
 
-import ifm8.lib.ButtonOnClickListener;
-import ifm8.lib.ButtonOnTouchListener;
-import ifm8.lib.CustomOnItemLongClickListener;
-import ifm8.lib.Methods;
+//import ifm8.lib.ButtonOnClickListener;
+//import ifm8.lib.ButtonOnTouchListener;
+//import ifm8.lib.CustomOnItemLongClickListener;
+//import ifm8.lib.Methods;
+import ifm8.lib.*;
+//import ifm8.lib.DBUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
@@ -38,6 +41,7 @@ public class ImageFileManager8Activity extends ListActivity {
 	public static String baseDirPath = null;
 	public static String baseDirName = "IFM8";
 	public static String listFileName = "list.txt";
+	public static String dbName = "IFM8";
 	
 	public static List<String> file_names = null;
 
@@ -47,7 +51,9 @@ public class ImageFileManager8Activity extends ListActivity {
 
 	public static Vibrator vib;
 
-	public static final int vibLength_click = 40;
+//	public static final int vibLength_click = 40;
+//	public static final int vibLength_click = 30;
+	public static final int vibLength_click = 35;
 	
     /** Called when the activity is first created. */
     @Override
@@ -97,6 +103,198 @@ public class ImageFileManager8Activity extends ListActivity {
 	private void set_initial_dir_list() {
 		/*----------------------------
 		 * Steps
+		 * 	1. Part 1
+			 * 1. Create root dir
+			 * 1-2. Create "list.txt"
+			 * 2. Set variables => currentDirPath, baseDirPath
+			 * 3. Get file list
+			 * 3-1. Sort file list
+			 * 4. Set list to adapter
+			 * 5. Set adapter to list view
+			 * 
+			 * 6. Set listener to list
+		 * 
+		 * 	2. Part 2
+			 * 1. Set path label to text view
+			 * 2. Create a table
+			----------------------------*/
+		
+		set_initial_dir_list_part1();
+		set_initial_dir_list_part2();
+		
+//		// TODO 自動生成されたメソッド・スタブ
+////		File dir = Environment.getExternalStorageDirectory();
+//		File dir = new File("/mnt/sdcard-ext");
+//		
+//		File file = new File(dir, baseDirName);
+//		
+//		if (!file.exists()) {
+//			try {
+//				file.mkdir();
+//				
+//				// Log
+//				Log.d("ImageFileManager8Activity.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "Dir created => " + file.getAbsolutePath());
+//				
+//			} catch (Exception e) {
+//				// Log
+//				Log.d("ImageFileManager8Activity.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "Exception => " + e.toString());
+//				
+//			}
+//		} else {//if (file.exists())
+//			// Log
+//			Log.d("ImageFileManager8Activity.java"
+//					+ "["
+//					+ Thread.currentThread().getStackTrace()[2]
+//							.getLineNumber() + "]", "Dir exists => " + file.getAbsolutePath());
+//		}//if (file.exists())
+//		
+//		/*----------------------------
+//		 * 1-2. Create "list.txt"
+//			----------------------------*/
+//		File list_file = new File(file, listFileName);
+//		
+//		if (list_file.exists()) {
+//			// Log
+//			Log.d("ImageFileManager8Activity.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "\"list.txt\" => Exists");
+//			
+//		} else {//if (list_file.exists())
+//			try {
+//				BufferedWriter br = new BufferedWriter(new FileWriter(list_file));
+//				br.close();
+//			} catch (IOException e) {
+//				// Log
+//				Log.d("ImageFileManager8Activity.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "BufferedWrite: Exception => " + e.toString());
+//				
+//			}
+//		}//if (list_file.exists())
+//		
+//		
+//		/*----------------------------
+//		 * 2. Set variables => currentDirPath, baseDirPath
+//			----------------------------*/
+//		baseDirPath = file.getAbsolutePath();
+//		currentDirPath = file.getAbsolutePath();
+//		
+//		/*----------------------------
+//		 * 3. Get file list
+//		 * 3-1. Sort file list
+//			----------------------------*/
+//		File[] files = file.listFiles();
+//		
+////		File[] files = dir.listFiles();
+//		
+////		Methods.makeComparator(fileNameComparator);
+//		
+////		Collections.sort(files, fileNameComparator);
+//		
+//		// Sort
+//		Methods.sortFileList(files);
+//		
+////		List<String> file_names = new ArrayList<String>();
+//		file_names = new ArrayList<String>();
+//		
+//		for (File item : files) {
+//			file_names.add(item.getName());
+//		}
+//		
+//		/*----------------------------
+//		 * 4. Set list to adapter
+//			----------------------------*/
+////		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//		adapter = new ArrayAdapter<String>(
+//									this,
+//									android.R.layout.simple_list_item_1,
+//									file_names
+//									);
+//		
+//		
+//		/*----------------------------
+//		 * 5. Set adapter to list view
+//			----------------------------*/
+//		this.setListAdapter(adapter);
+//		
+//		// Log
+//		Log.d("ImageFileManager8Activity.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "adapter => set");
+//		
+//		if (adapter == null) {
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "adapter => null");
+//
+//		} else {//if (adapter == null)
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "adapter => Not null");
+//		}//if (adapter == null)
+//		
+//		/*----------------------------
+//		 * 6. Set listener to list
+//			----------------------------*/
+//		ListView lv = this.getListView();
+//		
+//		lv.setTag(Methods.ItemTags.dir_list);
+//		
+//		lv.setOnItemLongClickListener(new CustomOnItemLongClickListener(this));
+////				new OnItemLongClickListener(){
+////
+////			@Override
+////			public boolean onItemLongClick(AdapterView<?> parent, View v,
+////					int position, long id) {
+////				// TODO 自動生成されたメソッド・スタブ
+////				
+////				String name = (String) parent.getItemAtPosition(position);
+////				
+////				//
+//////				vib.vibrate(400);
+////				vib.vibrate(40);
+////
+////				Methods.dlg_removeFolder(this);
+////				
+////				return false;
+////			}});
+//		
+//		/*----------------------------
+//		 * 7. Set path label to text view
+//			----------------------------*/
+//		
+//		Methods.updatePathLabel(this);
+//		
+//		
+////		TextView tv = (TextView) findViewById(R.id.v1_tv_dir_path);
+////		
+////		String currentPathLabel = Methods.getCurrentPathLabel(this);
+////		
+////		// Log
+////		Log.d("ImageFileManager8Activity.java" + "["
+////				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+////				+ "]", "currentPathLabel => " + currentPathLabel);
+//		
+//		/*----------------------------
+//		 * 8. Create a table
+//			----------------------------*/
+//		
+//		
+		
+	}//private void set_initial_dir_list()
+
+	private void set_initial_dir_list_part1() {
+		/*----------------------------
+		 * Steps
 		 * 1. Create root dir
 		 * 1-2. Create "list.txt"
 		 * 2. Set variables => currentDirPath, baseDirPath
@@ -106,8 +304,6 @@ public class ImageFileManager8Activity extends ListActivity {
 		 * 5. Set adapter to list view
 		 * 
 		 * 6. Set listener to list
-		 * 
-		 * 7. Set path label to text view
 			----------------------------*/
 		
 		// TODO 自動生成されたメソッド・スタブ
@@ -238,40 +434,33 @@ public class ImageFileManager8Activity extends ListActivity {
 		lv.setTag(Methods.ItemTags.dir_list);
 		
 		lv.setOnItemLongClickListener(new CustomOnItemLongClickListener(this));
-//				new OnItemLongClickListener(){
-//
-//			@Override
-//			public boolean onItemLongClick(AdapterView<?> parent, View v,
-//					int position, long id) {
-//				// TODO 自動生成されたメソッド・スタブ
-//				
-//				String name = (String) parent.getItemAtPosition(position);
-//				
-//				//
-////				vib.vibrate(400);
-//				vib.vibrate(40);
-//
-//				Methods.dlg_removeFolder(this);
-//				
-//				return false;
-//			}});
 		
+	}//private void set_initial_dir_list()
+
+	private void set_initial_dir_list_part2() {
 		/*----------------------------
-		 * 7. Set path label to text view
+		 * Steps
+		 * 1. Set path label to text view
+		 * 2. Create a table
+			----------------------------*/
+		/*----------------------------
+		 * 1. Set path label to text view
 			----------------------------*/
 		
 		Methods.updatePathLabel(this);
 		
+		/*----------------------------
+		 * 2. Create a table
+			----------------------------*/
+		DBUtils dbu = new DBUtils(this, this.dbName);
 		
-//		TextView tv = (TextView) findViewById(R.id.v1_tv_dir_path);
-//		
-//		String currentPathLabel = Methods.getCurrentPathLabel(this);
-//		
-//		// Log
-//		Log.d("ImageFileManager8Activity.java" + "["
-//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ "]", "currentPathLabel => " + currentPathLabel);
+		SQLiteDatabase db = dbu.getWritableDatabase();
 		
+		dbu.createTable(db, this.baseDirName, 
+//					dbu.get_cols_with_index(), dbu.get_col_types_with_index());
+				dbu.get_cols(), dbu.get_col_types());
+		
+		db.close();
 		
 	}//private void set_initial_dir_list()
 
@@ -393,3 +582,4 @@ public class ImageFileManager8Activity extends ListActivity {
 		super.onListItemClick(lv, v, position, id);
 	}//protected void onListItemClick(ListView l, View v, int position, long id)
 }//public class ImageFileManager8Activity extends ListActivity
+
