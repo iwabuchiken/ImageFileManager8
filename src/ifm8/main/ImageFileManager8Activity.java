@@ -260,15 +260,17 @@ public class ImageFileManager8Activity extends ListActivity {
 		 * 7. Set path label to text view
 			----------------------------*/
 		
+		Methods.updatePathLabel(this);
 		
-		TextView tv = (TextView) findViewById(R.id.v1_tv_dir_path);
 		
-		String currentPathLabel = Methods.getCurrentPathLabel(this);
-		
-		// Log
-		Log.d("ImageFileManager8Activity.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "currentPathLabel => " + currentPathLabel);
+//		TextView tv = (TextView) findViewById(R.id.v1_tv_dir_path);
+//		
+//		String currentPathLabel = Methods.getCurrentPathLabel(this);
+//		
+//		// Log
+//		Log.d("ImageFileManager8Activity.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "currentPathLabel => " + currentPathLabel);
 		
 		
 	}//private void set_initial_dir_list()
@@ -342,14 +344,14 @@ public class ImageFileManager8Activity extends ListActivity {
 		
 		String itemName = (String) lv.getItemAtPosition(position);
 		
-		// Log
-		Log.d("ImageFileManager8Activity.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "itemName => " + itemName);
-		
-		// debug
-		Toast.makeText(ImageFileManager8Activity.this, itemName, 2000)
-				.show();
+//		// Log
+//		Log.d("ImageFileManager8Activity.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "itemName => " + itemName);
+//		
+//		// debug
+//		Toast.makeText(ImageFileManager8Activity.this, itemName, 2000)
+//				.show();
 		
 		/*----------------------------
 		 * 2. Get file object

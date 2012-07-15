@@ -751,7 +751,7 @@ public class Methods {
 		/*----------------------------
 		 * 4. Update path view
 			----------------------------*/
-		getCurrentPathLabel(actv);
+		updatePathLabel(actv);
 		
 		
 	}//public static void enterDir(Activity actv, File newDir)
@@ -779,9 +779,9 @@ public class Methods {
 		
 		String s_newPath = StringUtils.join(newPath, new File("abc").separator);
 		
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "s_newPath => " + s_newPath);
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "s_newPath => " + s_newPath);
 		
 		return s_newPath;
 		
@@ -874,8 +874,16 @@ public class Methods {
 		/*----------------------------
 		 * 5. Update path view
 			----------------------------*/
-		getCurrentPathLabel(actv);
+		updatePathLabel(actv);
 		
 	}//public static void upDirectory(Activity actv)
+
+	public static void updatePathLabel(Activity actv) {
+		// 
+		TextView tv = (TextView) actv.findViewById(R.id.v1_tv_dir_path);
+		
+		tv.setText(getCurrentPathLabel(actv));
+		
+	}//public static void updatePathLabel(Activity actv)
 	
 }//public class Methods
