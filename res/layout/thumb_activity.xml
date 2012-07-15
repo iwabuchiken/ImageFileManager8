@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        
+		android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+		
+		android:background="@color/black"
+    >
+
+        <ListView
+            android:id="@+id/@android:id/list"
+            
+            android:layout_width="wrap_content"
+            android:layout_height="450dp"
+            
+            android:layout_weight="1"
+            android:background="@color/black" >
+        </ListView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/thumb_activity_LL_buttons"
+        
+        style="@style/v1_LL_header"
+        	>
+
+        <Button
+            android:id="@+id/thumb_activity_bt_toTop"
+            
+            style="@style/v1_2_bt_toTop"
+            
+            
+            android:text="@string/v1_2_bt_toTop" />
+
+        <Button
+            android:id="@+id/thumb_activity_bt_prev_page"
+            
+            style="@style/v1_2_bt_prev_page"
+            
+            android:text="@string/v1_2_bt_prev_page"
+            
+             />
+
+        <Button
+            android:id="@+id/thumb_activity_BT_btn_1"
+            
+            style="@style/v1_BT_btn_1"
+            
+            android:text="@string/v1_2_BT_btn_1" />
+
+        <Button
+            android:id="@+id/thumb_activity_bt_next_page"
+            
+            style="@style/v1_2_bt_prev_page"
+            
+            android:text="@string/v1_2_bt_next_page" />
+
+        <Button
+            android:id="@+id/thumb_activity_bt_toBottom"
+            
+            style="@style/v1_2_bt_toTop"
+            
+            android:text="@string/v1_2_bt_toBottom" 
+            
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
