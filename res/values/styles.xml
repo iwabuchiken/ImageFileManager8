@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- thumb_activity.xml -->
+	<!-- v1_ib -->
+	<style name="v1_ib">
+	    <item name="android:layout_width">45dp</item>
+		<item name="android:layout_height">45dp</item>
+		
+		<item name="android:layout_marginTop">0dp</item>
+		<item name="android:layout_marginBottom">dp</item>
+		<item name="android:layout_marginLeft">7dp</item>
+		<item name="android:layout_marginRight">7dp</item>
+		
+		
+	</style><!-- <style name="v1_ib"> -->
+	
+</resources>

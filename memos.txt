@@ -25,4 +25,4 @@ pushd C:\WORKS\WORKSPACES_ANDROID\Sample\05_Techbooster
 svn co https://techbooster.googlecode.com/svn/trunk/ContextMenu/ ContextMenu
 
 [GIMP]
-C:\WORKS\WORKSPACES_ANDROID\GIMP\Icons
+pushd C:\WORKS\WORKSPACES_ANDROID\GIMP\Icons

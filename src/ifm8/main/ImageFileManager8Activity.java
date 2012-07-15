@@ -574,7 +574,10 @@ public class ImageFileManager8Activity extends ListActivity {
 			
 		} else if (target.isFile()) {//if (target.isDirectory())
 			
-			Methods.toastAndLog(this, "This is a file: " + itemName, 2000);
+			Methods.startThumbnailActivity(this, target);
+			
+//			Methods.toastAndLog(this, "This is a file: " + itemName, 2000);
+			
 			
 		}//if (target.isDirectory())
 		

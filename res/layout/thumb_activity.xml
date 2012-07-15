@@ -8,18 +8,20 @@
     <LinearLayout
         
 		android:layout_width="fill_parent"
-    	android:layout_height="fill_parent"
+    	android:layout_height="wrap_content"
 		
 		android:background="@color/black"
+		
+		android:layout_weight="1"
     >
 
         <ListView
             android:id="@+id/@android:id/list"
             
             android:layout_width="wrap_content"
-            android:layout_height="450dp"
+            android:layout_height="fill_parent"
             
-            android:layout_weight="1"
+            
             android:background="@color/black" >
         </ListView>
 
@@ -28,46 +30,58 @@
     <LinearLayout
         android:id="@+id/thumb_activity_LL_buttons"
         
-        style="@style/v1_LL_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+        android:layout_marginTop="5dp"
+        
+        android:layout_gravity="center_horizontal"
+        
+        android:orientation="horizontal"
         	>
 
-        <Button
-            android:id="@+id/thumb_activity_bt_toTop"
+        <ImageButton
+            android:id="@+id/thumb_activity_ib_toTop"
             
-            style="@style/v1_2_bt_toTop"
+            style="@style/v1_ib"
             
             
-            android:text="@string/v1_2_bt_toTop" />
+            android:src="@drawable/ifm8_thumb_top_50x50_disenabled" 
+            
+            />
 
-        <Button
-            android:id="@+id/thumb_activity_bt_prev_page"
+        <ImageButton
+            android:id="@+id/thumb_activity_ib_prev_page"
             
-            style="@style/v1_2_bt_prev_page"
+            style="@style/v1_ib"
             
-            android:text="@string/v1_2_bt_prev_page"
+            android:src="@drawable/ifm8_thumb_up_50x50_disenabled"
             
              />
 
-        <Button
+        <ImageButton
             android:id="@+id/thumb_activity_BT_btn_1"
             
-            style="@style/v1_BT_btn_1"
+            style="@style/v1_ib"
             
-            android:text="@string/v1_2_BT_btn_1" />
+            android:src="@drawable/ifm8_thumb_back_50x50_disenabled"
+			/>
 
-        <Button
-            android:id="@+id/thumb_activity_bt_next_page"
+        <ImageButton
+            android:id="@+id/thumb_activity_ib_next_page"
             
-            style="@style/v1_2_bt_prev_page"
+            style="@style/v1_ib"
+        	
+            android:src="@drawable/ifm8_thumb_down_50x50_disenabled"
             
-            android:text="@string/v1_2_bt_next_page" />
+            />
 
-        <Button
-            android:id="@+id/thumb_activity_bt_toBottom"
+        <ImageButton
+            android:id="@+id/thumb_activity_ib_toBottom"
             
-            style="@style/v1_2_bt_toTop"
-            
-            android:text="@string/v1_2_bt_toBottom" 
+            style="@style/v1_ib"
+        	
+            android:src="@drawable/ifm8_thumb_bottom_50x50_disenabled"
             
             />
 

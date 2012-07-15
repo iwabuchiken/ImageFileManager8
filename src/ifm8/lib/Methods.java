@@ -1,6 +1,7 @@
 package ifm8.lib;
 
 import ifm8.main.*;
+import thumb_activity.main.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,6 +17,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -1037,5 +1039,29 @@ public class Methods {
 		tv.setText(getCurrentPathLabel(actv));
 		
 	}//public static void updatePathLabel(Activity actv)
+
+	public static void startThumbnailActivity(Activity actv, File target) {
+		/*----------------------------
+		 * Steps
+		 * 1. "list.txt"?
+		 * 2. If yes, start activity
+			----------------------------*/
+		if (!target.getName().equals(ImageFileManager8Activity.listFileName)) {
+			
+			toastAndLog(actv, "Not a \"list.txt\"", 2000);
+			
+			return;
+		}//if (!target.getName().equals(ImageFileManager8Activity.listFileName))
+		
+		/*----------------------------
+		 * 2. If yes, start activity
+			----------------------------*/
+		Intent i = new Intent();
+		
+		i.setClass(actv, ThumbnailActivity.class);
+		
+		actv.startActivity(i);
+		
+	}//public static void startThumbnailActivity(Activity actv, File target)
 	
 }//public class Methods
