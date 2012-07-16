@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!-- Row 1 -->
+        <LinearLayout
+            android:id="@+id/image_activity_LL_image"
+            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            
+            android:layout_weight="1"
+            
+            >
+
+
+        </LinearLayout>
+
+    <!-- Row 2 -->
+
+    <TextView
+        android:id="@+id/image_activity_tv_message"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        
+        android:minHeight="45dp"
+        
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        
+        android:background="@color/white"
+
+		android:layout_marginTop="10dp"
+		
+        />
+
+    <!-- Row 3 -->
+    <LinearLayout
+        
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+        android:orientation="horizontal"
+        
+        android:layout_gravity="center_horizontal"
+        
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        
+        >
+
+        <!-- image file => C:\WORKS\WORKSPACES_ANDROID\Sample\03_Techfun_jissen\Chapter6\PlaytubeSample\res\drawable -->
+        <ImageButton
+            android:id="@+id/image_activity_ib_prev"
+            
+            style="@style/image_activity_ib"
+        
+            android:src="@drawable/ifm8_back_disenabled" 
+            
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            
+            />
+
+        <ImageButton
+            android:id="@+id/image_activity_ib_back"
+
+            style="@style/image_activity_ib"
+            
+            android:src="@drawable/ifm8_image_actv_back_70x70"
+            
+            />
+
+        <ImageButton
+            android:id="@+id/image_activity_ib_next"
+            
+            style="@style/image_activity_ib"
+            
+            android:src="@drawable/ifm8_forward_disenabled" 
+            />
+    
+    </LinearLayout><!-- Row 3 -->
+    
+	
+</LinearLayout>

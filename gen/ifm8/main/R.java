@@ -52,7 +52,7 @@ public final class R {
         public static final int ifm8_up_disenabled=0x7f020017;
     }
     public static final class id {
-        public static final int LL_main=0x7f080020;
+        public static final int LL_main=0x7f080021;
         public static final int db_manager_btn_create_table=0x7f080000;
         public static final int db_manager_btn_drop_table=0x7f080001;
         public static final int dlg_confirm_create_folder_btn_cancel=0x7f080005;
@@ -79,29 +79,30 @@ public final class R {
         public static final int dlg_input_empty_btn_cancel=0x7f080019;
         public static final int dlg_input_empty_btn_reenter=0x7f080018;
         public static final int dlg_input_empty_tv=0x7f080016;
+        public static final int image_activity_LL_image=0x7f080020;
         public static final int image_activity_ib_back=0x7f08001e;
         public static final int image_activity_ib_next=0x7f08001f;
         public static final int image_activity_ib_prev=0x7f08001d;
         public static final int image_activity_iv_image=0x7f08001b;
         public static final int image_activity_sv_image=0x7f08001a;
         public static final int image_activity_tv_message=0x7f08001c;
-        public static final int iv_thumbnail=0x7f080021;
-        public static final int main_opt_menu_create_folder=0x7f08002f;
-        public static final int main_opt_menu_db_activity=0x7f080031;
-        public static final int main_opt_menu_refresh_db=0x7f080030;
-        public static final int textView1=0x7f080022;
-        public static final int thumb_activity_LL_buttons=0x7f080023;
-        public static final int thumb_activity_ib_back=0x7f080026;
-        public static final int thumb_activity_ib_next_page=0x7f080027;
-        public static final int thumb_activity_ib_prev_page=0x7f080025;
-        public static final int thumb_activity_ib_toBottom=0x7f080028;
-        public static final int thumb_activity_ib_toTop=0x7f080024;
-        public static final int v1_LL_debug=0x7f08002b;
-        public static final int v1_bt_back=0x7f08002c;
-        public static final int v1_bt_forward=0x7f08002e;
-        public static final int v1_bt_up=0x7f08002d;
-        public static final int v1_sv_dir_path=0x7f080029;
-        public static final int v1_tv_dir_path=0x7f08002a;
+        public static final int iv_thumbnail=0x7f080022;
+        public static final int main_opt_menu_create_folder=0x7f080030;
+        public static final int main_opt_menu_db_activity=0x7f080032;
+        public static final int main_opt_menu_refresh_db=0x7f080031;
+        public static final int textView1=0x7f080023;
+        public static final int thumb_activity_LL_buttons=0x7f080024;
+        public static final int thumb_activity_ib_back=0x7f080027;
+        public static final int thumb_activity_ib_next_page=0x7f080028;
+        public static final int thumb_activity_ib_prev_page=0x7f080026;
+        public static final int thumb_activity_ib_toBottom=0x7f080029;
+        public static final int thumb_activity_ib_toTop=0x7f080025;
+        public static final int v1_LL_debug=0x7f08002c;
+        public static final int v1_bt_back=0x7f08002d;
+        public static final int v1_bt_forward=0x7f08002f;
+        public static final int v1_bt_up=0x7f08002e;
+        public static final int v1_sv_dir_path=0x7f08002a;
+        public static final int v1_tv_dir_path=0x7f08002b;
     }
     public static final class layout {
         public static final int db_manager=0x7f030000;
@@ -112,11 +113,12 @@ public final class R {
         public static final int dlg_drop_table=0x7f030005;
         public static final int dlg_input_empty=0x7f030006;
         public static final int image_activity=0x7f030007;
-        public static final int list_row=0x7f030008;
-        public static final int main=0x7f030009;
-        public static final int thumb_activity=0x7f03000a;
-        public static final int v1=0x7f03000b;
-        public static final int v2_2=0x7f03000c;
+        public static final int image_activity_for_myview=0x7f030008;
+        public static final int list_row=0x7f030009;
+        public static final int main=0x7f03000a;
+        public static final int thumb_activity=0x7f03000b;
+        public static final int v1=0x7f03000c;
+        public static final int v2_2=0x7f03000d;
     }
     public static final class menu {
         public static final int main_menu=0x7f070000;

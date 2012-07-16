@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ImageActivity extends Activity {
@@ -32,7 +33,8 @@ public class ImageActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		//
-		setContentView(R.layout.image_activity);
+//		setContentView(R.layout.image_activity);
+		setContentView(R.layout.image_activity_for_myview);
 
 		//
 		vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
@@ -75,9 +77,20 @@ public class ImageActivity extends Activity {
 		/*----------------------------
 		 * 3. Set image to the view
 			----------------------------*/
-		ImageView iv = (ImageView) findViewById(R.id.image_activity_iv_image);
+		// MyView
+		MyView v = new MyView(this);
 		
-		iv.setImageBitmap(bm);
+		// Set image
+		v.setImageBitmap(bm);
+
+		//
+		LinearLayout LL = (LinearLayout) findViewById(R.id.image_activity_LL_image);
+		
+		LL.addView(v);
+		
+//		ImageView iv = (ImageView) findViewById(R.id.image_activity_iv_image);
+//		
+//		iv.setImageBitmap(bm);
 		
 		/*----------------------------
 		 * 4. Set file name to the view
