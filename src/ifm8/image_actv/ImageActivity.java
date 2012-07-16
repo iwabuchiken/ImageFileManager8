@@ -65,6 +65,9 @@ public class ImageActivity extends Activity {
 		 * 1. Get intent and data
 		 * 2. Prepare image
 		 * 3. Set image to the view
+		 * 
+		 * 3-2
+		 * 
 		 * 4. Set file name to the view
 		 * 
 		 * 5. Set listeners
@@ -91,7 +94,7 @@ public class ImageActivity extends Activity {
 		
 		// Set image
 		v.setImageBitmap(bm);
-
+		
 		//
 		LinearLayout LL = (LinearLayout) findViewById(R.id.image_activity_LL_image);
 		
