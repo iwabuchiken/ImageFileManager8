@@ -14,4 +14,17 @@
 		
 	</style><!-- <style name="v1_ib"> -->
 	
+	
+	<!-- image_activity.xml -->
+	<style name="image_activity_ib">
+	    <item name="android:layout_width">70dp</item>
+	    <item name="android:layout_height">70dp</item>
+	    
+	    <item name="android:layout_marginTop">0dp</item>
+		<item name="android:layout_marginBottom">dp</item>
+		<item name="android:layout_marginLeft">10dp</item>
+		<item name="android:layout_marginRight">10dp</item>
+		
+	</style><!-- image_activity.xml -->
+	
 </resources>

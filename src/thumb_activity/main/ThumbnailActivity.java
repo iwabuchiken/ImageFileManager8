@@ -1,5 +1,6 @@
 package thumb_activity.main;
 
+import ifm8.image_actv.ImageActivity;
 import ifm8.lib.ButtonOnClickListener;
 import ifm8.lib.ButtonOnTouchListener;
 import ifm8.lib.Methods;
@@ -14,6 +15,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -29,7 +31,10 @@ public class ThumbnailActivity extends ListActivity {
 
 	//
 	static TIListAdapter aAdapter;
-	
+
+	//
+	public static Vibrator vib;
+
 	/*------------------------------------------------------------------------------------
 	 * Methods
 	------------------------------------------------------------------------------------*/
@@ -44,6 +49,9 @@ public class ThumbnailActivity extends ListActivity {
         		Methods.getCurrentPathLabel(this) + " :: " +
         		Methods.convertPathIntoTableName(this), 
         		2000);
+        
+        //
+        vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
         
         initial_setup();
     }//void onCreate(Bundle savedInstanceState)
@@ -125,5 +133,41 @@ public class ThumbnailActivity extends ListActivity {
 		
 		
 	}//private void set_listeners()
+
+	@Override
+	protected void onListItemClick(ListView lv, View v, int position, long id) {
+		/*----------------------------
+		 * Steps
+		 * 0. Vibrate
+		 * 1. Get item
+		 * 2. Intent
+		 * 		2.1. Set data
+		 * 3. Start intent
+			----------------------------*/
+		/*----------------------------
+		 * 0. Vibrate
+			----------------------------*/
+		vib.vibrate(Methods.vibLength_click);
+		
+		/*----------------------------
+		 * 1. Get item
+			----------------------------*/
+		ThumbnailItem ti = (ThumbnailItem) lv.getItemAtPosition(position);
+		
+		/*----------------------------
+		 * 2. Intent
+		 * 		2.1. Set data
+			----------------------------*/
+		Intent i = new Intent();
+		
+		i.setClass(this, ImageActivity.class);
+		
+		i.putExtra("file_id", ti.getFileId());
+		i.putExtra("file_path", ti.getFile_path());
+		
+		this.startActivity(i);
+		
+		super.onListItemClick(lv, v, position, id);
+	}
 
 }//public class ThumbnailActivity extends ListActivity

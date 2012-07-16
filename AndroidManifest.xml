@@ -24,6 +24,7 @@
         <activity android:name="thumb_activity.main.ThumbnailActivity"></activity>
         
         <activity android:name="ifm8.dbadmin.DBAdminActivity"></activity>
+        <activity android:name="ifm8.image_actv.ImageActivity"></activity>
         
     </application>
 
