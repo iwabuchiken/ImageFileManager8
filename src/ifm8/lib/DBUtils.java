@@ -56,6 +56,9 @@ public class DBUtils extends SQLiteOpenHelper{
 		{"file_id", 		"file_path", "file_name", "date_added",
 			"date_modified", "memos", "tags"};
 
+	static String[] cols_for_insert_data = 
+		{"file_id", 		"file_path", "file_name", "date_added", "date_modified"};
+
 	static String[] col_types =
 		{"INTEGER", "TEXT", 	"TEXT",		"INTEGER",
 			"INTEGER",		"TEXT",	"TEXT"};
@@ -68,6 +71,14 @@ public class DBUtils extends SQLiteOpenHelper{
 		MediaStore.Images.Media.DATE_MODIFIED,
 		};
 
+	static String[] cols_refresh_log = {
+		"last_refreshed", "num_of_items_added"
+	};
+	
+	static String[] col_types_refresh_log = {
+		"INTEGER", 			"INTEGER"
+	};
+	
 	/*****************************************************************
 	 * Constructor
 	 *****************************************************************/

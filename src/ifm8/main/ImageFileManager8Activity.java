@@ -42,7 +42,9 @@ public class ImageFileManager8Activity extends ListActivity {
 	public static String baseDirName = "IFM8";
 	public static String listFileName = "list.txt";
 	public static String dbName = "IFM8";
-	
+
+	public static String refreshLogTableName = "refresh_log";
+			
 	public static List<String> file_names = null;
 
 	public static ArrayAdapter<String> adapter = null;
@@ -449,18 +451,35 @@ public class ImageFileManager8Activity extends ListActivity {
 		
 		Methods.updatePathLabel(this);
 		
+		
 		/*----------------------------
 		 * 2. Create a table
+		 * 
+		 * 		=> Decided not to create a table at the initial set up process: 20120716_124208
 			----------------------------*/
-		DBUtils dbu = new DBUtils(this, this.dbName);
-		
-		SQLiteDatabase db = dbu.getWritableDatabase();
-		
-		dbu.createTable(db, this.baseDirName, 
-//					dbu.get_cols_with_index(), dbu.get_col_types_with_index());
-				dbu.get_cols(), dbu.get_col_types());
-		
-		db.close();
+//		DBUtils dbu = new DBUtils(this, this.dbName);
+//		
+//		SQLiteDatabase db = dbu.getWritableDatabase();
+//		
+//		boolean result = dbu.createTable(db, this.baseDirName, 
+////					dbu.get_cols_with_index(), dbu.get_col_types_with_index());
+//				dbu.get_cols(), dbu.get_col_types());
+//		
+//		if (result == true) {
+//			// Log
+//			Log.d("ImageFileManager8Activity.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Table created: " + this.baseDirName);
+//			
+//		} else {//if (result == true)
+//			// Log
+//			Log.d("ImageFileManager8Activity.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Create table => Failed: " + this.baseDirName);
+//		}//if (result == true)
+//		
+//		
+//		db.close();
 		
 	}//private void set_initial_dir_list()
 

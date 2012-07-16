@@ -1152,19 +1152,12 @@ public class Methods {
 		 * 2-1. If no, then create one
 
 		 * 3. Execute query for image files
+		 * 3-1. Filter the cursor
 		 * 4. Insert data into db
+		 *
+		 * 5. Update table "refresh_log"
 		 * 
-		 * 5. Filter the cursor
-		 * 
-		 * 3. Get the "DATA_ADDED" of the last entry item
-		 * 		1. If no entry => Start date will be 0
-		 * 3-2. Close DB(readable)
-		 * 
-		 * 4. Execute query for image files
-		 * 5. Filter the cursor
-		 * 
-		 * 9-1. Close cursor
-		 * 9-2. Close db
+		 * 9. Close db
 		 * 
 		 * 10. Return
 			----------------------------*/
@@ -1184,7 +1177,8 @@ public class Methods {
 		 * 2-1. If no, then create one
 			----------------------------*/
 		//
-		String tableName = convertPathIntoTableName(actv);
+//		String tableName = convertPathIntoTableName(actv);
+		String tableName = ImageFileManager8Activity.baseDirName;
 		
 		// If the table doesn't exist, create one
 		if (!dbu.tableExists(wdb, tableName)) {
@@ -1193,7 +1187,7 @@ public class Methods {
 			
 			boolean blResult2 = 
 					dbu.createTable(wdb, tableName, DBUtils.cols, DBUtils.col_types);
-
+			
 			if (blResult2 == false) {
 				toastAndLog(actv, "Can't create a table: "+ tableName, 3000);
 				
@@ -1210,6 +1204,10 @@ public class Methods {
 //			wdb.close();
 			
 //			return false;
+		} else {//if (!dbu.tableExists(wdb, tableName))
+			
+			toastAndLog(actv, "Table exists: "+ tableName, 3000);
+			
 		}//if (!dbu.tableExists(wdb, tableName))
 		
 		//
@@ -1239,13 +1237,166 @@ public class Methods {
 		/*----------------------------
 		 * 4. Insert data into db
 			----------------------------*/
+		int numOfItemsAdded = insertDataIntoDB(c);
+		
+//		//
+//		c.moveToFirst();
+//		
+//		//
+////		String[] columns = DBUtils.cols;
+//		
+//		//
+//		int counter = 0;
+////		long threshHoldTime = getMillSeconds(2012, 7, 5);
+//		long threshHoldTime = getMillSeconds(2012, 6, 5);
+//		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "threshHoldTime => " + threshHoldTime);
+//		
+//		
+////		for (int i = c.getCount() - tempRecordNum; i < c.getCount(); i++) {
+//		for (int i = 0; i < c.getCount(); i++) {
+//			//
+////			if(c.getLong(3) >= threshHoldTime) {
+//			if(c.getLong(3) * 1000 >= threshHoldTime) {
+////			if(i > c.getCount() - tempRecordNum) {
+//				//
+//				String[] values = {
+//						String.valueOf(c.getLong(0)),
+//						c.getString(1),
+//						c.getString(2),
+//						String.valueOf(c.getLong(3)),
+//						String.valueOf(c.getLong(4))
+//				};
+//				
+////				blResult = dbu.insertData(wdb, tableName, columns, values);
+////				blResult = dbu.insertData(wdb, tableName, DBUtils.cols_for_insert_data, values);
+//				blResult = true;
+//				
+//				// Log
+//				Log.d("Methods.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", 
+//						StringUtils.join(values, "/"));
+//				
+//				
+//				if (blResult == false) {
+//					// Log
+//					Log.d("Methods.java"
+//							+ "["
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getLineNumber() + "]", "i => " + i + "/" + "c.getLong(0) => " + c.getLong(0));
+//				} else {//if (blResult == false)
+//					counter += 1;
+//				}
+//			}//if(c.getLong(3) >= threshHoldTime)
+//			
+//			//
+//			c.moveToNext();
+//			
+//		}//for (int i = 0; i < c.getCount(); i++)
+//		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "counter => " + counter);
+		
+		/*----------------------------
+		 * 5. Update table "refresh_log"
+			----------------------------*/
+//		updateRefreshLog(wdb);
+		c.moveToPrevious();
+		
+		long lastItemDate = c.getLong(3);
+		
+		updateRefreshLog(actv, wdb, dbu, lastItemDate, numOfItemsAdded);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "c.getLong(3) => " + c.getLong(3));
+		
+		
+		/*----------------------------
+		 * 9. Close db
+			----------------------------*/
+		wdb.close();
+		
+		/*----------------------------
+		 * 10. Return
+			----------------------------*/
+		return false;
+
+	}//public static boolean refreshMainDB(ListActivity actv)
+
+	private static void updateRefreshLog(Activity actv, SQLiteDatabase wdb, DBUtils dbu, long lastItemDate, int numOfItemsAdded) {
+		/*----------------------------
+		 * Steps
+		 * 1. Table exists?
+		 * 2. If no, create one
+		 * 2-2. Create table failed => Return
+		 * 3. Insert data
+			----------------------------*/
+		String tableName = ImageFileManager8Activity.refreshLogTableName;
+		
+		if(!dbu.tableExists(wdb, tableName)) {
+			
+			toastAndLog(actv, "Table doesn't exitst: " + tableName, 2000);
+			
+			/*----------------------------
+			 * 2. If no, create one
+				----------------------------*/
+			if(dbu.createTable(wdb, tableName, 
+								DBUtils.cols_refresh_log, DBUtils.col_types_refresh_log)) {
+				
+				toastAndLog(actv, "Table created: " + tableName, 3000);
+				
+			} else {//if
+				/*----------------------------
+				 * 2-2. Create table failed => Return
+					----------------------------*/
+				toastAndLog(actv, "Create table failed: " + tableName, 3000);
+				
+				return;
+				
+			}//if
+			
+		} else {//if(dbu.tableExists(wdb, ImageFileManager8Activity.refreshLogTableName))
+			
+			toastAndLog(actv, "Table exitsts: " + tableName, 2000);
+			
+		}//if(dbu.tableExists(wdb, ImageFileManager8Activity.refreshLogTableName))
+		
+		/*----------------------------
+		 * 3. Insert data
+			----------------------------*/
+		dbu.insertData(wdb, tableName, DBUtils.cols_refresh_log, DBUtils.col_types_refresh_log);
+		
+		
+	}//private static void updateRefreshLog(SQLiteDatabase wdb, long lastItemDate)
+
+	private static int insertDataIntoDB(Cursor c) {
+		/*----------------------------
+		 * Steps
+		 * 1. Move to first
+		 * 2. Set variables
+		 * 3. Obtain data
+		 * 4. Insert data
+		 * 5. Return => counter
+			----------------------------*/
+		
 		//
 		c.moveToFirst();
 		
 		//
-		String[] columns = DBUtils.cols;
+//		String[] columns = DBUtils.cols;
 		
-		//
+		/*----------------------------
+		 * 2. Set variables
+			----------------------------*/
 		int counter = 0;
 //		long threshHoldTime = getMillSeconds(2012, 7, 5);
 		long threshHoldTime = getMillSeconds(2012, 6, 5);
@@ -1255,7 +1406,9 @@ public class Methods {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "threshHoldTime => " + threshHoldTime);
 		
-		
+		/*----------------------------
+		 * 3. Obtain data
+			----------------------------*/
 //		for (int i = c.getCount() - tempRecordNum; i < c.getCount(); i++) {
 		for (int i = 0; i < c.getCount(); i++) {
 			//
@@ -1270,9 +1423,14 @@ public class Methods {
 						String.valueOf(c.getLong(3)),
 						String.valueOf(c.getLong(4))
 				};
-				
-				blResult = dbu.insertData(wdb, tableName, columns, values);
-//				blResult = true;
+
+				/*----------------------------
+				 * 4. Insert data
+					----------------------------*/
+				boolean blResult = true;
+
+			//				blResult = dbu.insertData(wdb, tableName, columns, values);
+//				blResult = dbu.insertData(wdb, tableName, DBUtils.cols_for_insert_data, values);
 				
 				// Log
 				Log.d("Methods.java"
@@ -1296,18 +1454,20 @@ public class Methods {
 			//
 			c.moveToNext();
 			
+			
 		}//for (int i = 0; i < c.getCount(); i++)
 		
 		// Log
 		Log.d("Methods.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "counter => " + counter);
-		//
-		wdb.close();
 		
-		return false;
-
-	}//public static boolean refreshMainDB(ListActivity actv)
+		/*----------------------------
+		 * 5. Return => counter
+			----------------------------*/
+		return counter;
+		
+	}//private static int insertDataIntoDB(Cursor c)
 
 	public static long getMillSeconds(int year, int month, int date) {
 		// Calendar
