@@ -164,6 +164,7 @@ public class ThumbnailActivity extends ListActivity {
 		
 		i.putExtra("file_id", ti.getFileId());
 		i.putExtra("file_path", ti.getFile_path());
+		i.putExtra("file_name", ti.getFile_name());
 		
 		this.startActivity(i);
 		

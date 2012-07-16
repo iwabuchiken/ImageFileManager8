@@ -60,6 +60,14 @@ public class ButtonOnClickListener implements OnClickListener {
 			
 			break;
 			
+		case image_activity_back:
+			
+			vib.vibrate(Methods.vibLength_click);
+			
+			actv.finish();
+			
+			break;
+			
 		default:
 			break;
 		}//switch (tag_name)

@@ -5,8 +5,8 @@
     android:orientation="vertical" >
 
     <!-- Row 1 -->
-        <ScrollView
-            android:id="@+id/image_activity_sv_image"
+        <LinearLayout
+            android:id="@+id/image_activity_LL_image"
             
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" 
@@ -15,20 +15,8 @@
             
             >
 
-            <ImageView
-                android:id="@+id/image_activity_iv_image"
-                
-                android:layout_width="wrap_content"
-                android:layout_height="450dp"
-                
-                android:src="@drawable/ic_launcher"
-                
-                android:layout_gravity="center_horizontal|center_vertical"
-                
-                
-                />
 
-        </ScrollView>
+        </LinearLayout>
 
     <!-- Row 2 -->
 
@@ -44,7 +32,9 @@
         android:textColor="@color/black"
         
         android:background="@color/white"
-            
+
+		android:layout_marginTop="10dp"
+		
         />
 
     <!-- Row 3 -->
@@ -57,7 +47,7 @@
         
         android:layout_gravity="center_horizontal"
         
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         
         >

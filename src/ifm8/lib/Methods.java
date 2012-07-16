@@ -75,6 +75,9 @@ public class Methods {
 		// thumb_activity.xml
 		thumb_activity_ib_back,
 		
+		// image_activity.xml
+		image_activity_back,
+		
 	}//public static enum ButtonTags
 	
 	public static enum ItemTags {
