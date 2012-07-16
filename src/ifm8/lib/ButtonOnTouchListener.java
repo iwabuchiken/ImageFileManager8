@@ -55,6 +55,15 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				ib.setImageResource(R.drawable.ifm8_thumb_back_touched);
 				
 				break;
+			
+				
+			// image_activity.xml
+			case image_activity_back:
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_image_actv_back_70x70_touched);
+				
+				break;
 				
 			case db_manager_activity_create_table:
 			case db_manager_activity_drop_table:
@@ -84,6 +93,15 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				ib.setImageResource(R.drawable.ifm8_thumb_back_50x50);
 				
 				break;
+
+			// image_activity.xml
+			case image_activity_back:
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_image_actv_back_70x70);
+				
+				break;
+				
 			case db_manager_activity_create_table:
 			case db_manager_activity_drop_table:
 
