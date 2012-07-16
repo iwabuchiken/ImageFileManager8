@@ -4,6 +4,7 @@ import ifm8.main.R;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -17,9 +18,14 @@ public class ButtonOnTouchListener implements OnTouchListener {
 	//
 	Activity actv;
 
+	//
+	Vibrator vib;
+	
 	public ButtonOnTouchListener(Activity actv) {
 		//
 		this.actv = actv;
+		
+		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
 	}
 
 	@Override
@@ -40,9 +46,19 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				ib.setImageResource(R.drawable.ifm8_up_disenabled);
 				
 				break;
+	
+			case thumb_activity_ib_back:
+				
+//				vib.vibrate(Methods.vibLength_click);
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_thumb_back_touched);
+				
+				break;
+				
 			case db_manager_activity_create_table:
 			case db_manager_activity_drop_table:
-				
+			
 				v.setBackgroundColor(Color.GRAY);
 			
 			break;
@@ -60,6 +76,13 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				ImageButton ib = (ImageButton) v;
 				ib.setImageResource(R.drawable.ifm8_up);
 
+				break;
+
+			case thumb_activity_ib_back:
+				
+				ib = (ImageButton) v;
+				ib.setImageResource(R.drawable.ifm8_thumb_back_50x50);
+				
 				break;
 			case db_manager_activity_create_table:
 			case db_manager_activity_drop_table:

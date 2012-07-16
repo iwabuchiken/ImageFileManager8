@@ -10,6 +10,9 @@ public class ThumbnailItem {
 	// Path
 	String file_path;
 	
+	// Name
+	String file_name;
+
 	// Date
 	long date_added;
 	
@@ -25,12 +28,15 @@ public class ThumbnailItem {
 	/*----------------------------
 	 * Constructor
 		----------------------------*/
-	public ThumbnailItem(long fileId, String file_path, long date_added, long date_modified) {
+	public ThumbnailItem(long fileId, String file_path, String file_name, 
+												long date_added, long date_modified) {
 		//
 		this.fileId = fileId;
 		
 		this.file_path = file_path;
 		
+		this.file_name = file_name;
+				
 		this.date_added = date_added;
 		
 		this.date_modified = date_modified;
@@ -87,6 +93,10 @@ public class ThumbnailItem {
 
 	public void setTags(String tags) {
 		this.tags = tags;
+	}
+
+	public String getFile_name() {
+		return file_name;
 	}
 
 }//public class ThumbnailItem

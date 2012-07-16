@@ -70,7 +70,10 @@ public class Methods {
 		ib_up,
 		
 		// DBAdminActivity.java
-		db_manager_activity_create_table, db_manager_activity_drop_table
+		db_manager_activity_create_table, db_manager_activity_drop_table,
+		
+		// thumb_activity.xml
+		thumb_activity_ib_back,
 		
 	}//public static enum ButtonTags
 	
@@ -79,6 +82,9 @@ public class Methods {
 		// ImageFileManager8Activity.java
 		dir_list,
 	}
+	
+	//
+	public static final int vibLength_click = 35;
 	
 	public static void dlg_createFolder(Activity actv) {
 		/*----------------------------
@@ -818,54 +824,69 @@ public class Methods {
 		return tableName;
 	}//private static String convertPathIntoTableName(String absolutePath)
 
-	private static String convertPathIntoTableName(Activity actv) {
+	public static String convertPathIntoTableName(Activity actv) {
 		/*----------------------------
 		 * Steps
 		 * 1. Get table name => Up to the current path
 		 * 2. Add name => Target folder name
 			----------------------------*/
-		
-		String[] currentPathArray = getCurrentPathLabel(actv).split(new File("aaa").separator);
+		String tableName = null;
+		StringBuilder sb = new StringBuilder();
+
+		if(getCurrentPathLabel(actv).equals(ImageFileManager8Activity.baseDirName)) {
+			tableName = getCurrentPathLabel(actv);
+		} else {
+			String[] currentPathArray = getCurrentPathLabel(actv).split(new File("aaa").separator);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "getCurrentPathLabel(actv) => " + getCurrentPathLabel(actv));
+			
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "currentPathArray.length => " + currentPathArray.length);
+			
+			if (currentPathArray.length > 1) {
+				
+				tableName = StringUtils.join(currentPathArray, "__");
+				
+//				sb.append(tableName);
+//				sb.append("__");
+				
+			} else {//if (currentPathArray.length > 1)
+				
+				sb.append(currentPathArray[0]);
+//				sb.append("__");
+				
+			}//if (currentPathArray.length > 1)
+			
+	//			tableName = StringUtils.join(currentPathArray, "__");
+			
+			/*----------------------------
+			 * 2. Add name => Target folder name
+				----------------------------*/
+//			String targetDirPath = ImageFileManager8Activity.currentDirPath;
+//			
+//			String[] a_targetDirPath = targetDirPath.split(new File("aaa").separator);
+//			
+//			String folderName = a_targetDirPath[a_targetDirPath.length - 1];
+//			
+//	//		sb.append(tableName);
+//	//		sb.append("__");
+//			sb.append(folderName);
+//			
+//			tableName = sb.toString();
+
+		}//if(getCurrentPathLabel(actv).equals(ImageFileManager8Activity.baseDirName))
 		
 		// Log
 		Log.d("Methods.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "currentPathArray.length => " + currentPathArray.length);
+				+ "]", "tableName => " + tableName);
 		
-		String tableName = null;
-		StringBuilder sb = new StringBuilder();
-		
-		if (currentPathArray.length > 1) {
-			
-			tableName = StringUtils.join(currentPathArray, "__");
-			
-			sb.append(tableName);
-			sb.append("__");
-			
-		} else {//if (currentPathArray.length > 1)
-			
-			sb.append(currentPathArray[0]);
-			sb.append("__");
-			
-		}//if (currentPathArray.length > 1)
-		
-//			tableName = StringUtils.join(currentPathArray, "__");
-		
-		/*----------------------------
-		 * 2. Add name => Target folder name
-			----------------------------*/
-		String targetDirPath = ImageFileManager8Activity.currentDirPath;
-		
-		String[] a_targetDirPath = targetDirPath.split(new File("aaa").separator);
-		
-		String folderName = a_targetDirPath[a_targetDirPath.length - 1];
-		
-//		sb.append(tableName);
-//		sb.append("__");
-		sb.append(folderName);
-		
-		tableName = sb.toString();
-
 		
 		return tableName;
 	}//private static String convertPathIntoTableName(String absolutePath)
@@ -1237,7 +1258,7 @@ public class Methods {
 		/*----------------------------
 		 * 4. Insert data into db
 			----------------------------*/
-		int numOfItemsAdded = insertDataIntoDB(c);
+		int numOfItemsAdded = insertDataIntoDB(wdb, dbu, c, tableName);
 		
 //		//
 //		c.moveToFirst();
@@ -1378,7 +1399,21 @@ public class Methods {
 		
 	}//private static void updateRefreshLog(SQLiteDatabase wdb, long lastItemDate)
 
-	private static int insertDataIntoDB(Cursor c) {
+	
+	/****************************************
+	 *		insertDataIntoDB()
+	 * 
+	 * <Caller> 
+	 * 1. public static boolean refreshMainDB(ListActivity actv)
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	private static int insertDataIntoDB(SQLiteDatabase wdb, DBUtils dbu, Cursor c,
+									String tableName) {
 		/*----------------------------
 		 * Steps
 		 * 1. Move to first
@@ -1427,10 +1462,11 @@ public class Methods {
 				/*----------------------------
 				 * 4. Insert data
 					----------------------------*/
-				boolean blResult = true;
+//				boolean blResult = true;
 
-			//				blResult = dbu.insertData(wdb, tableName, columns, values);
-//				blResult = dbu.insertData(wdb, tableName, DBUtils.cols_for_insert_data, values);
+//				boolean blResult = dbu.insertData(wdb, tableName, columns, values);
+				boolean blResult = 
+							dbu.insertData(wdb, tableName, DBUtils.cols_for_insert_data, values);
 				
 				// Log
 				Log.d("Methods.java"
@@ -1877,5 +1913,99 @@ public class Methods {
 		
 		
 	}//public static void dropTable(Activity actv, Dialog dlg)
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 
+	 * 1. ThumbnailActivity.initial_setup()
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static List<ThumbnailItem> getAllData(Activity actv, String tableName) {
+		/*----------------------------
+		 * Steps
+		 * 1. DB setup
+		 * 2. Get data
+		 * 		2.1. Get cursor
+		 * 		2.2. Add to list
+		 * 
+		 * 9. Close db
+		 * 10. Return value
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		/*----------------------------
+		 * 2. Get data
+		 * 		2.1. Get cursor
+		 * 		2.2. Add to list
+			----------------------------*/
+		//
+		String sql = "SELECT * FROM " + tableName;
+		
+		Cursor c = null;
+		
+		try {
+			c = rdb.rawQuery(sql, null);
+		} catch (Exception e) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+			
+			rdb.close();
+			
+			return null;
+		}
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "c.getCount() => " + c.getCount());
+
+		/*----------------------------
+		 * 2.2. Add to list
+			----------------------------*/
+		c.moveToNext();
+		
+		List<ThumbnailItem> tiList = new ArrayList<ThumbnailItem>();
+		
+		for (int i = 0; i < c.getCount(); i++) {
+
+			ThumbnailItem ti = new ThumbnailItem(
+					c.getLong(1),	// file_id
+					c.getString(2),	// file_path
+					c.getString(3),	// file_name
+					c.getLong(4),	// date_added
+					c.getLong(5)		// date_modified
+			);
+	
+			// Add to the list
+			tiList.add(ti);
+			
+			//
+			c.moveToNext();
+			
+		}//for (int i = 0; i < c.getCount(); i++)
+		
+		
+		
+		/*----------------------------
+		 * 9. Close db
+			----------------------------*/
+		rdb.close();
+		
+		/*----------------------------
+		 * 10. Return value
+			----------------------------*/
+		return tiList;
+		
+	}//public static List<ThumbnailItem> getAllData
 
 }//public class Methods

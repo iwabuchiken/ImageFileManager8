@@ -60,7 +60,7 @@
              />
 
         <ImageButton
-            android:id="@+id/thumb_activity_BT_btn_1"
+            android:id="@+id/thumb_activity_ib_back"
             
             style="@style/v1_ib"
             

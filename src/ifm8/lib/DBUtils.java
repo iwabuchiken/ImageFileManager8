@@ -71,6 +71,16 @@ public class DBUtils extends SQLiteOpenHelper{
 		MediaStore.Images.Media.DATE_MODIFIED,
 		};
 
+	static String[] proj_for_get_data = {
+		MediaStore.Images.Media._ID, 
+		MediaStore.Images.Media.DATA,
+		MediaStore.Images.Media.DISPLAY_NAME,
+		MediaStore.Images.Media.DATE_ADDED,
+		MediaStore.Images.Media.DATE_MODIFIED,
+		"memos",
+		"tags"
+		};
+
 	static String[] cols_refresh_log = {
 		"last_refreshed", "num_of_items_added"
 	};
