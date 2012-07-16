@@ -1,5 +1,6 @@
 package ifm8.lib;
 
+import ifm8.dbadmin.DBAdminActivity;
 import ifm8.main.*;
 import thumb_activity.main.*;
 
@@ -9,9 +10,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -30,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +42,8 @@ import org.apache.commons.lang.StringUtils;
 
 public class Methods {
 
+	static int tempRecordNum = 20;
+	
 	public static enum DialogTags {
 		// dlg_create_folder.xml
 		dlg_create_folder_ok, dlg_create_folder_cancel,
@@ -49,6 +56,12 @@ public class Methods {
 
 		// dlg_confirm_remove_folder.xml
 		dlg_confirm_remove_folder_ok, dlg_confirm_remove_folder_cancel,
+
+		// dlg_drop_table.xml
+		dlg_drop_table_btn_cancel, dlg_drop_table,
+		
+		// dlg_confirm_drop.xml
+		dlg_confirm_drop_table_btn_ok, dlg_confirm_drop_table_btn_cancel,
 		
 	}//public static enum DialogTags
 	
@@ -56,7 +69,10 @@ public class Methods {
 		// ImageFileManager8Activity.java
 		ib_up,
 		
-	}
+		// DBAdminActivity.java
+		db_manager_activity_create_table, db_manager_activity_drop_table
+		
+	}//public static enum ButtonTags
 	
 	public static enum ItemTags {
 		
@@ -802,6 +818,58 @@ public class Methods {
 		return tableName;
 	}//private static String convertPathIntoTableName(String absolutePath)
 
+	private static String convertPathIntoTableName(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get table name => Up to the current path
+		 * 2. Add name => Target folder name
+			----------------------------*/
+		
+		String[] currentPathArray = getCurrentPathLabel(actv).split(new File("aaa").separator);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "currentPathArray.length => " + currentPathArray.length);
+		
+		String tableName = null;
+		StringBuilder sb = new StringBuilder();
+		
+		if (currentPathArray.length > 1) {
+			
+			tableName = StringUtils.join(currentPathArray, "__");
+			
+			sb.append(tableName);
+			sb.append("__");
+			
+		} else {//if (currentPathArray.length > 1)
+			
+			sb.append(currentPathArray[0]);
+			sb.append("__");
+			
+		}//if (currentPathArray.length > 1)
+		
+//			tableName = StringUtils.join(currentPathArray, "__");
+		
+		/*----------------------------
+		 * 2. Add name => Target folder name
+			----------------------------*/
+		String targetDirPath = ImageFileManager8Activity.currentDirPath;
+		
+		String[] a_targetDirPath = targetDirPath.split(new File("aaa").separator);
+		
+		String folderName = a_targetDirPath[a_targetDirPath.length - 1];
+		
+//		sb.append(tableName);
+//		sb.append("__");
+		sb.append(folderName);
+		
+		tableName = sb.toString();
+
+		
+		return tableName;
+	}//private static String convertPathIntoTableName(String absolutePath)
+
 	/*----------------------------
 	 * deleteDirectory(File target)()
 	 * 
@@ -1063,5 +1131,591 @@ public class Methods {
 		actv.startActivity(i);
 		
 	}//public static void startThumbnailActivity(Activity actv, File target)
-	
+
+	/****************************************
+	 * method_name(param_type)
+	 * 
+	 * <Caller> 
+	 * 1. ImageFileManager7Activity : onOptionsItemSelected(MenuItem item)
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static boolean refreshMainDB(ListActivity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Set up DB(writable)
+		 * 2. Table exists?
+		 * 2-1. If no, then create one
+
+		 * 3. Execute query for image files
+		 * 4. Insert data into db
+		 * 
+		 * 5. Filter the cursor
+		 * 
+		 * 3. Get the "DATA_ADDED" of the last entry item
+		 * 		1. If no entry => Start date will be 0
+		 * 3-2. Close DB(readable)
+		 * 
+		 * 4. Execute query for image files
+		 * 5. Filter the cursor
+		 * 
+		 * 9-1. Close cursor
+		 * 9-2. Close db
+		 * 
+		 * 10. Return
+			----------------------------*/
+		//
+		boolean blResult;
+		/*----------------------------
+		 * 1. Set up DB(writable)
+			----------------------------*/
+		//
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		//
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		/*----------------------------
+		 * 2. Table exists?
+		 * 2-1. If no, then create one
+			----------------------------*/
+		//
+		String tableName = convertPathIntoTableName(actv);
+		
+		// If the table doesn't exist, create one
+		if (!dbu.tableExists(wdb, tableName)) {
+			
+			toastAndLog(actv, "Table doesn't exist: " + tableName, 3000);
+			
+			boolean blResult2 = 
+					dbu.createTable(wdb, tableName, DBUtils.cols, DBUtils.col_types);
+
+			if (blResult2 == false) {
+				toastAndLog(actv, "Can't create a table: "+ tableName, 3000);
+				
+				wdb.close();
+				
+				return false;
+				
+			} else {//if (blResult2 == false)
+				
+				toastAndLog(actv, "Table created: "+ tableName, 3000);
+				
+			}//if (blResult2 == false)
+			
+//			wdb.close();
+			
+//			return false;
+		}//if (!dbu.tableExists(wdb, tableName))
+		
+		//
+		/*----------------------------
+		 * 3. Execute query for image files
+			----------------------------*/
+		// ContentResolver
+		ContentResolver cr = actv.getContentResolver();
+		
+		// Uri
+        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        
+		// Projections
+		String[] proj = DBUtils.proj;
+
+        // Query
+        Cursor c = actv.managedQuery(uri, proj, null, null, null);
+		
+        //
+        actv.startManagingCursor(c);
+        
+        // Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "c.getCount() => " + c.getCount());
+        
+		/*----------------------------
+		 * 4. Insert data into db
+			----------------------------*/
+		//
+		c.moveToFirst();
+		
+		//
+		String[] columns = DBUtils.cols;
+		
+		//
+		int counter = 0;
+//		long threshHoldTime = getMillSeconds(2012, 7, 5);
+		long threshHoldTime = getMillSeconds(2012, 6, 5);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "threshHoldTime => " + threshHoldTime);
+		
+		
+//		for (int i = c.getCount() - tempRecordNum; i < c.getCount(); i++) {
+		for (int i = 0; i < c.getCount(); i++) {
+			//
+//			if(c.getLong(3) >= threshHoldTime) {
+			if(c.getLong(3) * 1000 >= threshHoldTime) {
+//			if(i > c.getCount() - tempRecordNum) {
+				//
+				String[] values = {
+						String.valueOf(c.getLong(0)),
+						c.getString(1),
+						c.getString(2),
+						String.valueOf(c.getLong(3)),
+						String.valueOf(c.getLong(4))
+				};
+				
+				blResult = dbu.insertData(wdb, tableName, columns, values);
+//				blResult = true;
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", 
+						StringUtils.join(values, "/"));
+				
+				
+				if (blResult == false) {
+					// Log
+					Log.d("Methods.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "i => " + i + "/" + "c.getLong(0) => " + c.getLong(0));
+				} else {//if (blResult == false)
+					counter += 1;
+				}
+			}//if(c.getLong(3) >= threshHoldTime)
+			
+			//
+			c.moveToNext();
+			
+		}//for (int i = 0; i < c.getCount(); i++)
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "counter => " + counter);
+		//
+		wdb.close();
+		
+		return false;
+
+	}//public static boolean refreshMainDB(ListActivity actv)
+
+	public static long getMillSeconds(int year, int month, int date) {
+		// Calendar
+		Calendar cal = Calendar.getInstance();
+		
+		// Set time
+		cal.set(year, month, date);
+		
+		// Date
+		Date d = cal.getTime();
+		
+		return d.getTime();
+		
+	}//private long getMillSeconds(int year, int month, int date)
+
+	public static void startDBAdminActivity(Activity actv) {
+		//
+		Intent i = new Intent();
+		
+		i.setClass(actv, DBAdminActivity.class);
+		
+		actv.startActivity(i);
+		
+	}//public static void startDBAdminActivity(Activity actv)
+
+	public static void dlg_dropTable(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Dialog
+		 * 		1.1. Set up
+		 * 		1.2. OnTouch
+		 * 		1.3. OnClick
+		 * 2. Adapter
+		 * 		2.1. Prepare data
+		 * 		2.2. Create adapter
+		 * 3. ListView
+		 * 		3.1 Get view
+		 * 		3.2. Set adapter to list view
+		 * 		3.3. Set listener to list view
+		 * 		1.5. OnListItem
+		 * 4. Set listener to list view
+		 * 5. Show dialog
+			----------------------------*/
+		// 
+		Dialog dlg = new Dialog(actv);
+		
+		//
+		dlg.setContentView(R.layout.dlg_drop_table);
+		
+		// Title
+		dlg.setTitle(R.string.dlg_drop_table_title);
+		
+		/*----------------------------
+		 * 1.2. Add listeners => OnTouch
+			----------------------------*/
+		//
+		Button btn_cancel = (Button) dlg.findViewById(R.id.dlg_drop_table_btn_cancel);
+		
+		//
+		btn_cancel.setTag(DialogTags.dlg_drop_table_btn_cancel);
+		
+		//
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		/*----------------------------
+		 * 1.3. Add listeners => OnClick
+			----------------------------*/
+		//
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		
+		
+		/*----------------------------
+		 * 2. Adapter
+			----------------------------*/
+		// 
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		List<String> tableList = getTableList(wdb);
+		
+//		Collections.sort(tableList);		//=> Sort not done here, because getTableList() itself sorts out
+													//		the list in the method.
+		
+//		//=> source: http://stackoverflow.com/questions/4681744/android-get-list-of-tables : "Just had to do the same. This seems to work:"
+//		String q = "SELECT name FROM " + "sqlite_master"+
+//						" WHERE type = 'table' ORDER BY name";
+//		
+//		Cursor c = null;
+//		try {
+//			c = wdb.rawQuery(q, null);
+//		} catch (Exception e) {
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Exception => " + e.toString());
+//		}
+//		
+//		// Table names list
+//		List<String> tableList = new ArrayList<String>();
+//		
+//		// Log
+//		if (c != null) {
+//			c.moveToFirst();
+//			
+//			for (int i = 0; i < c.getCount(); i++) {
+//				// Log
+//				Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "c.getString(0) => " + c.getString(0));
+//				
+//				//
+//				tableList.add(c.getString(0));
+//				
+//				// Next
+//				c.moveToNext();
+//				
+//			}//for (int i = 0; i < c.getCount(); i++)
+//
+//		} else {//if (c != null)
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "c => null");
+//		}//if (c != null)
+		
+		
+		wdb.close();
+		
+		// Adapter
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+						actv,
+						android.R.layout.simple_list_item_1, 
+						tableList
+				);
+		
+		/*----------------------------
+		 * 3. ListView
+			----------------------------*/
+		ListView lv = (ListView) dlg.findViewById(R.id.dlg_drop_table_lv_list);
+		
+		// Set adapter
+		lv.setAdapter(adapter);
+		
+		
+//		LayoutParams params = lv.getLayoutParams();
+//		
+//		params.width = 100;
+//		
+//		lv.setLayoutParams(params);
+		
+		/*----------------------------
+		 * 4. Set listener to list view
+			----------------------------*/
+//		lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg));
+		lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg, DialogTags.dlg_drop_table));
+		
+		/*----------------------------
+		 * 5. Show dialog
+			----------------------------*/
+		dlg.show();
+		
+	}//public static void dlg_dropTable(Activity actv)
+
+	public static List<String> getTableList(SQLiteDatabase wdb) {
+		//=> source: http://stackoverflow.com/questions/4681744/android-get-list-of-tables : "Just had to do the same. This seems to work:"
+		String q = "SELECT name FROM " + "sqlite_master"+
+						" WHERE type = 'table' ORDER BY name";
+		
+		Cursor c = null;
+		try {
+			c = wdb.rawQuery(q, null);
+		} catch (Exception e) {
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+		}
+		
+		// Table names list
+		List<String> tableList = new ArrayList<String>();
+		
+		// Log
+		if (c != null) {
+			c.moveToFirst();
+			
+			for (int i = 0; i < c.getCount(); i++) {
+				// Log
+				Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "c.getString(0) => " + c.getString(0));
+				
+				//
+				tableList.add(c.getString(0));
+				
+				// Next
+				c.moveToNext();
+				
+			}//for (int i = 0; i < c.getCount(); i++)
+
+		} else {//if (c != null)
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c => null");
+		}//if (c != null)
+		
+		return tableList;
+	}//public static List<String> getTableList()
+
+	public static void dlg_confirm_dropTable(Activity actv, Dialog dlg, String tableName) {
+		/*----------------------------
+		 * Steps
+		 * 1. Set up dialog
+		 * 2. Set table name to view
+		 * 3. Set listener => onTouch
+		 * 4. Set listener => Cancel
+		 * 5. Set listener => Drop
+		 * 6. Show dialog
+			----------------------------*/
+		
+		// 
+		Dialog dlg2 = new Dialog(actv);
+		
+		//
+		dlg2.setContentView(R.layout.dlg_confirm_drop_table);
+		
+		// Title
+		dlg2.setTitle(R.string.generic_tv_confirm);
+		
+		/*----------------------------
+		 * 2. Set table name to view
+			----------------------------*/
+		//
+//		TextView tv_table_name = (TextView) actv.findViewById(R.id.dlg_confirm_drop_table_tv_table_name);
+		TextView tv_table_name = (TextView) dlg2.findViewById(R.id.dlg_confirm_drop_table_tv_table_name);
+		
+		tv_table_name.setText(tableName);
+
+		/*----------------------------
+		 * 3. Set listener => onTouch
+			----------------------------*/
+		// Buttons
+		Button btn_ok = (Button) dlg2.findViewById(R.id.dlg_confirm_drop_table_btn_ok);
+		Button btn_cancel = (Button) dlg2.findViewById(R.id.dlg_confirm_drop_table_btn_cancel);
+		
+		// Tags
+		btn_ok.setTag(DialogTags.dlg_confirm_drop_table_btn_ok);
+		btn_cancel.setTag(DialogTags.dlg_confirm_drop_table_btn_cancel);
+		
+		// Set
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		/*----------------------------
+		 * 4. Set listener => Cancel
+			----------------------------*/
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+		
+		/*----------------------------
+		 * 5. Set listener => Drop
+			----------------------------*/
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+		
+		/*----------------------------
+		 * 6. Show dialog
+			----------------------------*/
+		dlg2.show();
+		
+	}//public static void dlg_confirm_dropTable
+
+
+	public static void dropTable(Activity actv, Dialog dlg, Dialog dlg2) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get table name
+		 * 2. Open db
+		 * 3. Drop table
+		 * 4. Dismiss dialog
+		 * 5. Close db
+			----------------------------*/
+		
+		// 
+		TextView tv_table_name = (TextView) dlg2.findViewById(R.id.dlg_confirm_drop_table_tv_table_name);
+		
+		String tableName = tv_table_name.getText().toString();
+		
+		/*----------------------------
+		 * 2. Open db
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase db = dbu.getWritableDatabase();
+
+		/*----------------------------
+		 * 3. Drop table
+			----------------------------*/
+		boolean result = dbu.dropTable(actv, db, tv_table_name.getText().toString());
+		
+		if (result == true) {
+			
+			toastAndLog(actv, "Table dropped => " + tableName, 3000);
+			
+			dlg2.dismiss();
+			dlg.dismiss();
+			
+//			// debug
+//			Toast.makeText(actv, "Table dropped => " + tableName, 3000).show();
+//			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Table dropped => " + tableName);
+			
+		} else {//if (result == true)
+			
+			toastAndLog(actv, "Drop table => Failed: " + tableName, 3000);
+			
+			dlg2.dismiss();
+			
+//			// debug
+//			Toast.makeText(actv, "Drop table => Failed: " + tableName, 3000).show();
+//			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Drop table => Failed: " + tableName);
+			
+		}//if (result == true)
+		
+		/*----------------------------
+		 * 4. Dismiss dialog
+			----------------------------*/
+//		dlg.dismiss();
+		
+		db.close();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "db => Closed");
+		
+	}//public static void dropTable(Activity actv, Dialog dlg, Dialog dlg2)
+
+	public static void dropTable(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get table name
+		 * 2. Open db
+		 * 3. Drop table
+		 * 4. Dismiss dialog
+		 * 5. Close db
+			----------------------------*/
+		
+		// 
+		TextView tv_table_name = (TextView) dlg.findViewById(R.id.dlg_confirm_drop_table_tv_table_name);
+		
+		String tableName = tv_table_name.getText().toString();
+		
+		/*----------------------------
+		 * 2. Open db
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase db = dbu.getWritableDatabase();
+
+		/*----------------------------
+		 * 3. Drop table
+			----------------------------*/
+		boolean result = dbu.dropTable(actv, db, tv_table_name.getText().toString());
+		
+		if (result == true) {
+			
+			toastAndLog(actv, "Table dropped => " + tableName, 3000);
+			
+//			// debug
+//			Toast.makeText(actv, "Table dropped => " + tableName, 3000).show();
+//			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Table dropped => " + tableName);
+			
+		} else {//if (result == true)
+			
+			toastAndLog(actv, "Drop table => Failed: " + tableName, 3000);
+			
+//			// debug
+//			Toast.makeText(actv, "Drop table => Failed: " + tableName, 3000).show();
+//			
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Drop table => Failed: " + tableName);
+			
+		}//if (result == true)
+		
+		/*----------------------------
+		 * 4. Dismiss dialog
+			----------------------------*/
+		dlg.dismiss();
+		
+		db.close();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "db => Closed");
+		
+		
+	}//public static void dropTable(Activity actv, Dialog dlg)
+
 }//public class Methods

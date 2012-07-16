@@ -80,6 +80,18 @@ public class ButtonOnClickListener implements OnClickListener {
 //			Methods.refreshListView(actv);
 			
 			break;// case ib_up
+			
+		case db_manager_activity_create_table:
+			
+			Methods.dlg_dropTable(actv);
+			
+			break;
+			
+		case db_manager_activity_drop_table:
+			
+			Methods.dlg_dropTable(actv);
+			
+			break;
 		default:
 			break;
 		}//switch (tag_name)

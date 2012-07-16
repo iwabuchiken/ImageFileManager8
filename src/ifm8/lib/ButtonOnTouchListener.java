@@ -39,7 +39,11 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				ImageButton ib = (ImageButton) v;
 				ib.setImageResource(R.drawable.ifm8_up_disenabled);
 				
-//				v.setBackgroundColor(Color.GRAY);
+				break;
+			case db_manager_activity_create_table:
+			case db_manager_activity_drop_table:
+				
+				v.setBackgroundColor(Color.GRAY);
 			
 			break;
 				
@@ -56,8 +60,11 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				ImageButton ib = (ImageButton) v;
 				ib.setImageResource(R.drawable.ifm8_up);
 
-				
-//				v.setBackgroundColor(Color.WHITE);
+				break;
+			case db_manager_activity_create_table:
+			case db_manager_activity_drop_table:
+
+				v.setBackgroundColor(Color.WHITE);
 				
 				break;
 				

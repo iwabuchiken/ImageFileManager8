@@ -52,13 +52,21 @@ public class DBUtils extends SQLiteOpenHelper{
 				{	"INTEGER", "TEXT", 	"TEXT",		"INTEGER",
 					"INTEGER",		"TEXT",	"TEXT"};
 
-	String[] cols = 
+	static String[] cols = 
 		{"file_id", 		"file_path", "file_name", "date_added",
 			"date_modified", "memos", "tags"};
 
-	String[] col_types =
+	static String[] col_types =
 		{"INTEGER", "TEXT", 	"TEXT",		"INTEGER",
 			"INTEGER",		"TEXT",	"TEXT"};
+
+	static String[] proj = {
+		MediaStore.Images.Media._ID, 
+		MediaStore.Images.Media.DATA,
+		MediaStore.Images.Media.DISPLAY_NAME,
+		MediaStore.Images.Media.DATE_ADDED,
+		MediaStore.Images.Media.DATE_MODIFIED,
+		};
 
 	/*****************************************************************
 	 * Constructor
@@ -280,6 +288,48 @@ public class DBUtils extends SQLiteOpenHelper{
 
 	}//public boolean dropTable(String tableName) 
 
+	public boolean insertData(SQLiteDatabase db, 
+					String tableName, String[] columnNames, String[] values) {
+		/*----------------------------
+		* 1. Insert data
+		----------------------------*/
+		try {
+			// Start transaction
+			db.beginTransaction();
+			
+			// ContentValues
+			ContentValues val = new ContentValues();
+			
+			// Put values
+			for (int i = 0; i < columnNames.length; i++) {
+				val.put(columnNames[i], values[i]);
+			}//for (int i = 0; i < columnNames.length; i++)
+			
+			// Insert data
+			db.insert(tableName, null, val);
+			
+			// Set as successful
+			db.setTransactionSuccessful();
+			
+			// End transaction
+			db.endTransaction();
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Data inserted => " + "(" + columnNames[0] + " => " + values[0] + "), and others");
+			
+			return true;
+		} catch (Exception e) {
+			// Log
+			Log.e("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Exception! => " + e.toString());
+			
+			return false;
+		}//try
+	}//public insertData(String tableName, String[] columnNames, String[] values)
+	
 
 }//public class DBUtils
 

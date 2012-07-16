@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    
+    android:orientation="vertical" 
+    
+    >
+
+    <ListView
+        android:id="@+id/dlg_drop_table_lv_list"
+        
+        android:layout_width="250dp"
+        android:layout_height="wrap_content" 
+        
+        android:layout_weight="1"
+        
+
+        >
+    </ListView>
+
+    <Button
+        android:id="@+id/dlg_drop_table_btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+		android:layout_gravity="center_horizontal"
+        
+        android:text="@string/generic_bt_cancel"
+        android:textSize="25dp" 
+        android:textColor="@color/red"
+        
+        android:layout_marginBottom="10dp"
+        />
+
+</LinearLayout>

@@ -101,6 +101,24 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			dlg.dismiss();
 			
 			break;
+
+		case dlg_drop_table_btn_cancel:
+			
+			dlg.dismiss();
+			
+			break;
+			
+		case dlg_confirm_drop_table_btn_ok:
+			
+			Methods.dropTable(actv, dlg, dlg2);
+			
+			break;
+			
+		case dlg_confirm_drop_table_btn_cancel:
+			
+			dlg2.dismiss();
+			
+			break;
 			
 		default:
 			break;

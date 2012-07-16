@@ -12,6 +12,8 @@
     
     <!-- main_menu.xml -->
     <string name="main_opt_menu_create_folder">フォルダ作成</string>
+    <string name="main_opt_menu_refresh_db">DBリフレッシュ</string>
+    <string name="main_opt_menu_db_activity">データベース</string>
 
     <!-- dlg_create_folder.xml -->
     <string name="dlg_create_folder_title">フォルダ作成</string>
@@ -28,5 +30,15 @@
     
     <!-- dlg_confirm_remove_folder.xml -->
     <string name="dlg_confirm_remove_folder_tv_message">このフォルダを削除しますか？</string>
+    
+    <!-- db_manager.xml -->
+    <string name="db_manager_btn_create_table">テーブル作成</string>
+    <string name="db_manager_btn_drop_table">テーブル削除</string>
+    
+    <!-- dlg_drop_table.xml -->
+    <string name="dlg_drop_table_title">テーブル削除</string>
+    
+    <!-- dlg_confirm_drop_table.xml -->
+    <string name="dlg_confirm_drop_table_tv_message_drop">このテーブルを削除しますか？</string>
     
 </resources>

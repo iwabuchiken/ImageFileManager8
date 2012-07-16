@@ -48,6 +48,27 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 			----------------------------*/
 		vib.vibrate(40);
 		
+		String tableName = (String) parent.getItemAtPosition(position);
+		
+		// Log
+		Log.d("DialogOnItemClickListener.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", 
+				"tableName => " + tableName + " / " + 
+				"position => " + position + " / " + "id => " + id);
+		
+		/*----------------------------
+		 * 2. Call a method
+			----------------------------*/
+		//
+		if (dlgTag != null && dlgTag == Methods.DialogTags.dlg_drop_table) {
+//			Methods.dlg_confirmTableDrop(actv, dlg, tableName);
+			
+			Methods.dlg_confirm_dropTable(actv, dlg, tableName);
+			
+		}//if (dlgName != null && dlgName == "confirm_table_drop")
+
+		
 		
 	}//public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 

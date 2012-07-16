@@ -487,6 +487,16 @@ public class ImageFileManager8Activity extends ListActivity {
 			Methods.dlg_createFolder(this);
 			
 			break;
+		case R.id.main_opt_menu_refresh_db:
+			
+			Methods.refreshMainDB(this);
+			
+			break;
+			
+		case R.id.main_opt_menu_db_activity:
+			
+			Methods.startDBAdminActivity(this);
+			
 		}//switch (item.getItemId())
 		
 		return super.onOptionsItemSelected(item);
