@@ -69,13 +69,14 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
     	if (convertView != null) {
 			v = convertView;
 		} else {//if (convertView != null)
-			v = inflater.inflate(R.layout.list_row, null);
+//			v = inflater.inflate(R.layout.list_row, null);
+			v = inflater.inflate(R.layout.list_row_checked_box, null);
 		}//if (convertView != null)
 
     	/*----------------------------
 		 * 2. Get view
 			----------------------------*/
-    	ImageView iv = (ImageView) v.findViewById(R.id.iv_thumbnail);
+    	ImageView iv = (ImageView) v.findViewById(R.id.list_row_checked_box_iv_thumbnail);
 
     	/*----------------------------
 		 * 3. Get item
@@ -105,11 +106,11 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
     	/*----------------------------
 		 * 5. Get memo, or, file name
 			----------------------------*/
-		TextView tv = (TextView) v.findViewById(R.id.textView1);
+		TextView tv = (TextView) v.findViewById(R.id.list_row_checked_box_textView1);
 		
 		tv.setText(ti.getFile_name());
 		
-		TextView tv_memo = (TextView) v.findViewById(R.id.textView2);
+		TextView tv_memo = (TextView) v.findViewById(R.id.list_row_checked_box_textView2);
 		
 		String memo = ti.getMemo();
 		

@@ -98,7 +98,7 @@ public class ThumbnailActivity extends ListActivity {
 						ifm8.main.R.layout.thumb_activity, 
 //						ThumbnailActivity.tiList);
 						tiList);
-
+		
 		/*----------------------------
 		 * 2.4. Set adapter to the list
 			----------------------------*/
