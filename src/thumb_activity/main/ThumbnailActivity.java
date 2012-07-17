@@ -65,6 +65,10 @@ public class ThumbnailActivity extends ListActivity {
         //
         checkedPositions = new ArrayList<Integer>();
         
+        
+        
+        
+        
         initial_setup();
     }//void onCreate(Bundle savedInstanceState)
 
@@ -183,6 +187,10 @@ public class ThumbnailActivity extends ListActivity {
 			
 			this.startActivity(i);		
 		} else if (move_mode == true) {//if (move_mode == false)
+			
+			/*----------------------------
+			 * CheckBox on, then click on the item, then nothing happens (20120717_221403)
+				----------------------------*/
 			
 			checkedPositions.add(position);
 			

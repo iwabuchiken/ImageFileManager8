@@ -101,6 +101,13 @@ public class ButtonOnClickListener implements OnClickListener {
 					+ "]", "New position => " + position +
 					" / " + "(length=" + ThumbnailActivity.checkedPositions.size() + ")");
 
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", 
+					"tiList(position=" + position + ") => " + 
+					ThumbnailActivity.tiList.get(position).getFile_name());
+
+			
 			break;
 		
 		default:
