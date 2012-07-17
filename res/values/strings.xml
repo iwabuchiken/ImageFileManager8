@@ -41,4 +41,9 @@
     <!-- dlg_confirm_drop_table.xml -->
     <string name="dlg_confirm_drop_table_tv_message_drop">このテーブルを削除しますか？</string>
     
+    
+    <!-- image_actv_menu.xml -->
+    <string name="image_actv_menu_add_memo">メモ</string>
+    
+    
 </resources>

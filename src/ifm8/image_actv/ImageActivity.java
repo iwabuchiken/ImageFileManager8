@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import android.widget.ImageButton;
@@ -140,15 +141,25 @@ public class ImageActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO 自動生成されたメソッド・スタブ
+		// 
+		MenuInflater mi = getMenuInflater();
+		mi.inflate(R.menu.image_actv_menu, menu);
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO 自動生成されたメソッド・スタブ
+		
+		switch (item.getItemId()) {
+		case R.id.image_actv_menu_add_memo:
+			
+			break;
+		}//switch (item.getItemId())
+		
 		return super.onOptionsItemSelected(item);
-	}
+		
+	}//public boolean onOptionsItemSelected(MenuItem item)
 
 	@Override
 	protected void onPause() {
@@ -179,4 +190,5 @@ public class ImageActivity extends Activity {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onDestroy();
 	}
+
 }//public class ImageActivity extends Activity
