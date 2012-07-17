@@ -38,19 +38,21 @@ public final class R {
         public static final int ifm8_opt_menu_refresh_db=0x7f020009;
         public static final int ifm8_option_menu_create_folder=0x7f02000a;
         public static final int ifm8_project=0x7f02000b;
-        public static final int ifm8_thumb_back_50x50=0x7f02000c;
-        public static final int ifm8_thumb_back_50x50_disenabled=0x7f02000d;
-        public static final int ifm8_thumb_back_touched=0x7f02000e;
-        public static final int ifm8_thumb_bottom_50x50=0x7f02000f;
-        public static final int ifm8_thumb_bottom_50x50_disenabled=0x7f020010;
-        public static final int ifm8_thumb_down_50x50=0x7f020011;
-        public static final int ifm8_thumb_down_50x50_disenabled=0x7f020012;
-        public static final int ifm8_thumb_top_50x50=0x7f020013;
-        public static final int ifm8_thumb_top_50x50_disenabled=0x7f020014;
-        public static final int ifm8_thumb_up_50x50=0x7f020015;
-        public static final int ifm8_thumb_up_50x50_disenabled=0x7f020016;
-        public static final int ifm8_up=0x7f020017;
-        public static final int ifm8_up_disenabled=0x7f020018;
+        public static final int ifm8_thumb_actv_opt_menu_move_mode_off=0x7f02000c;
+        public static final int ifm8_thumb_actv_opt_menu_move_mode_on=0x7f02000d;
+        public static final int ifm8_thumb_back_50x50=0x7f02000e;
+        public static final int ifm8_thumb_back_50x50_disenabled=0x7f02000f;
+        public static final int ifm8_thumb_back_touched=0x7f020010;
+        public static final int ifm8_thumb_bottom_50x50=0x7f020011;
+        public static final int ifm8_thumb_bottom_50x50_disenabled=0x7f020012;
+        public static final int ifm8_thumb_down_50x50=0x7f020013;
+        public static final int ifm8_thumb_down_50x50_disenabled=0x7f020014;
+        public static final int ifm8_thumb_top_50x50=0x7f020015;
+        public static final int ifm8_thumb_top_50x50_disenabled=0x7f020016;
+        public static final int ifm8_thumb_up_50x50=0x7f020017;
+        public static final int ifm8_thumb_up_50x50_disenabled=0x7f020018;
+        public static final int ifm8_up=0x7f020019;
+        public static final int ifm8_up_disenabled=0x7f02001a;
     }
     public static final class id {
         public static final int LL_main=0x7f080024;
@@ -107,6 +109,7 @@ public final class R {
         public static final int thumb_activity_ib_prev_page=0x7f08002e;
         public static final int thumb_activity_ib_toBottom=0x7f080031;
         public static final int thumb_activity_ib_toTop=0x7f08002d;
+        public static final int thumb_actv_menu_move_mode=0x7f08003c;
         public static final int v1_LL_debug=0x7f080034;
         public static final int v1_bt_back=0x7f080035;
         public static final int v1_bt_forward=0x7f080037;
@@ -135,6 +138,7 @@ public final class R {
     public static final class menu {
         public static final int image_actv_menu=0x7f070000;
         public static final int main_menu=0x7f070001;
+        public static final int thumb_actv_menu=0x7f070002;
     }
     public static final class string {
         public static final int app_name=0x7f050004;
@@ -181,6 +185,9 @@ public final class R {
         public static final int main_opt_menu_create_folder=0x7f050006;
         public static final int main_opt_menu_db_activity=0x7f050008;
         public static final int main_opt_menu_refresh_db=0x7f050007;
+        /**  thumb_actv_menu.xml 
+         */
+        public static final int thumb_actv_menu_move_mode=0x7f050017;
         public static final int v1_tv_dir_path=0x7f050005;
     }
     public static final class style {

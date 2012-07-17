@@ -515,7 +515,8 @@ public class ImageFileManager8Activity extends ListActivity {
 		case R.id.main_opt_menu_db_activity:
 			
 			Methods.startDBAdminActivity(this);
-			
+
+			break;
 		}//switch (item.getItemId())
 		
 		return super.onOptionsItemSelected(item);

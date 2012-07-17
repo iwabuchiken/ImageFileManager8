@@ -17,6 +17,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -38,6 +41,9 @@ public class ThumbnailActivity extends ListActivity {
 	//
 	public static Vibrator vib;
 
+	//
+	static boolean move_mode = false;
+	
 	/*------------------------------------------------------------------------------------
 	 * Methods
 	------------------------------------------------------------------------------------*/
@@ -175,5 +181,123 @@ public class ThumbnailActivity extends ListActivity {
 		
 		super.onListItemClick(lv, v, position, id);
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// 
+		MenuInflater mi = getMenuInflater();
+		mi.inflate(R.menu.thumb_actv_menu, menu);
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.thumb_actv_menu_move_mode:
+			
+			if (move_mode == true) {
+				/*----------------------------
+				 * Steps: Current mode => false
+				 * 1. Set icon => On
+				 * 2. move_mode => true
+				 * 4. Re-set tiList
+				 * 3. Update aAdapter
+					----------------------------*/
+				
+				item.setIcon(R.drawable.ifm8_thumb_actv_opt_menu_move_mode_off);
+				
+				move_mode = false;
+
+				/*----------------------------
+				 * 4. Re-set tiList
+					----------------------------*/
+				String tableName = Methods.convertPathIntoTableName(this);
+
+				tiList.clear();
+				
+//				ThumbnailActivity.tiList = Methods.getAllData(actv, tableName);
+				
+				tiList.addAll(Methods.getAllData(this, tableName));
+
+				// Log
+				Log.d("ThumbnailActivity.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "tiList.size() => " + tiList.size());
+				
+				/*----------------------------
+				 * 3. Update aAdapter
+					----------------------------*/
+//				aAdapter.clear();
+				
+				aAdapter = 
+						new TIListAdapter(
+								this, 
+								ifm8.main.R.layout.thumb_activity, 
+//								ThumbnailActivity.tiList);
+								tiList,
+								Methods.MoveMode.OFF);
+				
+				
+				setListAdapter(aAdapter);
+
+			} else {//if (move_mode)
+				/*----------------------------
+				 * Steps: Current mode => false
+				 * 1. Set icon => On
+				 * 2. move_mode => true
+				 * 3. Update aAdapter
+				 * 4. Re-set tiList
+					----------------------------*/
+				
+				item.setIcon(R.drawable.ifm8_thumb_actv_opt_menu_move_mode_on);
+				
+				move_mode = true;
+				
+
+				/*----------------------------
+				 * 4. Re-set tiList
+					----------------------------*/
+				String tableName = Methods.convertPathIntoTableName(this);
+
+				tiList.clear();
+				
+//				ThumbnailActivity.tiList = Methods.getAllData(actv, tableName);
+				
+				tiList.addAll(Methods.getAllData(this, tableName));
+
+				// Log
+				Log.d("ThumbnailActivity.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "tiList.size() => " + tiList.size());
+				
+				/*----------------------------
+				 * 3. Update aAdapter
+					----------------------------*/
+//				aAdapter.clear();
+				
+				aAdapter = 
+						new TIListAdapter(
+								this, 
+								ifm8.main.R.layout.thumb_activity, 
+//								ThumbnailActivity.tiList);
+								tiList,
+								Methods.MoveMode.ON);
+				
+				
+				setListAdapter(aAdapter);
+				
+				
+			}//if (move_mode)
+			
+			
+			break;
+		}//switch (item.getItemId())
+		
+		return super.onOptionsItemSelected(item);
+		
+	}//public boolean onOptionsItemSelected(MenuItem item)
 
 }//public class ThumbnailActivity extends ListActivity

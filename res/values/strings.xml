@@ -48,4 +48,7 @@
     <!-- dlg_add_memos.xml -->
     <string name="dlg_add_memos_tv_title">メモ</string>
     
+    <!-- thumb_actv_menu.xml -->
+    <string name="thumb_actv_menu_move_mode">移動モード</string>
+    
 </resources>

@@ -92,7 +92,12 @@ public class Methods {
 		// ImageFileManager8Activity.java
 		dir_list,
 	}
-	
+
+	public static enum MoveMode {
+		// TIListAdapter.java
+		ON, OFF,
+		
+	}//public static enum MoveMode
 	//
 	public static final int vibLength_click = 35;
 	
