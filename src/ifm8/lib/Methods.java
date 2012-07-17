@@ -456,6 +456,22 @@ public class Methods {
 		
 	}//public static void createFolder(Activity actv, Dialog dlg, Dialog dlg2)
 
+	/****************************************
+	 * 		refreshListView(Activity actv)
+	 * 
+	 * <Caller> 
+	 * 1. Methods.createFolder(Activity actv, Dialog dlg, Dialog dlg2)
+	 * 
+	 * <Desc> 
+	 * 1. Refresh the dir list in ImageFileManager8Activity.java
+	 * 
+	 * 
+	 * <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
 	public static void refreshListView(Activity actv) {
 		/*----------------------------
 		 * Steps
@@ -1986,7 +2002,10 @@ public class Methods {
 					c.getString(2),	// file_path
 					c.getString(3),	// file_name
 					c.getLong(4),	// date_added
-					c.getLong(5)		// date_modified
+//					c.getLong(5)		// date_modified
+					c.getLong(5),		// date_modified
+					c.getString(6),	// memos
+					c.getString(7)	// tags
 			);
 	
 			// Add to the list
@@ -2010,5 +2029,72 @@ public class Methods {
 		return tiList;
 		
 	}//public static List<ThumbnailItem> getAllData
+
+	public static void addMemo(Activity actv, long file_id, String tableName) {
+		/* VERSION = MOCKUP */
+		
+//		toastAndLog(actv, getCurrentPathLabel(actv), 3000);
+//		toastAndLog(actv, convertPathIntoTableName(actv), 3000);
+		
+		/*----------------------------
+		 * Steps
+		 * 1. Get tuhumbnail item
+		 * 2. Set memo
+		 * 3. Update db
+		 * 
+		 * 4. Refresh thumbnails list
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		ThumbnailItem ti = dbu.getData(actv, rdb, tableName, file_id);
+		
+		rdb.close();
+		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "DB => closed");
+//		
+//		toastAndLog(actv, ti.getFile_name() + "/" + "memo=" + ti.getMemo(), 2000);
+		
+		/*----------------------------
+		 * 2. Set memo
+			----------------------------*/
+//		ti.setMemo("abcdefg");
+//		ti.setMemo("123456");
+		ti.setMemo("WHERE句を省略した場合はテーブルに含まれる全てのデータの指定のカラムの値が指定の値で更新されます。");
+		
+		/*----------------------------
+		 * 3. Update db
+			----------------------------*/
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		dbu.updateData_memos(actv, wdb, tableName, ti);
+		
+		wdb.close();
+		
+		/*----------------------------
+		 * 4. Refresh thumbnails list
+			----------------------------*/
+		refreshTIList(actv);
+		
+		
+		
+	}//public static void addMemo(Activity actv, long file_id)
+
+	private static void refreshTIList(Activity actv) {
+		
+		String tableName = Methods.convertPathIntoTableName(actv);
+
+		ThumbnailActivity.tiList.clear();
+		
+//		ThumbnailActivity.tiList = Methods.getAllData(actv, tableName);
+		
+		ThumbnailActivity.tiList.addAll(Methods.getAllData(actv, tableName));
+		
+		ThumbnailActivity.aAdapter.notifyDataSetChanged();
+	}
 
 }//public class Methods

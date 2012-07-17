@@ -1,5 +1,8 @@
 package ifm8.lib;
 
+
+import thumb_activity.main.ThumbnailItem;
+
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -350,6 +353,105 @@ public class DBUtils extends SQLiteOpenHelper{
 			return false;
 		}//try
 	}//public insertData(String tableName, String[] columnNames, String[] values)
+
+	public ThumbnailItem getData(Activity actv, SQLiteDatabase rdb, String tableName, long file_id) {
+		/*----------------------------
+		 * Steps
+		 * 1. 
+			----------------------------*/
+		String sql = "SELECT * FROM " + tableName + " WHERE file_id = '" + String.valueOf(file_id) + "'";
+		
+		Cursor c = rdb.rawQuery(sql, null);
+		
+		actv.startManagingCursor(c);
+		
+		// Log
+		Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "c.getCount() => " + c.getCount());
+		
+		
+		c.moveToFirst();
+		
+//		ThumbnailItem ti = new ThumbnailItem(
+		return new ThumbnailItem(
+				c.getLong(1),	// file_id
+				c.getString(2),	// file_path
+				c.getString(3),	// file_name
+				c.getLong(4),	// date_added
+				c.getLong(5),		// date_modified
+				c.getString(6),		// memos
+				c.getString(7)		// tags
+		);
+		
+		
+//		ThumbnailItem ti = new ThumbnailItem(
+//							c.getLong(1),
+//							c.getString(2),
+//							c.getString(3),
+//							c.getLong(4),
+//							c.getLong(4),
+//							);
+
+		
+		
+	}//public void getData(SQLiteDatabase rdb, String tableName, long file_id)
+
+	public void updateData_memos(Activity actv, SQLiteDatabase wdb, 
+								String tableName, ThumbnailItem ti) {
+		/*----------------------------
+		 * Steps
+		 * 1. 
+			----------------------------*/
+		String sql = "UPDATE " + tableName + " SET " + 
+						"file_id='" + String.valueOf(ti.getFileId()) + "', " + 
+						"file_path='" + ti.getFile_path() + "', " +
+						"file_name='" + ti.getFile_name() + "', " +
+						"date_added='" + String.valueOf(ti.getDate_added()) + "', " +
+						"date_modified='" + String.valueOf(ti.getDate_modified()) + "', " +
+						"memos='" + ti.getMemo() + "', " +
+						"tags='" + ti.getTags() + "'" +
+						
+						" WHERE file_id = '" + String.valueOf(ti.getFileId()) + "'";
+		
+						
+//								"file_id", 		"file_path", "file_name", "date_added", "date_modified"
+//		static String[] cols = 
+//			{"file_id", 		"file_path", "file_name", "date_added",
+//				"date_modified", "memos", "tags"};
+
+		
+		try {
+			
+			wdb.execSQL(sql);
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "sql => Done: " + sql);
+			
+			
+		} catch (SQLException e) {
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+			
+		}
+//		
+//		actv.startManagingCursor(c);
+//		
+//		// Log
+//		Log.d("DBUtils.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "c.getCount() => " + c.getCount());
+//		
+//		
+//		c.moveToFirst();
+		
+		
+		
+	}//public void updateData_memos
 	
 
 }//public class DBUtils

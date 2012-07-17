@@ -27,11 +27,14 @@ public class ThumbnailActivity extends ListActivity {
 	 * Class fields
 		----------------------------*/
 	//
-	static List<ThumbnailItem> tiList;
+	public static List<ThumbnailItem> tiList;
 
 	//
-	static TIListAdapter aAdapter;
+	public static TIListAdapter aAdapter;
 
+	//
+	public static ArrayList<Integer> checkedPositions;
+	
 	//
 	public static Vibrator vib;
 
@@ -77,7 +80,8 @@ public class ThumbnailActivity extends ListActivity {
 			----------------------------*/
 		String tableName = Methods.convertPathIntoTableName(this);
 		
-		List<ThumbnailItem> tiList = Methods.getAllData(this, tableName);
+//		List<ThumbnailItem> tiList = Methods.getAllData(this, tableName);
+		tiList = Methods.getAllData(this, tableName);
 		
 		// Log
 		Log.d("ThumbnailActivity.java" + "["
@@ -87,7 +91,8 @@ public class ThumbnailActivity extends ListActivity {
 		/*----------------------------
 		 * 2.3. Prepare adapter
 			----------------------------*/
-		TIListAdapter aAdapter = 
+//		TIListAdapter aAdapter =
+		aAdapter = 
 				new TIListAdapter(
 						this, 
 						ifm8.main.R.layout.thumb_activity, 

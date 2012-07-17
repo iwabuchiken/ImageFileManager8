@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,8 +80,14 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
     	/*----------------------------
 		 * 3. Get item
 			----------------------------*/
-    	ThumbnailItem thumbnailItem = getItem(position);
+    	ThumbnailItem ti = getItem(position);
 
+    	// Log
+		Log.d("TIListAdapter.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "position => " + position);
+		
+    	
     	/*----------------------------
 		 * 4. Get bitmap
 			----------------------------*/
@@ -90,7 +97,7 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
     	// Bitmap
     	Bitmap bmp = 
 				MediaStore.Images.Thumbnails.getThumbnail(
-							cr, thumbnailItem.getFileId(), MediaStore.Images.Thumbnails.MICRO_KIND, null);
+							cr, ti.getFileId(), MediaStore.Images.Thumbnails.MICRO_KIND, null);
     	
     	// Set bitmap
     	iv.setImageBitmap(bmp);
@@ -100,8 +107,41 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
 			----------------------------*/
 		TextView tv = (TextView) v.findViewById(R.id.textView1);
 		
-		tv.setText(thumbnailItem.getFile_name());
-    	
+		tv.setText(ti.getFile_name());
+		
+		TextView tv_memo = (TextView) v.findViewById(R.id.textView2);
+		
+		String memo = ti.getMemo();
+		
+		// Log
+		Log.d("TIListAdapter.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "ti.getMemo()(pre-if) => " + ti.getMemo() + " / " + ti.getFile_name());
+		
+//		tv_memo.setText(ti.getMemo());
+//		
+//		// Log
+//		Log.d("TIListAdapter.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "memo => " + memo + " / " + ti.getFile_name());
+		
+		
+		if (memo != null) {
+			tv_memo.setText(memo);
+			
+			// Log
+			Log.d("TIListAdapter.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "memo => " + memo + " / " + ti.getFile_name());
+			
+			
+		} else {//if (memo)
+//			tv_memo.setText("NULL");
+			tv_memo.setText("");
+		}//if (memo)
+		
+//		memo = null;
+		
     	/*----------------------------
 		 * 9. Return view
 			----------------------------*/

@@ -28,6 +28,9 @@ public class ImageActivity extends Activity {
 
 	//
 	public static Vibrator vib;
+
+	//
+	long file_id;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,7 @@ public class ImageActivity extends Activity {
 		Intent i = getIntent();
 		
 		String file_path = i.getStringExtra("file_path");
-		long file_id = i.getLongExtra("file_id", -1);
+		file_id = i.getLongExtra("file_id", -1);
 		String file_name = i.getStringExtra("file_name");
 		
 		/*----------------------------
@@ -153,6 +156,8 @@ public class ImageActivity extends Activity {
 		
 		switch (item.getItemId()) {
 		case R.id.image_actv_menu_add_memo:
+			
+			Methods.addMemo(this, file_id, Methods.convertPathIntoTableName(this));
 			
 			break;
 		}//switch (item.getItemId())
