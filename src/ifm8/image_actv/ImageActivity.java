@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -157,7 +158,15 @@ public class ImageActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.image_actv_menu_add_memo:
 			
-			Methods.addMemo(this, file_id, Methods.convertPathIntoTableName(this));
+			// Log
+			Log.d("ImageActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "file_id => " + file_id);
+			
+			
+			Methods.dlg_addMemo(this, file_id, Methods.convertPathIntoTableName(this));
+			
+//			Methods.addMemo(this, file_id, Methods.convertPathIntoTableName(this));
 			
 			break;
 		}//switch (item.getItemId())

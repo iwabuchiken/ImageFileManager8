@@ -397,7 +397,7 @@ public class DBUtils extends SQLiteOpenHelper{
 		
 	}//public void getData(SQLiteDatabase rdb, String tableName, long file_id)
 
-	public void updateData_memos(Activity actv, SQLiteDatabase wdb, 
+	public boolean updateData_memos(Activity actv, SQLiteDatabase wdb, 
 								String tableName, ThumbnailItem ti) {
 		/*----------------------------
 		 * Steps
@@ -430,13 +430,18 @@ public class DBUtils extends SQLiteOpenHelper{
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "sql => Done: " + sql);
 			
+			Methods.toastAndLog(actv, "Data updated", 2000);
+			
+			return true;
+			
 			
 		} catch (SQLException e) {
 			// Log
 			Log.d("DBUtils.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "Exception => " + e.toString());
+					+ "]", "Exception => " + e.toString() + " / " + "sql: " + sql);
 			
+			return false;
 		}
 //		
 //		actv.startManagingCursor(c);

@@ -45,5 +45,7 @@
     <!-- image_actv_menu.xml -->
     <string name="image_actv_menu_add_memo">メモ</string>
     
+    <!-- dlg_add_memos.xml -->
+    <string name="dlg_add_memos_tv_title">メモ</string>
     
 </resources>

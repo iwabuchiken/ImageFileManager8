@@ -82,10 +82,10 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
 			----------------------------*/
     	ThumbnailItem ti = getItem(position);
 
-    	// Log
-		Log.d("TIListAdapter.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "position => " + position);
+//    	// Log
+//		Log.d("TIListAdapter.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "position => " + position);
 		
     	
     	/*----------------------------
@@ -113,10 +113,10 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
 		
 		String memo = ti.getMemo();
 		
-		// Log
-		Log.d("TIListAdapter.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "ti.getMemo()(pre-if) => " + ti.getMemo() + " / " + ti.getFile_name());
+//		// Log
+//		Log.d("TIListAdapter.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "ti.getMemo()(pre-if) => " + ti.getMemo() + " / " + ti.getFile_name());
 		
 //		tv_memo.setText(ti.getMemo());
 //		
@@ -129,10 +129,10 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
 		if (memo != null) {
 			tv_memo.setText(memo);
 			
-			// Log
-			Log.d("TIListAdapter.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "memo => " + memo + " / " + ti.getFile_name());
+//			// Log
+//			Log.d("TIListAdapter.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "memo => " + memo + " / " + ti.getFile_name());
 			
 			
 		} else {//if (memo)

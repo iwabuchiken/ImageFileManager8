@@ -45,6 +45,10 @@ public class Methods {
 	static int tempRecordNum = 20;
 	
 	public static enum DialogTags {
+		// Generics
+		dlg_generic_dismiss,
+		
+		
 		// dlg_create_folder.xml
 		dlg_create_folder_ok, dlg_create_folder_cancel,
 
@@ -62,6 +66,9 @@ public class Methods {
 		
 		// dlg_confirm_drop.xml
 		dlg_confirm_drop_table_btn_ok, dlg_confirm_drop_table_btn_cancel,
+		
+		// dlg_add_memos.xml
+		dlg_add_memos_bt_add, dlg_add_memos_bt_cancel,
 		
 	}//public static enum DialogTags
 	
@@ -2031,6 +2038,13 @@ public class Methods {
 	}//public static List<ThumbnailItem> getAllData
 
 	public static void addMemo(Activity actv, long file_id, String tableName) {
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "addMemo() => Started");
+		
+		
 		/* VERSION = MOCKUP */
 		
 //		toastAndLog(actv, getCurrentPathLabel(actv), 3000);
@@ -2071,7 +2085,11 @@ public class Methods {
 			----------------------------*/
 		SQLiteDatabase wdb = dbu.getWritableDatabase();
 
-		dbu.updateData_memos(actv, wdb, tableName, ti);
+		boolean result = dbu.updateData_memos(actv, wdb, tableName, ti);
+		
+		if (result) {
+			
+		}//if (result)
 		
 		wdb.close();
 		
@@ -2080,6 +2098,10 @@ public class Methods {
 			----------------------------*/
 		refreshTIList(actv);
 		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "TIList => Refreshed");
 		
 		
 	}//public static void addMemo(Activity actv, long file_id)
@@ -2097,4 +2119,174 @@ public class Methods {
 		ThumbnailActivity.aAdapter.notifyDataSetChanged();
 	}
 
+	public static void dlg_addMemo(Activity actv, long file_id, String tableName) {
+		/*----------------------------
+		 * Steps
+		 * 1. Set up
+		 * 1-2. Set text to edit text
+		 * 2. Add listeners => OnTouch
+		 * 3. Add listeners => OnClick
+			----------------------------*/
+		
+		// 
+		Dialog dlg = new Dialog(actv);
+		
+		//
+		dlg.setContentView(R.layout.dlg_add_memos);
+		
+		// Title
+		dlg.setTitle(R.string.dlg_add_memos_tv_title);
+		
+		/*----------------------------
+		 * 1-2. Set text to edit text
+			----------------------------*/
+		ThumbnailItem ti = getData(actv, tableName, file_id);
+		
+		EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
+		
+		if (ti.getMemo() != null) {
+			
+			et.setText(ti.getMemo());
+			
+			et.setSelection(ti.getMemo().length());
+			
+		} else {//if (ti.getMemo() != null)
+			
+			et.setSelection(0);
+			
+		}//if (ti.getMemo() != null)
+		
+		
+		
+		/*----------------------------
+		 * 2. Add listeners => OnTouch
+			----------------------------*/
+		//
+		Button btn_add = (Button) dlg.findViewById(R.id.dlg_add_memos_bt_add);
+		Button btn_cancel = (Button) dlg.findViewById(R.id.dlg_add_memos_cancel);
+		
+		// Tags
+		btn_add.setTag(DialogTags.dlg_add_memos_bt_add);
+		btn_cancel.setTag(DialogTags.dlg_generic_dismiss);
+		
+		//
+		btn_add.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		/*----------------------------
+		 * 3. Add listeners => OnClick
+			----------------------------*/
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "file_id => " + file_id);
+		
+		
+		//
+//		btn_add.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		btn_add.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, file_id, tableName));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		
+		//
+		dlg.show();
+		
+	}//public static void dlg_addMemo(Activity actv, long file_id, String tableName)
+
+	public static ThumbnailItem getData(Activity actv, String tableName, long file_id) {
+
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		ThumbnailItem ti = dbu.getData(actv, rdb, tableName, file_id);
+		
+		rdb.close();
+		
+		return ti;
+		
+	}//public ThumbnailItem getData(Activity actv, String tableName, long file_id)
+
+	public static void addMemo(Activity actv, Dialog dlg, long file_id, String tableName) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get tuhumbnail item
+		 * 1-2. Get text from edit text
+		 * 2. Set memo
+		 * 3. Update db
+		 * 
+		 * 4. Refresh thumbnails list
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		ThumbnailItem ti = dbu.getData(actv, rdb, tableName, file_id);
+		
+		rdb.close();
+		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "DB => closed");
+//		
+//		toastAndLog(actv, ti.getFile_name() + "/" + "memo=" + ti.getMemo(), 2000);
+		
+		/*----------------------------
+		 * 1-2. Get text from edit text
+			----------------------------*/
+		EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
+		
+		/*----------------------------
+		 * 2. Set memo
+			----------------------------*/
+//		ti.setMemo("abcdefg");
+//		ti.setMemo("123456");
+//		ti.setMemo("WHERE句を省略した場合はテーブルに含まれる全てのデータの指定のカラムの値が指定の値で更新されます。");
+		
+		ti.setMemo(et.getText().toString());
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "New memo => " + et.getText().toString());
+		
+		/*----------------------------
+		 * 3. Update db
+			----------------------------*/
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		boolean result = dbu.updateData_memos(actv, wdb, tableName, ti);
+		
+		wdb.close();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "wdb => Closed");
+		
+		if (result) {
+			
+			dlg.dismiss();
+			
+		} else {//if (result)
+			
+			return;
+			
+		}//if (result)
+		
+		
+		
+		/*----------------------------
+		 * 4. Refresh thumbnails list
+			----------------------------*/
+		refreshTIList(actv);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "TIList => Refreshed");
+		
+	}//public static void addMemo()
+	
 }//public class Methods

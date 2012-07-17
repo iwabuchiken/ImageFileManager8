@@ -3,6 +3,7 @@ package ifm8.lib;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -19,6 +20,10 @@ public class DialogButtonOnClickListener implements OnClickListener {
 
 	//
 	Vibrator vib;
+	
+	// Used in => Methods.dlg_addMemo(Activity actv, long file_id, String tableName)
+	long file_id;
+	String tableName;
 	
 	public DialogButtonOnClickListener(Activity actv, Dialog dlg) {
 		//
@@ -39,6 +44,17 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		//
 		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
 	}
+
+	public DialogButtonOnClickListener(Activity actv, Dialog dlg, long file_id, String tableName) {
+		// 
+		this.actv = actv;
+		this.dlg = dlg;
+		
+		this.tableName = tableName;
+		
+		this.file_id = file_id;
+		
+	}//public DialogButtonOnClickListener(Activity actv, Dialog dlg, long file_id, String tableName)
 
 	@Override
 	public void onClick(View v) {
@@ -119,7 +135,36 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			dlg2.dismiss();
 			
 			break;
+
+		case dlg_add_memos_bt_add:
 			
+			// Log
+			Log.d("DialogButtonOnClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "file_id => " + file_id);
+			
+			
+			// Log
+			Log.d("DialogButtonOnClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Calling => Methods.addMemo()");
+			
+			
+			Methods.addMemo(actv, dlg, file_id, tableName);
+			
+			break;
+			
+		case dlg_add_memos_bt_cancel:
+			
+			dlg.dismiss();
+			
+			break;
+			
+		case dlg_generic_dismiss:
+			
+			dlg.dismiss();
+			
+			break;
 		default:
 			break;
 		}//switch (tag_name)
