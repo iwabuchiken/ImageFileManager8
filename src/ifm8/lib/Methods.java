@@ -85,6 +85,9 @@ public class Methods {
 		// image_activity.xml
 		image_activity_back,
 		
+		// TIListAdapter.java
+		tilist_cb,
+		
 	}//public static enum ButtonTags
 	
 	public static enum ItemTags {

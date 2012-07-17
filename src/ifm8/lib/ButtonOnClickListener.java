@@ -1,10 +1,13 @@
 package ifm8.lib;
 import java.io.File;
 
+import thumb_activity.main.ThumbnailActivity;
+
 import ifm8.main.ImageFileManager8Activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -20,6 +23,9 @@ public class ButtonOnClickListener implements OnClickListener {
 	//
 	Vibrator vib;
 	
+	//
+	int position;
+	
 	public ButtonOnClickListener(Activity actv) {
 		//
 		this.actv = actv;
@@ -27,6 +33,18 @@ public class ButtonOnClickListener implements OnClickListener {
 		//
 		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
 	}
+
+	public ButtonOnClickListener(Activity actv, int position) {
+		//
+		this.actv = actv;
+		this.position = position;
+		
+		//
+		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
+		
+		
+		
+	}//public ButtonOnClickListener(Activity actv, int position)
 
 	@Override
 	public void onClick(View v) {
@@ -67,7 +85,24 @@ public class ButtonOnClickListener implements OnClickListener {
 			actv.finish();
 			
 			break;
+
+		case tilist_cb:
 			
+			// Log
+			Log.d("ButtonOnClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "position => " + position);
+			
+			ThumbnailActivity.checkedPositions.add(position);
+			
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "New position => " + position +
+					" / " + "(length=" + ThumbnailActivity.checkedPositions.size() + ")");
+
+			break;
+		
 		default:
 			break;
 		}//switch (tag_name)

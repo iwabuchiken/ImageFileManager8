@@ -42,8 +42,8 @@ public class ThumbnailActivity extends ListActivity {
 	public static Vibrator vib;
 
 	//
-	static boolean move_mode = false;
-	
+	public static boolean move_mode = false;
+
 	/*------------------------------------------------------------------------------------
 	 * Methods
 	------------------------------------------------------------------------------------*/
@@ -61,6 +61,9 @@ public class ThumbnailActivity extends ListActivity {
         
         //
         vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
+        
+        //
+        checkedPositions = new ArrayList<Integer>();
         
         initial_setup();
     }//void onCreate(Bundle savedInstanceState)
@@ -160,24 +163,55 @@ public class ThumbnailActivity extends ListActivity {
 			----------------------------*/
 		vib.vibrate(Methods.vibLength_click);
 		
-		/*----------------------------
-		 * 1. Get item
-			----------------------------*/
-		ThumbnailItem ti = (ThumbnailItem) lv.getItemAtPosition(position);
-		
-		/*----------------------------
-		 * 2. Intent
-		 * 		2.1. Set data
-			----------------------------*/
-		Intent i = new Intent();
-		
-		i.setClass(this, ImageActivity.class);
-		
-		i.putExtra("file_id", ti.getFileId());
-		i.putExtra("file_path", ti.getFile_path());
-		i.putExtra("file_name", ti.getFile_name());
-		
-		this.startActivity(i);
+		if (move_mode == false) {
+			/*----------------------------
+			 * 1. Get item
+				----------------------------*/
+			ThumbnailItem ti = (ThumbnailItem) lv.getItemAtPosition(position);
+			
+			/*----------------------------
+			 * 2. Intent
+			 * 		2.1. Set data
+				----------------------------*/
+			Intent i = new Intent();
+			
+			i.setClass(this, ImageActivity.class);
+			
+			i.putExtra("file_id", ti.getFileId());
+			i.putExtra("file_path", ti.getFile_path());
+			i.putExtra("file_name", ti.getFile_name());
+			
+			this.startActivity(i);		
+		} else if (move_mode == true) {//if (move_mode == false)
+			
+			checkedPositions.add(position);
+			
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "New position => " + position +
+					" / " + "(length=" + checkedPositions.size() + ")");
+			
+			
+		}//if (move_mode == false)
+//				/*----------------------------
+//				 * 1. Get item
+//					----------------------------*/
+//				ThumbnailItem ti = (ThumbnailItem) lv.getItemAtPosition(position);
+//				
+//				/*----------------------------
+//				 * 2. Intent
+//				 * 		2.1. Set data
+//					----------------------------*/
+//				Intent i = new Intent();
+//				
+//				i.setClass(this, ImageActivity.class);
+//				
+//				i.putExtra("file_id", ti.getFileId());
+//				i.putExtra("file_path", ti.getFile_path());
+//				i.putExtra("file_name", ti.getFile_name());
+//				
+//				this.startActivity(i);
 		
 		super.onListItemClick(lv, v, position, id);
 	}
@@ -285,6 +319,7 @@ public class ThumbnailActivity extends ListActivity {
 //								ThumbnailActivity.tiList);
 								tiList,
 								Methods.MoveMode.ON);
+//								Methods.MoveMode.ON, this);
 				
 				
 				setListAdapter(aAdapter);
