@@ -6,6 +6,7 @@ import thumb_activity.main.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class Methods {
 	
 	public static enum DialogTags {
 		// Generics
-		dlg_generic_dismiss,
+		dlg_generic_dismiss, dlg_generic_dismiss_second_dialog,
 		
 		
 		// dlg_create_folder.xml
@@ -69,6 +70,12 @@ public class Methods {
 		
 		// dlg_add_memos.xml
 		dlg_add_memos_bt_add, dlg_add_memos_bt_cancel,
+
+		// dlg_move_files.xml
+		dlg_move_files_move, dlg_move_files,
+		
+		// dlg_confirm_move_files.xml	=> ok, cancel, dlg tag
+		dlg_confirm_move_files_ok, dlg_confirm_move_files_cancel, dlg_confirm_move_files,
 		
 	}//public static enum DialogTags
 	
@@ -2296,5 +2303,293 @@ public class Methods {
 				+ "]", "TIList => Refreshed");
 		
 	}//public static void addMemo()
-	
+
+	public static void dlg_moveFiles(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get generic dialog
+		 * 2. Get dir list
+		 * 2-1. Set list to the adapter
+		 * 3. Set adapter to the list view
+		 * 4. Set listener to the view
+		 * 
+		 * 9. Show dialog
+			----------------------------*/
+		
+		Dialog dlg = dlg_template_cancel(
+				// Activity, layout, title
+				actv, R.layout.dlg_move_files, R.string.thumb_actv_menu_move_files,
+				// Ok button, Cancel button
+				R.id.dlg_move_files_bt_cancel,
+				// Ok tag, Cancel tag
+				DialogTags.dlg_generic_dismiss
+							);
+		
+		/*----------------------------
+		 * 2. Get dir list
+			----------------------------*/
+//		String[] fileNames = new File(ImageFileManager8Activity.baseDirPath).list();
+//		String[] fileNames = new File(ImageFileManager8Activity.baseDirPath).list(new FileFilter(){
+//
+//			@Override
+//			public boolean accept(File pathname) {
+//				// TODO 自動生成されたメソッド・スタブ
+//				
+//				return pathname.isDirectory();
+//			}
+//			
+//		});//String[] fileNames
+
+		File[] files = new File(ImageFileManager8Activity.baseDirPath).listFiles(new FileFilter(){
+
+			@Override
+			public boolean accept(File pathname) {
+				// TODO 自動生成されたメソッド・スタブ
+				
+				return pathname.isDirectory();
+			}
+			
+		});//File[] files
+		
+		List<String> fileNameList = new ArrayList<String>();
+		
+//		for (String fileName : fileNames) {
+		for (File eachFile : files) {
+			
+//			fileNameList.add(fileName);
+			fileNameList.add(eachFile.getName());
+			
+		}//for (String fileName : fileNames)
+		
+		Collections.sort(fileNameList);
+		
+		/*----------------------------
+		 * 2-1. Set list to the adapter
+			----------------------------*/
+		ArrayAdapter<String> dirListAdapter = new ArrayAdapter<String>(
+												actv,
+												android.R.layout.simple_list_item_1,
+												fileNameList
+											);
+		
+		/*----------------------------
+		 * 3. Set adapter to the list view
+			----------------------------*/
+		//
+		ListView lv = (ListView) dlg.findViewById(R.id.dlg_move_files_lv_list);
+		
+		lv.setAdapter(dirListAdapter);
+		
+		/*----------------------------
+		 * 4. Set listener to the view
+			----------------------------*/
+		
+		lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg, DialogTags.dlg_move_files));
+		
+		/*----------------------------
+		 * 9. Show dialog
+			----------------------------*/
+		dlg.show();
+		
+	}//public static void dlg_moveFiles(Activity actv)
+
+	public static Dialog dlg_template_okCancel(Activity actv, int layoutId, int titleStringId,
+									int okButtonId, int cancelButtonId, DialogTags okTag, DialogTags cancelTag) {
+		/*----------------------------
+		 * Steps
+		 * 1. Set up
+		 * 2. Add listeners => OnTouch
+		 * 3. Add listeners => OnClick
+			----------------------------*/
+		
+		// 
+		Dialog dlg = new Dialog(actv);
+		
+		//
+		dlg.setContentView(layoutId);
+		
+		// Title
+		dlg.setTitle(titleStringId);
+		
+		/*----------------------------
+		 * 2. Add listeners => OnTouch
+			----------------------------*/
+		//
+		Button btn_ok = (Button) dlg.findViewById(okButtonId);
+		Button btn_cancel = (Button) dlg.findViewById(cancelButtonId);
+		
+		//
+		btn_ok.setTag(okTag);
+		btn_cancel.setTag(cancelTag);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		/*----------------------------
+		 * 3. Add listeners => OnClick
+			----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		
+		//
+//		dlg.show();
+		
+		return dlg;
+		
+	}//public static Dialog dlg_template_okCancel()
+
+	public static Dialog dlg_template_okCancel_2_dialogues(
+											Activity actv, int layoutId, int titleStringId,
+											int okButtonId, int cancelButtonId, 
+											DialogTags okTag, DialogTags cancelTag,
+											Dialog dlg1) {
+		/*----------------------------
+		* Steps
+		* 1. Set up
+		* 2. Add listeners => OnTouch
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		
+		// 
+		Dialog dlg2 = new Dialog(actv);
+		
+		//
+		dlg2.setContentView(layoutId);
+		
+		// Title
+		dlg2.setTitle(titleStringId);
+		
+		/*----------------------------
+		* 2. Add listeners => OnTouch
+		----------------------------*/
+		//
+		Button btn_ok = (Button) dlg2.findViewById(okButtonId);
+		Button btn_cancel = (Button) dlg2.findViewById(cancelButtonId);
+		
+		//
+		btn_ok.setTag(okTag);
+		btn_cancel.setTag(cancelTag);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		
+		/*----------------------------
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg1, dlg2));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg1, dlg2));
+		
+		//
+		//dlg.show();
+		
+		return dlg2;
+		
+	}//public static Dialog dlg_template_okCancel_2_dialogues()
+
+	public static Dialog dlg_template_cancel(Activity actv, int layoutId, int titleStringId,
+											int cancelButtonId, DialogTags cancelTag) {
+		/*----------------------------
+		* Steps
+		* 1. Set up
+		* 2. Add listeners => OnTouch
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		
+		// 
+		Dialog dlg = new Dialog(actv);
+		
+		//
+		dlg.setContentView(layoutId);
+		
+		// Title
+		dlg.setTitle(titleStringId);
+		
+		/*----------------------------
+		* 2. Add listeners => OnTouch
+		----------------------------*/
+		//
+		Button btn_cancel = (Button) dlg.findViewById(cancelButtonId);
+		
+		//
+		btn_cancel.setTag(cancelTag);
+		
+		//
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		/*----------------------------
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		//
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		
+		//
+		//dlg.show();
+		
+		return dlg;
+		
+	}//public static Dialog dlg_template_okCancel()
+
+	public static void dlg_confirm_moveFiles(Activity actv, Dialog dlg, String folderPath) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get a confirm dialog
+		 * 2. Set a chosen folder name to the view
+		 * 9. Show dialog
+			----------------------------*/
+		
+		Dialog dlg2 = dlg_template_okCancel_2_dialogues(
+				// Activity, layout, title
+				actv, R.layout.dlg_confirm_move_files, R.string.generic_tv_confirm,
+				// Ok button, Cancel button
+				R.id.dlg_confirm_move_files_btn_ok, R.id.dlg_confirm_move_files_btn_cancel,
+				// Ok tag, Cancel tag
+				DialogTags.dlg_confirm_move_files_ok, DialogTags.dlg_generic_dismiss_second_dialog,
+				// Dialogues
+				dlg
+		);
+		
+		/*----------------------------
+		 * 2. Set a chosen folder name to the view
+			----------------------------*/
+		TextView tv_folder_name = (TextView) dlg2.findViewById(R.id.dlg_confirm_move_files_tv_table_name);
+		
+		tv_folder_name.setText(folderPath);
+		
+		/*----------------------------
+		 * 9. Show dialog
+			----------------------------*/
+		dlg2.show();
+		
+	}//public static void dlg_confirm_moveFiles(Activity actv, Dialog dlg)
+
+	public static void moveFiles(Activity actv, Dialog dlg1, Dialog dlg2) {
+		/*----------------------------
+		 * Steps
+		 * 1. Move files
+		 * 2. Update the list view
+		 * 3. Dismiss dialogues
+			----------------------------*/
+		/*----------------------------
+		 * 1. Move files
+			----------------------------*/
+		
+		/*----------------------------
+		 * 2. Update the list view
+			----------------------------*/
+		ThumbnailActivity.checkedPositions.clear();
+		
+		ThumbnailActivity.aAdapter.notifyDataSetChanged();
+		
+		/*----------------------------
+		 * 3. Dismiss dialogues
+			----------------------------*/
+		dlg1.dismiss();
+		dlg2.dismiss();
+		
+	}//public static void moveFiles(Activity actv, Dialog dlg1, Dialog dlg2)
+
 }//public class Methods

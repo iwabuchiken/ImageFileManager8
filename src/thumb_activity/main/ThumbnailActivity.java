@@ -10,8 +10,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -24,6 +27,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ThumbnailActivity extends ListActivity {
 	/*----------------------------
@@ -66,8 +70,14 @@ public class ThumbnailActivity extends ListActivity {
         checkedPositions = new ArrayList<Integer>();
         
         
-        
-        
+//        SharedPreferences prefs = 
+//        			getSharedPreferences("ifm8_thumb_actv_checked_items", MODE_PRIVATE);
+//        
+//        SharedPreferences.Editor editor = prefs.edit();
+//        
+//        
+//        
+//        editor.put
         
         initial_setup();
     }//void onCreate(Bundle savedInstanceState)
@@ -236,6 +246,13 @@ public class ThumbnailActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		/*----------------------------
+		 * Steps
+		 * 1. R.id.thumb_actv_menu_move_mode
+		 * 2. R.id.thumb_actv_menu_move_files
+			----------------------------*/
+		
+		
 		case R.id.thumb_actv_menu_move_mode:
 			
 			if (move_mode == true) {
@@ -336,11 +353,125 @@ public class ThumbnailActivity extends ListActivity {
 			}//if (move_mode)
 			
 			
-			break;
+			break;// case R.id.thumb_actv_menu_move_mode
+			
+		case R.id.thumb_actv_menu_move_files:	//------------------------------------------
+			
+			if (move_mode == false) {
+				
+				// debug
+				Toast.makeText(ThumbnailActivity.this, "Move mode is not on", 2000)
+						.show();
+				
+				return false;
+				
+			} else if (move_mode == true) {
+				/*----------------------------
+				 * Steps
+				 * 1. checkedPositions => Has contents?
+				 * 2. If yes, show dialog
+					----------------------------*/
+				if (checkedPositions.size() < 1) {
+					
+					Methods.toastAndLog(this, "No item selected", 2000);
+					
+					return false;
+					
+				}//if (checkedPositions.size() < 1)
+				
+				
+				/*----------------------------
+				 * 2. If yes, show dialog
+					----------------------------*/
+				Methods.dlg_moveFiles(this);
+				
+				
+				
+			}//if (move_mode == false)
+			
+			break;// case R.id.thumb_actv_menu_move_files
+			
 		}//switch (item.getItemId())
 		
 		return super.onOptionsItemSelected(item);
 		
 	}//public boolean onOptionsItemSelected(MenuItem item)
+
+	@Override
+	protected void onDestroy() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onDestroy();
+		
+		// Log
+		Log.d("ThumbnailActivity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "onDestroy");
+
+		SharedPreferences prefs = 
+		getSharedPreferences("ifm8_thumb_actv_checked_items", MODE_PRIVATE);
+		
+		SharedPreferences.Editor editor = prefs.edit();
+
+		if (checkedPositions.size() > 0) {
+			
+//			Integer[] positions = (Integer[]) checkedPositions.toArray();
+			Object[] positions = checkedPositions.toArray();
+			
+			String s_positions = StringUtils.join(positions, "/");
+			
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "s_positions => " + s_positions);
+			
+			//
+			editor.putString("checkd_positions", s_positions);
+			
+			editor.commit();
+			
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Preferences => Stored");
+			
+			
+			
+		} else {//if (tiList.size() > 0)
+			
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "checkedPositions.size() => equal to or less than 0");
+			
+		}//if (tiList.size() > 0)
+
+		
+		
+	}
+
+
+	@Override
+	protected void onResume() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onResume();
+		
+		// Log
+		Log.d("ThumbnailActivity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "onResume");
+		
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onPause();
+
+		// Log
+		Log.d("ThumbnailActivity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "onPause");
+
+	}
 
 }//public class ThumbnailActivity extends ListActivity

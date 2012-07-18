@@ -38,7 +38,13 @@ import android.widget.Toast;
 public class ImageFileManager8Activity extends ListActivity {
 	
 	public static String currentDirPath = null;
+	
+	/*----------------------------
+	 * baseDirPath => "/mnt/sdcard-ext", baseDirName
+		----------------------------*/
 	public static String baseDirPath = null;
+	
+	
 	public static String baseDirName = "IFM8";
 	public static String listFileName = "list.txt";
 	public static String dbName = "IFM8";

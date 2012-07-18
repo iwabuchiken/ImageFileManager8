@@ -8,5 +8,12 @@
         
     </item>
     
-
+	<item 
+        android:id="@+id/thumb_actv_menu_move_files" 
+        android:title="@string/thumb_actv_menu_move_files" 
+        android:icon="@drawable/ifm8_thumb_actv_opt_menu_move_file_2"
+        >
+        
+    </item>
+    
 </menu>

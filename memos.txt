@@ -5,6 +5,7 @@ C:\WORKS\PROGRAMS\FreeMind\FreeMind.exe C:\WORKS\WORKSPACES_ANDROID\FM\ImageFile
 gitk
 
 
+
 [Git]
 copy ..\ImageFileManager6\.gitignore .
 

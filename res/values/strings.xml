@@ -50,5 +50,8 @@
     
     <!-- thumb_actv_menu.xml -->
     <string name="thumb_actv_menu_move_mode">移動モード</string>
+    <string name="thumb_actv_menu_move_files">移動</string>
     
+    <!-- dlg_confirm_move_files.xml -->
+    <string name="dlg_confirm_move_files_tv_message">このフォルダへ移しますか？</string>
 </resources>

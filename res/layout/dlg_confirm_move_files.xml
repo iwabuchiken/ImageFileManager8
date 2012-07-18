@@ -12,11 +12,11 @@
         >
 
         <TextView
-            android:id="@+id/dlg_confirm_remove_folder_tv_message"
+            android:id="@+id/dlg_confirm_move_files_tv_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
              
-            android:text="@string/dlg_confirm_remove_folder_tv_message"
+            android:text="@string/dlg_confirm_move_files_tv_message"
             android:textSize="25dp"
             />
 
@@ -32,7 +32,7 @@
 		
 		<!-- Table name -->
         <TextView
-            android:id="@+id/dlg_confirm_remove_folder_tv_table_name"
+            android:id="@+id/dlg_confirm_move_files_tv_table_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
              
@@ -53,7 +53,7 @@
         >
 
         <Button
-            android:id="@+id/dlg_confirm_remove_folder_btn_ok"
+            android:id="@+id/dlg_confirm_move_files_btn_ok"
             
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
             />
 
         <Button
-            android:id="@+id/dlg_confirm_remove_folder_btn_cancel"
+            android:id="@+id/dlg_confirm_move_files_btn_cancel"
             
             android:layout_width="200dp"
             android:layout_height="wrap_content"

@@ -130,13 +130,13 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			
 			break;
 			
-		case dlg_confirm_drop_table_btn_cancel:
+		case dlg_confirm_drop_table_btn_cancel: // ----------------------------------------------------
 			
 			dlg2.dismiss();
 			
 			break;
 
-		case dlg_add_memos_bt_add:
+		case dlg_add_memos_bt_add: // ----------------------------------------------------
 			
 			// Log
 			Log.d("DialogButtonOnClickListener.java" + "["
@@ -154,18 +154,38 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			
 			break;
 			
-		case dlg_add_memos_bt_cancel:
+		case dlg_add_memos_bt_cancel: // ----------------------------------------------------
 			
 			dlg.dismiss();
 			
 			break;
 			
-		case dlg_generic_dismiss:
+		case dlg_generic_dismiss: // ----------------------------------------------------
 			
 			dlg.dismiss();
 			
 			break;
-		default:
+
+		case dlg_generic_dismiss_second_dialog: // ----------------------------------------------------
+			
+			dlg2.dismiss();
+			
+			break;
+
+//		case dlg_move_files_move: // ----------------------------------------------------
+//			
+//			// debug
+//			Toast.makeText(actv, "dlg_move_files_move", 2000).show();
+//			
+//			break;
+
+		case dlg_confirm_move_files_ok: // ----------------------------------------------------
+			
+			Methods.moveFiles(actv, dlg, dlg2);
+			
+			break;
+			
+		default: // ----------------------------------------------------
 			break;
 		}//switch (tag_name)
 	}

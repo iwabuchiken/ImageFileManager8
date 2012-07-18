@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -190,6 +191,12 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
 			
 			
 			TextView tv_memo = (TextView) v.findViewById(R.id.textView2);
+			
+			tv_memo.setTextColor(Color.BLACK);
+			tv_memo.setBackgroundColor(Color.WHITE);
+			
+//			tv_memo.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+			
 			
 			String memo = ti.getMemo();
 			
