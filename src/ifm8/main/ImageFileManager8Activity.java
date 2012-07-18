@@ -50,6 +50,8 @@ public class ImageFileManager8Activity extends ListActivity {
 	public static String dbName = "IFM8";
 
 	public static String refreshLogTableName = "refresh_log";
+	
+	public static String tableNameSeparator = "__";
 			
 	public static List<String> file_names = null;
 

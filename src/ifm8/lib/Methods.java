@@ -813,6 +813,20 @@ public class Methods {
 		
 	}//public static void removeFolder(Activity actv, Dialog dlg)
 
+	/****************************************
+	 * convertPathIntoTableName(Activity actv, File targetDir)
+	 * 
+	 * <Caller> 1. 
+	 * 
+	 * <Desc> 
+	 * 1. Used when creating a new folder in IFM8Activity option menu
+	 * 
+	 * <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
 	private static String convertPathIntoTableName(Activity actv, File targetDir) {
 		/*----------------------------
 		 * Steps
@@ -930,6 +944,103 @@ public class Methods {
 		
 		
 		return tableName;
+	}//private static String convertPathIntoTableName(String absolutePath)
+
+	/****************************************
+	 * convertPathIntoTableName(Activity actv, String pathLabel)
+	 * 
+	 * <Caller> 
+	 * 1. moveFiles(Activity actv, Dialog dlg1, Dialog dlg2)
+	 * 		=> From folder path, create a table name, to which to move files
+	 * 
+	 * <Desc>
+	 *  1. 
+	 *  
+	 *  <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static String convertPathIntoTableName(Activity actv, String pathLabel) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get path array from path label
+		 * 2. Format the path array with table name format
+		 * 3. Add the base dir name to the array
+		 * 4. Return sb
+			----------------------------*/
+		String tableName = null;
+		StringBuilder sb = new StringBuilder();
+
+//		if(getCurrentPathLabel(actv).equals(ImageFileManager8Activity.baseDirName)) {
+//			tableName = getCurrentPathLabel(actv);
+//		} else {
+//			String[] currentPathArray = getCurrentPathLabel(actv).split(new File("aaa").separator);
+		String[] pathArray = pathLabel.split(new File("aaa").separator);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "pathArray.length => " + pathArray.length);
+			
+			if (pathArray.length > 1) {
+			
+				/*----------------------------
+				 * 2. Format the path array with table name format
+					----------------------------*/
+				tableName = StringUtils.join(pathArray, ImageFileManager8Activity.tableNameSeparator);
+			
+				/*----------------------------
+				 * 3. Add the base dir name to the array
+					----------------------------*/
+				sb.append(ImageFileManager8Activity.baseDirName);
+				sb.append(ImageFileManager8Activity.tableNameSeparator);
+				
+				sb.append(tableName);
+				
+			} else {//if (pathArray.length > 1)
+				
+				/*----------------------------
+				 * 3. Add the base dir name to the array
+					----------------------------*/
+				sb.append(ImageFileManager8Activity.baseDirName);
+				sb.append(ImageFileManager8Activity.tableNameSeparator);
+				
+				sb.append(pathArray[0]);
+//				sb.append("__");
+				
+			}//if (pathArray.length > 1)
+			
+	//			tableName = StringUtils.join(currentPathArray, "__");
+			
+			/*----------------------------
+			 * 2. Add name => Target folder name
+				----------------------------*/
+//			String targetDirPath = ImageFileManager8Activity.currentDirPath;
+//			
+//			String[] a_targetDirPath = targetDirPath.split(new File("aaa").separator);
+//			
+//			String folderName = a_targetDirPath[a_targetDirPath.length - 1];
+//			
+//	//		sb.append(tableName);
+//	//		sb.append("__");
+//			sb.append(folderName);
+//			
+//			tableName = sb.toString();
+
+//		}//if(getCurrentPathLabel(actv).equals(ImageFileManager8Activity.baseDirName))
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tableName => " + tableName);
+		
+		/*----------------------------
+		 * 4. Return sb
+			----------------------------*/
+		return sb.toString();
+		
 	}//private static String convertPathIntoTableName(String absolutePath)
 
 	/*----------------------------
@@ -2575,7 +2686,59 @@ public class Methods {
 			----------------------------*/
 		/*----------------------------
 		 * 1. Move files
+		 * 		1.1. Prepare toMoveFiles
+		 * 		1.2. Get target dir path from dlg2
+		 * 		1.3. Insert items in toMoveFiles to the new table
+		 * 		1.4. Delete the items from the source table
 			----------------------------*/
+		List<ThumbnailItem> toMoveFiles = new ArrayList<ThumbnailItem>();
+		
+		for (int position : ThumbnailActivity.checkedPositions) {
+			
+			toMoveFiles.add(ThumbnailActivity.tiList.get(position));
+			
+		}//for (int position : ThumbnailActivity.checkedPositions)
+		
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "toMoveFiles.size() => " + toMoveFiles.size());
+		
+		for (ThumbnailItem thumbnailItem : toMoveFiles) {
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "thumbnailItem.getFile_name() => " + thumbnailItem.getFile_name());
+		}
+		
+		/*----------------------------
+		 * 1.2. Get target dir path from dlg2
+			----------------------------*/
+		TextView tv = (TextView) dlg2.findViewById(R.id.dlg_confirm_move_files_tv_table_name);
+		
+		String folderPath = tv.getText().toString();
+		
+		String targetTableName = convertPathIntoTableName(actv, folderPath);
+		
+		String sourceTableName = convertPathIntoTableName(actv);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "folderPath => " + folderPath);
+		
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "targetTableName => " + targetTableName);
+		
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "sourceTableName => " + sourceTableName);
+		
+		/*----------------------------
+		 * 1.3. Insert items in toMoveFiles to the new table
+			----------------------------*/
+		
 		
 		/*----------------------------
 		 * 2. Update the list view
