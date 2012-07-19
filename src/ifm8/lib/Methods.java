@@ -1508,7 +1508,16 @@ public class Methods {
 		String[] proj = DBUtils.proj;
 
         // Query
-        Cursor c = actv.managedQuery(uri, proj, null, null, null);
+//        Cursor c = actv.managedQuery(uri, proj, null, null, null);
+		
+		
+		// REF=> http://blog.csdn.net/uoyevoli/article/details/4970860
+		Cursor c = actv.managedQuery(
+											uri, 
+											proj,
+											MediaStore.Images.Media.DATE_ADDED + " > ?",
+											new String[] {String.valueOf(getMillSeconds(2012, 6, 15) / 1000)},
+											null);
 		
         //
         actv.startManagingCursor(c);
