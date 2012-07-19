@@ -140,9 +140,9 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				 * 		2. Delete data
 				 * 		3. Close db
 				 * 		4. If unsuccesful, toast a message (Not dismiss the dialog)
-				 * 		4-2. If successful, delete the item from tiList, as well
-				 * 		5. Notify adapter
-				 * 		6. Dismiss dialog
+				 * 		4-2. If successful, delete the item from tiList, as well, and,
+				 * 		4-3. Notify adapter
+				 * 		5. Dismiss dialog
 					----------------------------*/
 				// Edit memo
 				if (opName.equals(actv.getString(R.string.dlg_item_menu_item_delete))) {
@@ -158,6 +158,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 					 * 2. Delete data
 						----------------------------*/
 					boolean result = dbu.deleteData(
+										actv,
 										wdb, 
 										Methods.convertPathIntoTableName(actv), 
 										ti.getFileId());
@@ -174,7 +175,8 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 						
 						Methods.toastAndLog(
 								actv, 
-								"Data deleted => file id = " + String.valueOf(ti.getFileId()), 
+//								"Data deleted => file id = " + String.valueOf(ti.getFileId()), 
+								"Data wasn't deleted => file id = " + String.valueOf(ti.getFileId()),
 								2000);
 						
 					} else if (result == true) {//if (result == true)
@@ -195,16 +197,20 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 								+ Thread.currentThread().getStackTrace()[2]
 										.getLineNumber() + "]", "Data removed from tiList => " + ti.getFile_name());
 						
+						/*----------------------------
+						 * 4-3. Notify adapter
+							----------------------------*/
+						ThumbnailActivity.aAdapter.notifyDataSetChanged();
 						
 					}//if (result == true)
 					
+//					/*----------------------------
+//					 * 5. Notify adapter
+//						----------------------------*/
+//					ThumbnailActivity.aAdapter.notifyDataSetChanged();
+//					
 					/*----------------------------
-					 * 5. Notify adapter
-						----------------------------*/
-					ThumbnailActivity.aAdapter.notifyDataSetChanged();
-					
-					/*----------------------------
-					 * 6. Dismiss dialog
+					 * 5. Dismiss dialog
 						----------------------------*/
 					dlg.dismiss();
 					

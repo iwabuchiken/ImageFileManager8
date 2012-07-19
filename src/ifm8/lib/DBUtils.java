@@ -10,6 +10,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -513,7 +514,35 @@ public class DBUtils extends SQLiteOpenHelper{
 		
 	}//public void updateData_memos
 
-	public boolean deleteData(SQLiteDatabase db, String tableName, long file_id) {
+	public boolean deleteData(Activity actv, SQLiteDatabase db, String tableName, long file_id) {
+		/*----------------------------
+		 * Steps
+		 * 1. Item exists in db?
+		 * 2. If yes, delete it
+			----------------------------*/
+		/*----------------------------
+		 * 1. Item exists in db?
+			----------------------------*/
+		boolean result = isInDB_long(db, tableName, file_id);
+		
+		if (result == false) {		// Result is false ==> Meaning the target data doesn't exist
+											//							in db; Hence, not executing delete op
+			
+			// debug
+			Toast.makeText(actv, 
+					"Data doesn't exist in db: " + String.valueOf(file_id), 
+					2000).show();
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", 
+					"Data doesn't exist in db => Delete the data (file_id = " + String.valueOf(file_id) + ")");
+			
+			return false;
+			
+		}//if (result == false)
+		
 		
 		String sql = 
 						"DELETE FROM " + tableName + 
@@ -542,5 +571,30 @@ public class DBUtils extends SQLiteOpenHelper{
 		
 	}//public boolean deleteData(SQLiteDatabase db, String tableName, long file_id)
 
+	public boolean isInDB_long(SQLiteDatabase db, String tableName, long file_id) {
+		
+		String sql = "SELECT COUNT(*) FROM " + tableName + " WHERE file_id = '" +
+						String.valueOf(file_id) + "'";
+		
+		long result = DatabaseUtils.longForQuery(db, sql, null);
+		
+		// Log
+		Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "result => " + String.valueOf(result));
+		
+		if (result > 0) {
+
+			return true;
+			
+		} else {//if (result > 0)
+			
+			return false;
+			
+		}//if (result > 0)
+		
+//		return false;
+		
+	}//public boolean isInDB_long(SQLiteDatabase db, String tableName, long file_id)
 }//public class DBUtils
 
