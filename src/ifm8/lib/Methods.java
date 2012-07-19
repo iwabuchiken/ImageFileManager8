@@ -1332,7 +1332,7 @@ public class Methods {
 		 * 2-1. If no, then create one
 
 		 * 3. Execute query for image files
-		 * 3-1. Filter the cursor
+
 		 * 4. Insert data into db
 		 *
 		 * 5. Update table "refresh_log"
@@ -1497,7 +1497,18 @@ public class Methods {
 		//
 		/*----------------------------
 		 * 3. Execute query for image files
+		 * 		1. ContentResolver
+		 * 		2. Uri
+		 * 		3. proj
+		 * 		4. Last refreshed date
+		 * 		5. Execute query
 			----------------------------*/
+		/*----------------------------
+		 * 3.1. ContentResolver
+		 * 3.2. Uri
+		 * 3.3. proj
+			----------------------------*/
+		
 		// ContentResolver
 		ContentResolver cr = actv.getContentResolver();
 		
@@ -1507,6 +1518,67 @@ public class Methods {
 		// Projections
 		String[] proj = DBUtils.proj;
 
+		/*----------------------------
+		 * 3.4. Last refreshed date
+			----------------------------*/
+//		String lastRefreshedDate;
+		long lastRefreshedDate = 0;
+
+//		result = dbu.tableExists(wdb, "regresh_log");
+		result = dbu.tableExists(wdb, ImageFileManager8Activity.refreshLogTableName);
+		
+		if (result != false) {
+			//		String sql = "SELECT * FROM refresh_log ORDER BY id DESC";
+			
+			// REF=> http://www.accessclub.jp/sql/10.html
+			String sql = "SELECT * FROM refresh_log ORDER BY " + android.provider.BaseColumns._ID + " DESC";
+			
+			Cursor tempC = wdb.rawQuery(sql, null);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "tempC.getCount() => " + tempC.getCount());
+	
+			if (tempC.getCount() > 0) {
+				
+				tempC.moveToFirst();
+				
+				lastRefreshedDate = tempC.getLong(1);
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", 
+						"lastRefreshedDate => " + String.valueOf(lastRefreshedDate));
+				
+				
+//				for (int i = 0; i < tempC.getCount(); i++) {
+//					
+//					// Log
+//					Log.d("Methods.java"
+//							+ "["
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getLineNumber() + "]", "tempC.getLong(1) => " + tempC.getLong(1));
+//					
+//					tempC.moveToNext();
+//					
+//				}//for (int i = 0; i < tempC.getCount(); i++)
+				
+			}//if (tempC.getCount() > 0)
+		} else {//if (result != false)
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "result => false");
+			
+		}//if (result != false)
+		
+		/*----------------------------
+		 * 3.5. Execute query
+			----------------------------*/
         // Query
 //        Cursor c = actv.managedQuery(uri, proj, null, null, null);
 		
@@ -1516,8 +1588,17 @@ public class Methods {
 											uri, 
 											proj,
 											MediaStore.Images.Media.DATE_ADDED + " > ?",
-											new String[] {String.valueOf(getMillSeconds(2012, 6, 15) / 1000)},
+//											new String[] {String.valueOf(getMillSeconds(2012, 6, 15) / 1000)},
+//											new String[] {String.valueOf(lastRefreshedDate / 1000)},
+											new String[] {String.valueOf(lastRefreshedDate)},
+											
 											null);
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "String.valueOf(lastRefreshedDate / 1000) => " + String.valueOf(lastRefreshedDate / 1000));
+		
 		
         //
         actv.startManagingCursor(c);
@@ -1526,27 +1607,30 @@ public class Methods {
 		Log.d("Methods.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "c.getCount() => " + c.getCount());
-        
-		/*----------------------------
-		 * 4. Insert data into db
-			----------------------------*/
-//		int numOfItemsAdded = insertDataIntoDB(wdb, dbu, c, tableName);
-		int numOfItemsAdded = insertDataIntoDB(wdb, dbu, c, tableName, backupTableName);
 		
-		/*----------------------------
-		 * 5. Update table "refresh_log"
-			----------------------------*/
-//		updateRefreshLog(wdb);
-		c.moveToPrevious();
+		if (c.getCount() > 0) {
+			/*----------------------------
+			 * 4. Insert data into db
+				----------------------------*/
+	//		int numOfItemsAdded = insertDataIntoDB(wdb, dbu, c, tableName);
+			int numOfItemsAdded = insertDataIntoDB(wdb, dbu, c, tableName, backupTableName);
+			
+			/*----------------------------
+			 * 5. Update table "refresh_log"
+				----------------------------*/
+	//		updateRefreshLog(wdb);
+			c.moveToPrevious();
+			
+			long lastItemDate = c.getLong(3);
+			
+			updateRefreshLog(actv, wdb, dbu, lastItemDate, numOfItemsAdded);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getLong(3) => " + c.getLong(3));
 		
-		long lastItemDate = c.getLong(3);
-		
-		updateRefreshLog(actv, wdb, dbu, lastItemDate, numOfItemsAdded);
-		
-		// Log
-		Log.d("Methods.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "c.getLong(3) => " + c.getLong(3));
+		}//if (c.getCount() > 0)
 		
 		/*----------------------------
 		 * 9. Close db
@@ -1561,7 +1645,9 @@ public class Methods {
 
 	}//public static boolean refreshMainDB(ListActivity actv)
 
-	private static void updateRefreshLog(Activity actv, SQLiteDatabase wdb, DBUtils dbu, long lastItemDate, int numOfItemsAdded) {
+	private static void updateRefreshLog(
+												Activity actv, SQLiteDatabase wdb, 
+												DBUtils dbu, long lastItemDate, int numOfItemsAdded) {
 		/*----------------------------
 		 * Steps
 		 * 1. Table exists?
@@ -1628,7 +1714,13 @@ public class Methods {
 		/*----------------------------
 		 * 3. Insert data
 			----------------------------*/
-		dbu.insertData(wdb, tableName, DBUtils.cols_refresh_log, DBUtils.col_types_refresh_log);
+//		dbu.insertData(wdb, tableName, DBUtils.cols_refresh_log, DBUtils.col_types_refresh_log);
+//		dbu.insertData(wdb, tableName, long lastItemDate, int numOfItemsAdded);
+		dbu.insertData(
+						wdb, 
+						tableName, 
+						DBUtils.cols_refresh_log, 
+						new long[] {lastItemDate, (long) numOfItemsAdded});
 		
 		
 	}//private static void updateRefreshLog(SQLiteDatabase wdb, long lastItemDate)
