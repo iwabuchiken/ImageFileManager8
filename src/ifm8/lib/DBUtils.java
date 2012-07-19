@@ -512,7 +512,35 @@ public class DBUtils extends SQLiteOpenHelper{
 		
 		
 	}//public void updateData_memos
-	
+
+	public boolean deleteData(SQLiteDatabase db, String tableName, long file_id) {
+		
+		String sql = 
+						"DELETE FROM " + tableName + 
+						" WHERE file_id = '" + String.valueOf(file_id) + "'";
+		
+		try {
+			db.execSQL(sql);
+			
+//			// Log
+//			Log.d("DBUtils.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Data deleted => file id = " + String.valueOf(file_id));
+			
+			
+			return true;
+			
+		} catch (SQLException e) {
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+			
+			return false;
+			
+		}//try
+		
+	}//public boolean deleteData(SQLiteDatabase db, String tableName, long file_id)
 
 }//public class DBUtils
 

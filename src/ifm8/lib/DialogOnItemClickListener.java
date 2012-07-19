@@ -1,7 +1,12 @@
 package ifm8.lib;
 
+import thumb_activity.main.ThumbnailActivity;
+import thumb_activity.main.ThumbnailItem;
+import ifm8.main.ImageFileManager8Activity;
+import ifm8.main.R;
 import android.app.Activity;
 import android.app.Dialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +24,9 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 	
 	//
 	Methods.DialogTags dlgTag = null;
+
+	//
+	ThumbnailItem ti;
 	
 	public DialogOnItemClickListener(Activity actv, Dialog dlg) {
 		// 
@@ -36,6 +44,19 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
 		
 	}//public DialogOnItemClickListener(Activity actv, Dialog dlg)
+
+	public DialogOnItemClickListener(Activity actv, Dialog dlg,
+								Methods.DialogTags dlgTag, ThumbnailItem ti) {
+		// 
+		this.actv = actv;
+		this.dlg = dlg;
+		this.dlgTag = dlgTag;
+		this.ti = ti;
+		
+		//
+		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
+		
+	}//public DialogOnItemClickListener
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -78,7 +99,14 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 			
 		}//if (dlgName != null && dlgName == "confirm_table_drop")
 
-		if (dlgTag != null) {
+		if (dlgTag == null) {
+			
+			// Log
+			Log.d("DialogOnItemClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "dlgTag != null");
+			
+		} else if (dlgTag != null) {//if (dlgTag != null)
 			
 			switch (dlgTag) {
 			case dlg_move_files:
@@ -88,15 +116,111 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				Methods.dlg_confirm_moveFiles(actv, dlg, folderPath);
 				
 				break;
+				
+			case dlg_item_menu:
+				/*----------------------------
+				 * Steps
+				 * 1. Get operation name
+				 * 2. Op name is "Edit"
+				 * 
+					----------------------------*/
+				
+				
+				String opName = (String) parent.getItemAtPosition(position);
+				
+				// Log
+				Log.d("DialogOnItemClickListener.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "opName => " + opName);
+				
+				/*----------------------------
+				 * 2. Op name is "Edit"
+				 * 		1. db setup
+				 * 		2. Delete data
+				 * 		3. Close db
+				 * 		4. If unsuccesful, toast a message (Not dismiss the dialog)
+				 * 		4-2. If successful, delete the item from tiList, as well
+				 * 		5. Notify adapter
+				 * 		6. Dismiss dialog
+					----------------------------*/
+				// Edit memo
+				if (opName.equals(actv.getString(R.string.dlg_item_menu_item_delete))) {
+					
+					/*----------------------------
+					 * 2.1. db setup
+						----------------------------*/
+					DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+					
+					SQLiteDatabase wdb = dbu.getWritableDatabase();
+					
+					/*----------------------------
+					 * 2. Delete data
+						----------------------------*/
+					boolean result = dbu.deleteData(
+										wdb, 
+										Methods.convertPathIntoTableName(actv), 
+										ti.getFileId());
+					
+					/*----------------------------
+					 * 3. Close db
+						----------------------------*/
+					wdb.close();
+					
+					/*----------------------------
+					 * 4. If unsuccesful, toast a message (Not dismiss the dialog)
+						----------------------------*/
+					if (result == false) {
+						
+						Methods.toastAndLog(
+								actv, 
+								"Data deleted => file id = " + String.valueOf(ti.getFileId()), 
+								2000);
+						
+					} else if (result == true) {//if (result == true)
+						/*----------------------------
+						 * 4-2. If successful, delete the item from tiList, as well
+							----------------------------*/
+						Methods.toastAndLog(
+								actv, 
+//								"Data deleted => file id = " + String.valueOf(ti.getFileId()), 
+								"Data deleted => file name = " + ti.getFile_name(),
+								2000);
+
+						ThumbnailActivity.tiList.remove(position);
+						
+						// Log
+						Log.d("DialogOnItemClickListener.java"
+								+ "["
+								+ Thread.currentThread().getStackTrace()[2]
+										.getLineNumber() + "]", "Data removed from tiList => " + ti.getFile_name());
+						
+						
+					}//if (result == true)
+					
+					/*----------------------------
+					 * 5. Notify adapter
+						----------------------------*/
+					ThumbnailActivity.aAdapter.notifyDataSetChanged();
+					
+					/*----------------------------
+					 * 6. Dismiss dialog
+						----------------------------*/
+					dlg.dismiss();
+					
+				}//if (opName.equals(actv.getString(R.string.dlg_item_menu_item_delete)))
+				
+				break;
 			}//switch (dlgTag)
 			
 		} else {//if (dlgTag != null)
+			
 			// Log
 			Log.d("DialogOnItemClickListener.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "dlgTag != null");
+					+ "]", "Unknown tag");
 			
-		}//if (dlgTag != null)
+		}
 		
 		
 	}//public void onItemClick(AdapterView<?> parent, View v, int position, long id)

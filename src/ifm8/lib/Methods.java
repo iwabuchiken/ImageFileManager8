@@ -76,6 +76,10 @@ public class Methods {
 		
 		// dlg_confirm_move_files.xml	=> ok, cancel, dlg tag
 		dlg_confirm_move_files_ok, dlg_confirm_move_files_cancel, dlg_confirm_move_files,
+
+		// dlg_item_menu.xml
+		dlg_item_menu_bt_cancel, dlg_item_menu,
+
 		
 	}//public static enum DialogTags
 	
@@ -101,6 +105,9 @@ public class Methods {
 		
 		// ImageFileManager8Activity.java
 		dir_list,
+		
+		// ThumbnailActivity.java
+		dir_list_thumb_actv,
 	}
 
 	public static enum MoveMode {
@@ -2840,5 +2847,67 @@ public class Methods {
 		dlg2.dismiss();
 		
 	}//public static void moveFiles(Activity actv, Dialog dlg1, Dialog dlg2)
+
+
+	public static void dlg_thumb_actv_item_menu(Activity actv, ThumbnailItem ti) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get a generic dialog
+		 * 2. Prepare data
+		 * 3. Prepare adapter
+		 * 
+		 * 4. Set data to adapter
+		 * 5. Set adapter to the list
+		 * 5-1. Listener to the view
+		 *
+		 * 6. Show dialog
+			----------------------------*/
+		/*----------------------------
+		 * 1. Get a generic dialog
+			----------------------------*/
+		Dialog dlg = dlg_template_cancel(actv, R.layout.dlg_item_menu, R.string.generic_tv_menu,
+				R.id.dlg_item_menu_bt_cancel, DialogTags.dlg_generic_dismiss);
+		
+		/*----------------------------
+		 * 2. Prepare data
+			----------------------------*/
+		List<String> itemList = new ArrayList<String>();
+		
+		itemList.add(actv.getString(R.string.dlg_item_menu_item_edit_memo));
+		itemList.add(actv.getString(R.string.dlg_item_menu_item_delete));
+		itemList.add(actv.getString(R.string.dlg_item_menu_item_move));
+		
+		/*----------------------------
+		 * 3. Prepare adapter
+		 * 4. Set data to adapter
+			----------------------------*/
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+						actv,
+						android.R.layout.simple_list_item_1, 
+						itemList
+				);
+
+		/*----------------------------
+		 * 5. Set adapter to the list
+			----------------------------*/
+		ListView lv = (ListView) dlg.findViewById(R.id.dlg_item_menu_lv);
+		
+		lv.setAdapter(adapter);
+		
+		
+		/*----------------------------
+		 * 5-1. Listener to the view
+			----------------------------*/
+		
+		lv.setOnItemClickListener(
+						new DialogOnItemClickListener(actv, dlg, DialogTags.dlg_item_menu, ti));
+		
+		/*----------------------------
+		 * 6. Show dialog
+			----------------------------*/
+		dlg.show();
+		
+		
+	}//public static void dlg_thumb_actv_item_menu(Activity actv, ThumbnailItem ti)
 
 }//public class Methods

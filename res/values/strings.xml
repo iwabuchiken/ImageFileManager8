@@ -5,6 +5,7 @@
     <string name="generic_bt_ok">OK</string>
     <string name="generic_bt_cancel">キャンセル</string>
     <string name="generic_tv_confirm">確認</string>
+    <string name="generic_tv_menu">メニュー</string>
     
     <string name="hello">Hello World, ImageFileManager8Activity!</string>
     <string name="app_name">ImageFileManager8</string>
@@ -54,4 +55,10 @@
     
     <!-- dlg_confirm_move_files.xml -->
     <string name="dlg_confirm_move_files_tv_message">このフォルダへ移しますか？</string>
+    
+    <!-- dlg_item_menu.xml -->
+    <string name="dlg_item_menu_item_edit_memo">メモ編集</string>
+    <string name="dlg_item_menu_item_delete">削除</string>
+    <string name="dlg_item_menu_item_move">移動</string>
+    
 </resources>

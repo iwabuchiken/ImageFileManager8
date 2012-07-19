@@ -3,6 +3,7 @@ package thumb_activity.main;
 import ifm8.image_actv.ImageActivity;
 import ifm8.lib.ButtonOnClickListener;
 import ifm8.lib.ButtonOnTouchListener;
+import ifm8.lib.CustomOnItemLongClickListener;
 import ifm8.lib.Methods;
 import ifm8.main.*;
 
@@ -164,6 +165,7 @@ public class ThumbnailActivity extends ListActivity {
 		/*----------------------------
 		 * Steps
 		 * 1. "Back" button
+		 * 2. LongClick
 			----------------------------*/
 		//
 		ImageButton ib_back = (ImageButton) findViewById(R.id.thumb_activity_ib_back);
@@ -176,7 +178,15 @@ public class ThumbnailActivity extends ListActivity {
 		ib_back.setOnTouchListener(new ButtonOnTouchListener(this));
 		ib_back.setOnClickListener(new ButtonOnClickListener(this));
 		 
+		/*----------------------------
+		 * 2. LongClick
+			----------------------------*/
+//		ListView lv = (ListView) findViewById(android.R.layout.activity_list_item);
+		ListView lv = this.getListView();
 		
+		lv.setTag(Methods.ItemTags.dir_list_thumb_actv);
+		
+		lv.setOnItemLongClickListener(new CustomOnItemLongClickListener(this));
 		
 	}//private void set_listeners()
 
