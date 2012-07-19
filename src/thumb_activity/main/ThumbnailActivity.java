@@ -54,7 +54,16 @@ public class ThumbnailActivity extends ListActivity {
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // Log
+		Log.d("ThumbnailActivity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "onCreate => Started");
+		
+		move_mode = false;
+		
+		
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.thumb_activity);
 
         Methods.toastAndLog(this, 
@@ -68,8 +77,17 @@ public class ThumbnailActivity extends ListActivity {
         
         //
         checkedPositions = new ArrayList<Integer>();
-        
-        
+
+        // Log
+		Log.d("ThumbnailActivity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "checkedPositions.size() => " + checkedPositions.size());
+		
+		Log.d("ThumbnailActivity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "move_mode => " + move_mode);
+
+		
 //        SharedPreferences prefs = 
 //        			getSharedPreferences("ifm8_thumb_actv_checked_items", MODE_PRIVATE);
 //        
@@ -268,13 +286,32 @@ public class ThumbnailActivity extends ListActivity {
 				
 				move_mode = false;
 
+				// Log
+				Log.d("ThumbnailActivity.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "move_mode => Now false");
+				
+				
 				/*----------------------------
 				 * 4. Re-set tiList
 					----------------------------*/
 				String tableName = Methods.convertPathIntoTableName(this);
 
 				tiList.clear();
-				
+
+				// Log
+				Log.d("ThumbnailActivity.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "tiList => Cleared");
+
+				Log.d("ThumbnailActivity.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "checkedPositions.size() => " + checkedPositions.size());
+
+
 //				ThumbnailActivity.tiList = Methods.getAllData(actv, tableName);
 				
 				tiList.addAll(Methods.getAllData(this, tableName));
@@ -314,6 +351,12 @@ public class ThumbnailActivity extends ListActivity {
 				
 				move_mode = true;
 				
+				// Log
+				Log.d("ThumbnailActivity.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "move_mode => Now true");
+				
 
 				/*----------------------------
 				 * 4. Re-set tiList
@@ -321,7 +364,18 @@ public class ThumbnailActivity extends ListActivity {
 				String tableName = Methods.convertPathIntoTableName(this);
 
 				tiList.clear();
-				
+
+				// Log
+				Log.d("ThumbnailActivity.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "tiList => Cleared");
+
+				Log.d("ThumbnailActivity.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "checkedPositions.size() => " + checkedPositions.size());
+
 //				ThumbnailActivity.tiList = Methods.getAllData(actv, tableName);
 				
 				tiList.addAll(Methods.getAllData(this, tableName));
@@ -399,6 +453,13 @@ public class ThumbnailActivity extends ListActivity {
 
 	@Override
 	protected void onDestroy() {
+		/*----------------------------
+		 * Steps
+		 * 1. Super
+		 * 2. Preferences
+		 * 3. move_mode => false
+			----------------------------*/
+		
 		// TODO 自動生成されたメソッド・スタブ
 		super.onDestroy();
 		
@@ -445,9 +506,12 @@ public class ThumbnailActivity extends ListActivity {
 			
 		}//if (tiList.size() > 0)
 
+		/*----------------------------
+		 * 3. move_mode => false
+			----------------------------*/
+		move_mode = false;
 		
-		
-	}
+	}//protected void onDestroy()
 
 
 	@Override
@@ -459,6 +523,8 @@ public class ThumbnailActivity extends ListActivity {
 		Log.d("ThumbnailActivity.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "onResume");
+		
+		
 		
 	}
 

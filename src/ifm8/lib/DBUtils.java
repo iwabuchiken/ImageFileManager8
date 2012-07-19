@@ -354,6 +354,61 @@ public class DBUtils extends SQLiteOpenHelper{
 		}//try
 	}//public insertData(String tableName, String[] columnNames, String[] values)
 
+	public boolean insertData(SQLiteDatabase db, String tableName, ThumbnailItem ti) {
+		/*----------------------------
+		* 1. Insert data
+		----------------------------*/
+		try {
+			// Start transaction
+			db.beginTransaction();
+			
+			// ContentValues
+			ContentValues val = new ContentValues();
+			
+//			{"file_id", 		"file_path", "file_name", "date_added",
+//				"date_modified", "memos", "tags"};
+			
+//			// Put values
+//			for (int i = 0; i < columnNames.length; i++) {
+//				val.put(columnNames[i], values[i]);
+//			}//for (int i = 0; i < columnNames.length; i++)
+
+			val.put("file_id", ti.getFileId());
+			
+			val.put("file_path", ti.getFile_path());
+			val.put("file_name", ti.getFile_name());
+			
+			val.put("date_added", ti.getDate_added());
+			val.put("date_modified", ti.getDate_modified());
+			
+			val.put("memos", ti.getMemo());
+			val.put("tags", ti.getTags());
+			
+			// Insert data
+			db.insert(tableName, null, val);
+			
+			// Set as successful
+			db.setTransactionSuccessful();
+			
+			// End transaction
+			db.endTransaction();
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Data inserted => " + "(file_name => " + val.getAsString("file_name") + "), and others");
+			
+			return true;
+		} catch (Exception e) {
+			// Log
+			Log.e("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Exception! => " + e.toString());
+			
+			return false;
+		}//try
+	}//public insertData(SQLiteDatabase db, String tableName, ThumbnailItem ti)
+
 	public ThumbnailItem getData(Activity actv, SQLiteDatabase rdb, String tableName, long file_id) {
 		/*----------------------------
 		 * Steps

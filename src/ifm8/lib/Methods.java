@@ -2737,15 +2737,101 @@ public class Methods {
 		
 		/*----------------------------
 		 * 1.3. Insert items in toMoveFiles to the new table
+		 * 		1.3.1. Insert data to the new table
 			----------------------------*/
+		/*----------------------------
+		 * 1.3.1. Insert data to the new table
+		 * 		1. Set up db
+		 * 		2. Table exists?
+		 * 		2-2. If no, create one
+		 * 		3. Get item from toMoveFiles
+		 * 
+		 * 		4. Insert data into the new table
+		 * 
+		 * 1.4. Delete the items from the source table
+		 * 		1. Delete data from the source table
+		 * 		2. Delete the item from tiList 
+		 * 
+		 * 		9. Close db
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
 		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		/*----------------------------
+		 * 1.3.1.2. Table exists?
+			----------------------------*/
+		boolean result = dbu.tableExists(wdb, targetTableName);
+		
+		if (result == false) {
+			
+			/*----------------------------
+			 * 1.3.2-2. If no, create one
+				----------------------------*/
+			result = dbu.createTable(
+								wdb, targetTableName, 
+								dbu.get_cols(), dbu.get_col_types());
+			
+			if (result == false) {
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "toast and log");
+				
+				toastAndLog(actv, "Can't create a table", 2000);
+				
+				wdb.close();
+				
+				return;
+				
+			}//if (result == false)
+			
+		}//if (result == true)
+		
+		
+		/*----------------------------
+		 * 1.3.1.3. Get item from toMoveFiles
+			----------------------------*/
+		for (ThumbnailItem thumbnailItem : toMoveFiles) {
+			
+			/*----------------------------
+			 * 1.3.4. Insert data into the new table
+				----------------------------*/
+			dbu.insertData(wdb, targetTableName, thumbnailItem);
+			
+		}//for (ThumbnailItem thumbnailItem : toMoveFiles)
+		
+		/*----------------------------
+		 * 1.4.9. Close wdb
+			----------------------------*/
+		wdb.close();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "wdb => Closed");
 		
 		/*----------------------------
 		 * 2. Update the list view
 			----------------------------*/
 		ThumbnailActivity.checkedPositions.clear();
 		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "checkedPositions => Cleared");
+		
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", 
+				"ThumbnailActivity.checkedPositions.size() => " + 
+				ThumbnailActivity.checkedPositions.size());
+		
 		ThumbnailActivity.aAdapter.notifyDataSetChanged();
+		
+		
 		
 		/*----------------------------
 		 * 3. Dismiss dialogues
