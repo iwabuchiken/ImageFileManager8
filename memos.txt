@@ -17,6 +17,8 @@ git log --grep=B5 -3
 
 git log --grep=master -3
 
+git log --grep=refresh -3
+
 pushd C:\WORKS\WORKSPACES_ANDROID\FM
 g a .
 g c -a

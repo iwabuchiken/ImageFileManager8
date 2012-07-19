@@ -49,6 +49,8 @@ public class ImageFileManager8Activity extends ListActivity {
 	public static String listFileName = "list.txt";
 	public static String dbName = "IFM8";
 
+	public static String backupTableName = "IFM8_backup";
+	
 	public static String refreshLogTableName = "refresh_log";
 	
 	public static String tableNameSeparator = "__";
@@ -515,8 +517,42 @@ public class ImageFileManager8Activity extends ListActivity {
 			
 			break;
 		case R.id.main_opt_menu_refresh_db:
+			/*----------------------------
+			 * Steps
+			 * 1. Vibrate
+			 * 2. Task
+				----------------------------*/
 			
-			Methods.refreshMainDB(this);
+			vib.vibrate(this.vibLength_click);
+			
+			/*----------------------------
+			 * 2. Task
+				----------------------------*/
+			RefreshDBTask task_ = new RefreshDBTask(this);
+			
+			// debug
+			Toast.makeText(ImageFileManager8Activity.this, "Starting a task...", 2000)
+					.show();
+			
+			task_.execute("Start");
+			
+//			boolean result = Methods.refreshMainDB(this);
+//			
+//			if (result == true) {
+//				
+//				// debug
+//				Toast.makeText(ImageFileManager8Activity.this, "DB refreshed",
+//						2000).show();
+//				
+//			} else {//if (result == true)
+//				
+//				// debug
+//				Toast.makeText(ImageFileManager8Activity.this, "Sorry. Refresh DB => Failed",
+//						2000).show();
+//				
+//			}//if (result == true)
+			
+			
 			
 			break;
 			

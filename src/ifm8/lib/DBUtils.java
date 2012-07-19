@@ -571,6 +571,21 @@ public class DBUtils extends SQLiteOpenHelper{
 		
 	}//public boolean deleteData(SQLiteDatabase db, String tableName, long file_id)
 
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 
+	 * 1. deleteData(Activity actv, SQLiteDatabase db, String tableName, long file_id)
+	 * 
+	 * <Desc> 
+	 * 1. REF=> http://stackoverflow.com/questions/3369888/android-sqlite-insert-unique
+	 * 
+	 * <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
 	public boolean isInDB_long(SQLiteDatabase db, String tableName, long file_id) {
 		
 		String sql = "SELECT COUNT(*) FROM " + tableName + " WHERE file_id = '" +

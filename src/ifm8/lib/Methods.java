@@ -1316,7 +1316,7 @@ public class Methods {
 	 * method_name(param_type)
 	 * 
 	 * <Caller> 
-	 * 1. ImageFileManager7Activity : onOptionsItemSelected(MenuItem item)
+	 * 1. ImageFileManager8Activity : onOptionsItemSelected(MenuItem item)
 	 * 
 	 * <Desc> 1. <Params> 1.
 	 * 
@@ -1355,21 +1355,44 @@ public class Methods {
 		/*----------------------------
 		 * 2. Table exists?
 		 * 2-1. If no, then create one
+		 * 		1. baseDirName
+		 * 		2. backupTableName
 			----------------------------*/
 		//
 //		String tableName = convertPathIntoTableName(actv);
 		String tableName = ImageFileManager8Activity.baseDirName;
+		String backupTableName = ImageFileManager8Activity.backupTableName;
+		
+		
+		/*----------------------------
+		 * 2-1.1. baseDirName
+			----------------------------*/
+		boolean result = dbu.tableExists(wdb, tableName);
 		
 		// If the table doesn't exist, create one
-		if (!dbu.tableExists(wdb, tableName)) {
+//		if (!dbu.tableExists(wdb, tableName)) {
+		if (result == false) {
 			
-			toastAndLog(actv, "Table doesn't exist: " + tableName, 3000);
+//			toastAndLog(actv, "Table doesn't exist: " + tableName, 3000);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + tableName);
+			
 			
 			boolean blResult2 = 
 					dbu.createTable(wdb, tableName, DBUtils.cols, DBUtils.col_types);
 			
 			if (blResult2 == false) {
-				toastAndLog(actv, "Can't create a table: "+ tableName, 3000);
+//				toastAndLog(actv, "Can't create a table: "+ tableName, 3000);
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Can't create a table: "+ tableName);
+				
 				
 				wdb.close();
 				
@@ -1377,18 +1400,99 @@ public class Methods {
 				
 			} else {//if (blResult2 == false)
 				
-				toastAndLog(actv, "Table created: "+ tableName, 3000);
+//				toastAndLog(actv, "Table created: "+ tableName, 3000);
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Table created: "+ tableName);
+				
 				
 			}//if (blResult2 == false)
 			
 //			wdb.close();
 			
 //			return false;
-		} else {//if (!dbu.tableExists(wdb, tableName))
+//		} else {//if (!dbu.tableExists(wdb, tableName))
+		} else {//if (result == false)
 			
-			toastAndLog(actv, "Table exists: "+ tableName, 3000);
+//			toastAndLog(actv, "Table exists: "+ tableName, 3000);
 			
-		}//if (!dbu.tableExists(wdb, tableName))
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table exists: "+ tableName);
+			
+			
+//		}//if (!dbu.tableExists(wdb, tableName))
+		}//if (result == false)
+		
+		/*----------------------------
+		 * 2-1.2. backupTableName
+			----------------------------*/
+		result = dbu.tableExists(wdb, backupTableName);
+		
+		// If the table doesn't exist, create one
+//		if (!dbu.tableExists(wdb, backupTableName)) {
+		if (result == false) {
+			
+//			toastAndLog(actv, "Table doesn't exist: " + backupTableName, 3000);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + backupTableName);
+			
+			
+			boolean blResult2 = 
+					dbu.createTable(wdb, backupTableName, DBUtils.cols, DBUtils.col_types);
+			
+			if (blResult2 == false) {
+//				toastAndLog(actv, "Can't create a table: "+ backupTableName, 3000);
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "message");
+				
+				
+				wdb.close();
+				
+				return false;
+				
+			} else {//if (blResult2 == false)
+				
+//				toastAndLog(actv, "Table created: "+ backupTableName, 3000);
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Table created: "+ backupTableName);
+				
+				
+			}//if (blResult2 == false)
+			
+//			wdb.close();
+			
+//			return false;
+//		} else {//if (!dbu.tableExists(wdb, backupTableName))
+		} else {//if (result == false)
+			
+//			toastAndLog(actv, "Table exists: "+ backupTableName, 3000);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table exists: "+ backupTableName);
+			
+			
+//		}//if (!dbu.tableExists(wdb, tableName))
+		}//if (result == false)
+		
+		
 		
 		//
 		/*----------------------------
@@ -1417,72 +1521,8 @@ public class Methods {
 		/*----------------------------
 		 * 4. Insert data into db
 			----------------------------*/
-		int numOfItemsAdded = insertDataIntoDB(wdb, dbu, c, tableName);
-		
-//		//
-//		c.moveToFirst();
-//		
-//		//
-////		String[] columns = DBUtils.cols;
-//		
-//		//
-//		int counter = 0;
-////		long threshHoldTime = getMillSeconds(2012, 7, 5);
-//		long threshHoldTime = getMillSeconds(2012, 6, 5);
-//		
-//		// Log
-//		Log.d("Methods.java" + "["
-//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ "]", "threshHoldTime => " + threshHoldTime);
-//		
-//		
-////		for (int i = c.getCount() - tempRecordNum; i < c.getCount(); i++) {
-//		for (int i = 0; i < c.getCount(); i++) {
-//			//
-////			if(c.getLong(3) >= threshHoldTime) {
-//			if(c.getLong(3) * 1000 >= threshHoldTime) {
-////			if(i > c.getCount() - tempRecordNum) {
-//				//
-//				String[] values = {
-//						String.valueOf(c.getLong(0)),
-//						c.getString(1),
-//						c.getString(2),
-//						String.valueOf(c.getLong(3)),
-//						String.valueOf(c.getLong(4))
-//				};
-//				
-////				blResult = dbu.insertData(wdb, tableName, columns, values);
-////				blResult = dbu.insertData(wdb, tableName, DBUtils.cols_for_insert_data, values);
-//				blResult = true;
-//				
-//				// Log
-//				Log.d("Methods.java"
-//						+ "["
-//						+ Thread.currentThread().getStackTrace()[2]
-//								.getLineNumber() + "]", 
-//						StringUtils.join(values, "/"));
-//				
-//				
-//				if (blResult == false) {
-//					// Log
-//					Log.d("Methods.java"
-//							+ "["
-//							+ Thread.currentThread().getStackTrace()[2]
-//									.getLineNumber() + "]", "i => " + i + "/" + "c.getLong(0) => " + c.getLong(0));
-//				} else {//if (blResult == false)
-//					counter += 1;
-//				}
-//			}//if(c.getLong(3) >= threshHoldTime)
-//			
-//			//
-//			c.moveToNext();
-//			
-//		}//for (int i = 0; i < c.getCount(); i++)
-//		
-//		// Log
-//		Log.d("Methods.java" + "["
-//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ "]", "counter => " + counter);
+//		int numOfItemsAdded = insertDataIntoDB(wdb, dbu, c, tableName);
+		int numOfItemsAdded = insertDataIntoDB(wdb, dbu, c, tableName, backupTableName);
 		
 		/*----------------------------
 		 * 5. Update table "refresh_log"
@@ -1499,7 +1539,6 @@ public class Methods {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "c.getLong(3) => " + c.getLong(3));
 		
-		
 		/*----------------------------
 		 * 9. Close db
 			----------------------------*/
@@ -1508,7 +1547,8 @@ public class Methods {
 		/*----------------------------
 		 * 10. Return
 			----------------------------*/
-		return false;
+//		return false;
+		return true;
 
 	}//public static boolean refreshMainDB(ListActivity actv)
 
@@ -1524,7 +1564,13 @@ public class Methods {
 		
 		if(!dbu.tableExists(wdb, tableName)) {
 			
-			toastAndLog(actv, "Table doesn't exitst: " + tableName, 2000);
+//			toastAndLog(actv, "Table doesn't exitst: " + tableName, 2000);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exitst: " + tableName);
+			
 			
 			/*----------------------------
 			 * 2. If no, create one
@@ -1532,13 +1578,27 @@ public class Methods {
 			if(dbu.createTable(wdb, tableName, 
 								DBUtils.cols_refresh_log, DBUtils.col_types_refresh_log)) {
 				
-				toastAndLog(actv, "Table created: " + tableName, 3000);
+//				toastAndLog(actv, "Table created: " + tableName, 3000);
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Table created: " + tableName);
+				
 				
 			} else {//if
 				/*----------------------------
 				 * 2-2. Create table failed => Return
 					----------------------------*/
-				toastAndLog(actv, "Create table failed: " + tableName, 3000);
+//				toastAndLog(actv, "Create table failed: " + tableName, 3000);
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Create table failed: " + tableName);
+				
 				
 				return;
 				
@@ -1546,7 +1606,13 @@ public class Methods {
 			
 		} else {//if(dbu.tableExists(wdb, ImageFileManager8Activity.refreshLogTableName))
 			
-			toastAndLog(actv, "Table exitsts: " + tableName, 2000);
+//			toastAndLog(actv, "Table exitsts: " + tableName, 2000);
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table exitsts: " + tableName);
+			
 			
 		}//if(dbu.tableExists(wdb, ImageFileManager8Activity.refreshLogTableName))
 		
@@ -1560,6 +1626,124 @@ public class Methods {
 
 	
 	/****************************************
+	 *		insertDataIntoDB()
+	 * 
+	 * <Caller> 
+	 * 1. public static boolean refreshMainDB(ListActivity actv)
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	private static int insertDataIntoDB(SQLiteDatabase wdb, DBUtils dbu, Cursor c,
+									String tableName, String backupTableName) {
+		/*----------------------------
+		 * Steps
+		 * 1. Move to first
+		 * 2. Set variables
+		 * 3. Obtain data
+		 * 4. Insert data
+		 * 5. Return => counter
+			----------------------------*/
+		
+		//
+		c.moveToFirst();
+		
+		//
+//		String[] columns = DBUtils.cols;
+		
+		/*----------------------------
+		 * 2. Set variables
+			----------------------------*/
+		int counter = 0;
+//		long threshHoldTime = getMillSeconds(2012, 7, 5);
+		long threshHoldTime = getMillSeconds(2012, 6, 5);
+		
+//		// Log
+//		Log.d("Methods.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "threshHoldTime => " + threshHoldTime);
+		
+		/*----------------------------
+		 * 3. Obtain data
+			----------------------------*/
+//		for (int i = c.getCount() - tempRecordNum; i < c.getCount(); i++) {
+		for (int i = 0; i < c.getCount(); i++) {
+			//
+//			if(c.getLong(3) >= threshHoldTime) {
+//			if(c.getLong(3) * 1000 >= threshHoldTime) {
+//			if(i > c.getCount() - tempRecordNum) {
+				//
+				String[] values = {
+						String.valueOf(c.getLong(0)),
+						c.getString(1),
+						c.getString(2),
+						String.valueOf(c.getLong(3)),
+						String.valueOf(c.getLong(4))
+				};
+
+				/*----------------------------
+				 * 4. Insert data
+				 * 		1. Insert data to tableName
+				 * 		2. Record result
+				 * 		3. Insert data to backupTableName
+				 * 		4. Record result
+					----------------------------*/
+//				boolean blResult = true;
+
+//				boolean blResult = dbu.insertData(wdb, tableName, columns, values);
+				boolean blResult = 
+							dbu.insertData(wdb, tableName, DBUtils.cols_for_insert_data, values);
+				
+//				// Log
+//				Log.d("Methods.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", 
+//						StringUtils.join(values, "/"));
+				
+				
+				
+//				if (blResult == false) {
+//					// Log
+//					Log.d("Methods.java"
+//							+ "["
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getLineNumber() + "]", "i => " + i + "/" + "c.getLong(0) => " + c.getLong(0));
+//				} 	
+				
+				
+				if (blResult == false) {
+					// Log
+					Log.d("Methods.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "i => " + i + "/" + "c.getLong(0) => " + c.getLong(0));
+				} else {//if (blResult == false)
+					counter += 1;
+				}
+//			}//if(c.getLong(3) >= threshHoldTime)
+			
+			//
+			c.moveToNext();
+			
+			
+		}//for (int i = 0; i < c.getCount(); i++)
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "counter => " + counter);
+		
+		/*----------------------------
+		 * 5. Return => counter
+			----------------------------*/
+		return counter;
+		
+	}//private static int insertDataIntoDB(Cursor c)
+	/*****************************************
 	 *		insertDataIntoDB()
 	 * 
 	 * <Caller> 
