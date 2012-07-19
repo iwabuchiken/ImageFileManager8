@@ -1318,7 +1318,10 @@ public class Methods {
 	 * <Caller> 
 	 * 1. ImageFileManager8Activity : onOptionsItemSelected(MenuItem item)
 	 * 
-	 * <Desc> 1. <Params> 1.
+	 * <Desc> 
+	 * 1. REF=> C:\WORKS\WORKSPACES_ANDROID\Sample\05_Techbooster\AsyncTask\src\org\jpn\techbooster\sample\asynctask\AsyncTaskActivity.java
+	 * 
+	 * <Params> 1.
 	 * 
 	 * <Return> 1.
 	 * 
@@ -3039,12 +3042,6 @@ public class Methods {
 		 * 		3. Get item from toMoveFiles
 		 * 
 		 * 		4. Insert data into the new table
-		 * 
-		 * 1.4. Delete the items from the source table
-		 * 		1. Delete data from the source table
-		 * 		2. Delete the item from tiList 
-		 * 
-		 * 		9. Close db
 			----------------------------*/
 		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
 		
@@ -3094,6 +3091,23 @@ public class Methods {
 			dbu.insertData(wdb, targetTableName, thumbnailItem);
 			
 		}//for (ThumbnailItem thumbnailItem : toMoveFiles)
+		
+		
+		/*----------------------------
+		 * 1.4. Delete the items from the source table
+		 * 		1. Delete data from the source table
+		 * 		2. Delete the item from tiList 
+		 * 
+		 * 		9. Close db
+			----------------------------*/
+		/*----------------------------
+		 * 1.4.1. Delete data from the source table
+			----------------------------*/
+//		for (ThumbnailItem thumbnailItem : toMoveFiles) {
+//			
+//			deleteItem_fileId(actv, thumbnailItem, int position);
+//			
+//		}//for (ThumbnailItem thumbnailItem : toMoveFiles)
 		
 		/*----------------------------
 		 * 1.4.9. Close wdb
@@ -3195,4 +3209,165 @@ public class Methods {
 		
 	}//public static void dlg_thumb_actv_item_menu(Activity actv, ThumbnailItem ti)
 
+	public static void deleteItem_fileId(Activity actv, ThumbnailItem ti, int position, Dialog dlg) {
+		/*----------------------------
+		 * 1. db setup
+		 * 2. Delete data
+		 * 3. Close db
+		 * 4. If unsuccesful, toast a message (Not dismiss the dialog)
+		 * 4-2. If successful, delete the item from tiList, as well, and,
+		 * 4-3. Notify adapter
+		 * 5. Dismiss dialog
+			----------------------------*/
+		
+		/*----------------------------
+		 * 1. db setup
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+		
+		/*----------------------------
+		 * 2. Delete data
+			----------------------------*/
+		boolean result = dbu.deleteData(
+							actv,
+							wdb, 
+							Methods.convertPathIntoTableName(actv), 
+							ti.getFileId());
+		
+		/*----------------------------
+		 * 3. Close db
+			----------------------------*/
+		wdb.close();
+		
+		/*----------------------------
+		 * 4. If unsuccesful, toast a message (Not dismiss the dialog)
+			----------------------------*/
+		if (result == false) {
+			
+			Methods.toastAndLog(
+					actv, 
+//					"Data deleted => file id = " + String.valueOf(ti.getFileId()), 
+					"Data wasn't deleted => file id = " + String.valueOf(ti.getFileId()),
+					2000);
+			
+		} else if (result == true) {//if (result == true)
+			/*----------------------------
+			 * 4-2. If successful, delete the item from tiList, as well
+				----------------------------*/
+			Methods.toastAndLog(
+					actv, 
+//					"Data deleted => file id = " + String.valueOf(ti.getFileId()), 
+					"Data deleted => file name = " + ti.getFile_name(),
+					2000);
+
+			ThumbnailActivity.tiList.remove(position);
+			
+			// Log
+			Log.d("DialogOnItemClickListener.java"
+					+ "["
+					+ Thread.currentThread().getStackTrace()[2]
+							.getLineNumber() + "]", "Data removed from tiList => " + ti.getFile_name());
+			
+			/*----------------------------
+			 * 4-3. Notify adapter
+				----------------------------*/
+			ThumbnailActivity.aAdapter.notifyDataSetChanged();
+			
+		}//if (result == true)
+		
+//		/*----------------------------
+//		 * 5. Notify adapter
+//			----------------------------*/
+//		ThumbnailActivity.aAdapter.notifyDataSetChanged();
+//		
+		/*----------------------------
+		 * 5. Dismiss dialog
+			----------------------------*/
+		dlg.dismiss();
+
+	}//public static void deleteItem_fileId(Activity actv, ThumbnailItem ti, int position, Dialog dlg)
+	
+	public static void deleteItem_fileId(Activity actv, String tableName, ThumbnailItem ti, int position) {
+		/*----------------------------
+		 * 1. db setup
+		 * 2. Delete data
+		 * 3. Close db
+		 * 4. If unsuccesful, toast a message (Not dismiss the dialog)
+		 * 4-2. If successful, delete the item from tiList, as well, and,
+		 * 4-3. Notify adapter
+		 * 5. Dismiss dialog
+			----------------------------*/
+		
+		/*----------------------------
+		 * 1. db setup
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+		
+		/*----------------------------
+		 * 2. Delete data
+			----------------------------*/
+		boolean result = dbu.deleteData(
+							actv,
+							wdb, 
+//							Methods.convertPathIntoTableName(actv),
+							tableName,
+							ti.getFileId());
+		
+		/*----------------------------
+		 * 3. Close db
+			----------------------------*/
+		wdb.close();
+		
+		/*----------------------------
+		 * 4. If unsuccesful, toast a message (Not dismiss the dialog)
+			----------------------------*/
+		if (result == false) {
+			
+			Methods.toastAndLog(
+					actv, 
+//					"Data deleted => file id = " + String.valueOf(ti.getFileId()), 
+					"Data wasn't deleted => file id = " + String.valueOf(ti.getFileId()),
+					2000);
+			
+		} else if (result == true) {//if (result == true)
+			/*----------------------------
+			 * 4-2. If successful, delete the item from tiList, as well
+				----------------------------*/
+			Methods.toastAndLog(
+					actv, 
+//					"Data deleted => file id = " + String.valueOf(ti.getFileId()), 
+					"Data deleted => file name = " + ti.getFile_name(),
+					2000);
+
+			ThumbnailActivity.tiList.remove(position);
+			
+			// Log
+			Log.d("DialogOnItemClickListener.java"
+					+ "["
+					+ Thread.currentThread().getStackTrace()[2]
+							.getLineNumber() + "]", "Data removed from tiList => " + ti.getFile_name());
+			
+			/*----------------------------
+			 * 4-3. Notify adapter
+				----------------------------*/
+			ThumbnailActivity.aAdapter.notifyDataSetChanged();
+			
+		}//if (result == true)
+		
+//		/*----------------------------
+//		 * 5. Notify adapter
+//			----------------------------*/
+//		ThumbnailActivity.aAdapter.notifyDataSetChanged();
+//		
+//		/*----------------------------
+//		 * 5. Dismiss dialog
+//			----------------------------*/
+//		dlg.dismiss();
+
+	}//public static void deleteItem_fileId(Activity actv, ThumbnailItem ti, int position)
+	
 }//public class Methods
