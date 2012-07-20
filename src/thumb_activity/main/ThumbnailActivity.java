@@ -174,6 +174,7 @@ public class ThumbnailActivity extends ListActivity {
 		 * 1. "Back" button
 		 * 2. LongClick
 		 * 3. "Bottom"
+		 * 4. "Top"
 			----------------------------*/
 		//
 		ImageButton ib_back = (ImageButton) findViewById(R.id.thumb_activity_ib_back);
@@ -210,7 +211,7 @@ public class ThumbnailActivity extends ListActivity {
 		bt_bottom.setTag(Methods.ButtonTags.thumb_activity_ib_bottom);
 		
 		/*----------------------------
-		 * 2. Listeners
+		 * 3.2. Listeners
 			----------------------------*/
 		bt_bottom.setOnTouchListener(new ButtonOnTouchListener(this));
 		bt_bottom.setOnClickListener(new ButtonOnClickListener(this, lv));
@@ -226,6 +227,27 @@ public class ThumbnailActivity extends ListActivity {
 //				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 ////				+ "]", "lv.getChildCount() => " + lv.getChildCount());
 //				+ "]", "lv.getChildCount() => " + lv.getChildCount());
+		
+		/*----------------------------
+		 * 4. "Top"
+		 * 		1. Set up
+		 * 		2. Listeners
+			----------------------------*/
+		ImageButton bt_top = (ImageButton) findViewById(R.id.thumb_activity_ib_toTop);
+		
+		bt_top.setEnabled(true);
+//		bt_bottom.setImageResource(R.drawable.ifm8_thumb_bottom_50x50);
+		bt_top.setImageResource(R.drawable.ifm8_thumb_top_50x50);
+		
+		// Tag
+//		bt_bottom.setTag(Methods.ButtonTags.thumb_activity_ib_bottom);
+		bt_top.setTag(Methods.ButtonTags.thumb_activity_ib_top);
+		
+		/*----------------------------
+		 * 4.2. Listeners
+			----------------------------*/
+		bt_top.setOnTouchListener(new ButtonOnTouchListener(this));
+		bt_top.setOnClickListener(new ButtonOnClickListener(this, lv));
 		
 		
 	}//private void set_listeners()

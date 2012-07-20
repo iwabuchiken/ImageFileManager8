@@ -56,6 +56,7 @@ public class ButtonOnClickListener implements OnClickListener {
 		this.actv = actv;
 		this.lv = lv;
 		
+		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
 	}
 
 	@Override
@@ -124,6 +125,8 @@ public class ButtonOnClickListener implements OnClickListener {
 		
 		case thumb_activity_ib_bottom: //----------------------------------------------
 			
+			vib.vibrate(Methods.vibLength_click);
+			
 			int numOfGroups = ThumbnailActivity.tiList.size() / lv.getChildCount();
 			
 			int indexOfLastChild = lv.getChildCount() * numOfGroups;
@@ -159,6 +162,14 @@ public class ButtonOnClickListener implements OnClickListener {
 			
 			
 			break;// case thumb_activity_ib_bottom 
+			
+		case thumb_activity_ib_top://--------------------------------------------
+			
+			vib.vibrate(Methods.vibLength_click);
+			
+			lv.setSelection(0);
+			
+			break;// thumb_activity_ib_top
 			
 		default:
 			break;

@@ -91,7 +91,7 @@ public class Methods {
 		db_manager_activity_create_table, db_manager_activity_drop_table,
 		
 		// thumb_activity.xml
-		thumb_activity_ib_back, thumb_activity_ib_bottom,
+		thumb_activity_ib_back, thumb_activity_ib_bottom, thumb_activity_ib_top,
 		
 		// image_activity.xml
 		image_activity_back,

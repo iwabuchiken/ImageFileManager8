@@ -37,7 +37,7 @@ public class ButtonOnTouchListener implements OnTouchListener {
 		case MotionEvent.ACTION_DOWN:
 			switch (tag_name) {
 				//
-			case ib_up:
+			case ib_up://----------------------------------------------------
 				//
 //				(ImageButton) v).setImageResource(R.drawable.ifm8_up_disenabled);
 //				ImageButton ib = new ImageButton(actv);
@@ -47,7 +47,7 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				
 				break;
 	
-			case thumb_activity_ib_back:
+			case thumb_activity_ib_back://----------------------------------------------------
 				
 //				vib.vibrate(Methods.vibLength_click);
 				
@@ -58,14 +58,14 @@ public class ButtonOnTouchListener implements OnTouchListener {
 			
 				
 			// image_activity.xml
-			case image_activity_back:
+			case image_activity_back://----------------------------------------------------
 				
 				ib = (ImageButton) v;
 				ib.setImageResource(R.drawable.ifm8_image_actv_back_70x70_touched);
 				
 				break;
 				
-			case db_manager_activity_create_table:
+			case db_manager_activity_create_table://----------------------------------------------------
 			case db_manager_activity_drop_table:
 			
 				v.setBackgroundColor(Color.GRAY);
@@ -79,7 +79,7 @@ public class ButtonOnTouchListener implements OnTouchListener {
 		case MotionEvent.ACTION_UP:
 			switch (tag_name) {
 				//
-			case ib_up:
+			case ib_up://----------------------------------------------------
 				//
 				
 				ImageButton ib = (ImageButton) v;
@@ -87,7 +87,7 @@ public class ButtonOnTouchListener implements OnTouchListener {
 
 				break;
 
-			case thumb_activity_ib_back:
+			case thumb_activity_ib_back://----------------------------------------------------
 				
 				ib = (ImageButton) v;
 				ib.setImageResource(R.drawable.ifm8_thumb_back_50x50);
@@ -95,14 +95,14 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				break;
 
 			// image_activity.xml
-			case image_activity_back:
+			case image_activity_back://----------------------------------------------------
 				
 				ib = (ImageButton) v;
 				ib.setImageResource(R.drawable.ifm8_image_actv_back_70x70);
 				
 				break;
 				
-			case db_manager_activity_create_table:
+			case db_manager_activity_create_table://----------------------------------------------------
 			case db_manager_activity_drop_table:
 
 				v.setBackgroundColor(Color.WHITE);
