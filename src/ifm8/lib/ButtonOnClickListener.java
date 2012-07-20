@@ -100,26 +100,64 @@ public class ButtonOnClickListener implements OnClickListener {
 			break;
 
 		case tilist_cb:
+			/*----------------------------
+			 * Steps
+			 * 1. If already checked, unlist from ThumbnailActivity.checkedPositions
+			 * 2. If not yet, enlist into it
+			 * 3. Then, notify to adapter
+				----------------------------*/
+			/*----------------------------
+			 * 1. If already checked, unlist from ThumbnailActivity.checkedPositions
+				----------------------------*/
+			if (ThumbnailActivity.checkedPositions.contains((int)position)) {
+				// Log
+				Log.d("ButtonOnClickListener.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "position exists => " + position);
+				
+//				ThumbnailActivity.checkedPositions.add(position);
+//				ThumbnailActivity.checkedPositions.remove(position);
+				ThumbnailActivity.checkedPositions.remove((Integer) position);
+				
+				// Log
+				Log.d("ButtonOnClickListener.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "position removed => " + position);
+				
+				
+//				// Log
+//				Log.d("ThumbnailActivity.java" + "["
+//						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//						+ "]", "New position => " + position +
+//						" / " + "(length=" + ThumbnailActivity.checkedPositions.size() + ")");
+//	
+//				Log.d("ThumbnailActivity.java" + "["
+//						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//						+ "]", 
+//						"tiList(position=" + position + ") => " + 
+//						ThumbnailActivity.tiList.get(position).getFile_name());
+	
+			} else {//if (ThumbnailActivity.checkedPositions.contains((int)position))
+				/*----------------------------
+				 * 2. If not yet, enlist into it
+					----------------------------*/
+				
+				ThumbnailActivity.checkedPositions.add(position);
+				
+				// Log
+				Log.d("ButtonOnClickListener.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "new position added => " + String.valueOf(position));
+				
+				
+			}//if (ThumbnailActivity.checkedPositions.contains((int)position))
 			
-			// Log
-			Log.d("ButtonOnClickListener.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "position => " + position);
-			
-			ThumbnailActivity.checkedPositions.add(position);
-			
-			// Log
-			Log.d("ThumbnailActivity.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "New position => " + position +
-					" / " + "(length=" + ThumbnailActivity.checkedPositions.size() + ")");
-
-			Log.d("ThumbnailActivity.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", 
-					"tiList(position=" + position + ") => " + 
-					ThumbnailActivity.tiList.get(position).getFile_name());
-
+			/*----------------------------
+			 * 3. Then, notify to adapter
+				----------------------------*/
+			ThumbnailActivity.aAdapter.notifyDataSetChanged();
 			
 			break;
 		
