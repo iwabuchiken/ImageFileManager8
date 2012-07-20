@@ -481,6 +481,9 @@ public class ThumbnailActivity extends ListActivity {
 			
 			break;// case R.id.thumb_actv_menu_move_mode
 			
+		/*----------------------------
+		 * 2. R.id.thumb_actv_menu_move_files
+			----------------------------*/
 		case R.id.thumb_actv_menu_move_files:	//------------------------------------------
 			
 			if (move_mode == false) {

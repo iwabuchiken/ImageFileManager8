@@ -164,6 +164,12 @@ public class CustomOnItemLongClickListener implements OnItemLongClickListener {
 				 * 5.3. dir_list_move_files
 					----------------------------*/
 				case dir_list_move_files:
+					/*----------------------------
+					 * Steps
+					 * 1. Get folder name from dialog view
+					 * 2. Create a new file object, using => 
+						----------------------------*/
+					
 					folderName = (String) parent.getItemAtPosition(position);
 					
 //					// debug
@@ -172,7 +178,15 @@ public class CustomOnItemLongClickListener implements OnItemLongClickListener {
 //					File f = new File(ImageFileManager8Activity.currentDirPath, folderName);
 //					File f = new File(ImageFileManager8Activity.currentDirPath, folderName + "/abcde");
 					
-					File f = new File(ImageFileManager8Activity.currentDirPath, folderName);
+//					File f = new File(ImageFileManager8Activity.currentDirPath, folderName);
+					File f = new File(ImageFileManager8Activity.baseDirPath, folderName);
+					
+					// Log
+					Log.d("CustomOnItemLongClickListener.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "f.getAbsolutePath() => " + f.getAbsolutePath());
+					
 					
 					if (!f.exists()) {
 						

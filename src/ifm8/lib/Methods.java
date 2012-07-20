@@ -3177,6 +3177,12 @@ public class Methods {
 			
 			ThumbnailActivity.tiList.remove(position);
 			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Removed from tiList at position=" + position);
+			
+			
 		}//for (Integer position : ThumbnailActivity.checkedPositions)
 		
 		/*----------------------------
@@ -3207,6 +3213,10 @@ public class Methods {
 		
 		ThumbnailActivity.aAdapter.notifyDataSetChanged();
 		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "aAdapter => Notified");
 		
 		
 		/*----------------------------
