@@ -108,7 +108,11 @@ public class Methods {
 		
 		// ThumbnailActivity.java
 		dir_list_thumb_actv,
-	}
+		
+		// Methods.java
+		dir_list_move_files,
+		
+	}//public static enum ItemTags
 
 	public static enum MoveMode {
 		// TIListAdapter.java
@@ -1049,6 +1053,50 @@ public class Methods {
 		return sb.toString();
 		
 	}//private static String convertPathIntoTableName(String absolutePath)
+
+	public static String convertAbsolutePathIntoPath(Activity actv, String absolutePath) {
+		
+		/*----------------------------
+		 * Steps
+		 *		=> "/mnt/.../IFM8/Plants/Leaves" ===> "Plants/Leaves"
+		 * 1. 
+			----------------------------*/
+		String[] a_path = absolutePath.split(new File("aaa").separator);
+		String[] a_path_new = null;
+		
+		int index = findIndexFromArray(a_path, ImageFileManager8Activity.baseDirName);
+		
+		if (index != -1) {
+			
+			if (index + 1 <= a_path.length) {
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "(index + 1 <= a_path.length) => true");
+				
+				
+				a_path_new = Arrays.copyOfRange(a_path, index + 1, a_path.length);
+				
+			} else {//if (index + 1 <= a_path.length)		//=> index == a_path.length ===> a_path = {"xxx", ... , "IFM8"}
+				
+			}//if (index + 1 <= a_path.length)
+			
+//			a_path_new = Arrays.copyOfRange(a_path, index, a_path.length);
+			
+		} else {//if (index != -1)
+			
+			a_path_new = new String[] {"DEFAULT", "PATH"};
+			
+		}//if (index != -1)
+		
+		
+//		return StringUtils.join(a_path, ImageFileManager8Activity.tableNameSeparator);
+//		return StringUtils.join(a_path_new, ImageFileManager8Activity.tableNameSeparator);
+		return StringUtils.join(a_path_new, new File("aaa").separator);
+		
+	}//convertAbsolutePathIntoPath(Activity actv, String absolutePath)
 
 	/*----------------------------
 	 * deleteDirectory(File target)()
@@ -2788,9 +2836,22 @@ public class Methods {
 		
 		/*----------------------------
 		 * 4. Set listener to the view
+		 * 		1. onClick
+		 * 		2. onLongClick
 			----------------------------*/
 		
 		lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg, DialogTags.dlg_move_files));
+		
+		/*----------------------------
+		 * 4.2. onLongClick
+			----------------------------*/
+		lv.setTag(ItemTags.dir_list_move_files);
+		
+		lv.setOnItemLongClickListener(
+						new CustomOnItemLongClickListener(
+												actv, 
+												dlg,
+												dirListAdapter, fileNameList));
 		
 		/*----------------------------
 		 * 9. Show dialog
@@ -3460,4 +3521,39 @@ public class Methods {
 
 	}//public static void deleteItem_fileId(Activity actv, ThumbnailItem ti, int position)
 
+	/****************************************
+	 * findIndexFromArray(String[] ary, String target)
+	 * 
+	 * <Caller> 
+	 * 1. convertAbsolutePathIntoPath()
+	 * 
+	 * <Desc> 
+	 * 1. 
+	 * 
+	 * <Params> 1.
+	 * 
+	 * <Return> 
+	 * 		-1		=> Couldn't find
+	 * 		
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static int findIndexFromArray(String[] ary, String target) {
+		
+		int index = -1;
+		
+		for (int i = 0; i < ary.length; i++) {
+			
+			if (ary[i].equals(target)) {
+				
+				return i;
+				
+			}//if (ary[i].equals(tar))
+			
+		}//for (int i = 0; i < ary.length; i++)
+		
+		return index;
+		
+	}//public static int findIndexFromArray(String[] ary, String target)
+	
 }//public class Methods
