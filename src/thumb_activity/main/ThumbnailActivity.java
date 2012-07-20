@@ -26,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -111,10 +112,12 @@ public class ThumbnailActivity extends ListActivity {
 		 * 		2.3. Prepare adapter
 		 * 		2.4. Set adapter to the list
 			----------------------------*/
-		/*----------------------------
-		 * 1. Set listeners
-			----------------------------*/
-		set_listeners();
+		
+		//==> Move to after 2. 
+//		/*----------------------------
+//		 * 1. Set listeners
+//			----------------------------*/
+//		set_listeners();
 		
 		/*----------------------------
 		 * 2.1. Get table name
@@ -157,7 +160,11 @@ public class ThumbnailActivity extends ListActivity {
 			
 		}//if (aAdapter != null)
 		
-			
+		/*----------------------------
+		 * 1. Set listeners
+			----------------------------*/
+		set_listeners();
+
 		
 	}//private void initial_setup()
 
@@ -166,6 +173,7 @@ public class ThumbnailActivity extends ListActivity {
 		 * Steps
 		 * 1. "Back" button
 		 * 2. LongClick
+		 * 3. "Bottom"
 			----------------------------*/
 		//
 		ImageButton ib_back = (ImageButton) findViewById(R.id.thumb_activity_ib_back);
@@ -187,6 +195,38 @@ public class ThumbnailActivity extends ListActivity {
 		lv.setTag(Methods.ItemTags.dir_list_thumb_actv);
 		
 		lv.setOnItemLongClickListener(new CustomOnItemLongClickListener(this));
+		
+		/*----------------------------
+		 * 3. "Bottom"
+		 * 		1. Set up
+		 * 		2. Listeners
+			----------------------------*/
+		ImageButton bt_bottom = (ImageButton) findViewById(R.id.thumb_activity_ib_toBottom);
+		
+		bt_bottom.setEnabled(true);
+		bt_bottom.setImageResource(R.drawable.ifm8_thumb_bottom_50x50);
+		
+		// Tag
+		bt_bottom.setTag(Methods.ButtonTags.thumb_activity_ib_bottom);
+		
+		/*----------------------------
+		 * 2. Listeners
+			----------------------------*/
+		bt_bottom.setOnTouchListener(new ButtonOnTouchListener(this));
+		bt_bottom.setOnClickListener(new ButtonOnClickListener(this, lv));
+		
+//		int firstVisiblePosition = lv.getFirstVisiblePosition();
+//				
+//		// Log
+//		Log.d("ThumbnailActivity.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "firstVisiblePosition => " + firstVisiblePosition);
+//
+//		Log.d("ThumbnailActivity.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+////				+ "]", "lv.getChildCount() => " + lv.getChildCount());
+//				+ "]", "lv.getChildCount() => " + lv.getChildCount());
+		
 		
 	}//private void set_listeners()
 

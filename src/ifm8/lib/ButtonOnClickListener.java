@@ -2,6 +2,7 @@ package ifm8.lib;
 import java.io.File;
 
 import thumb_activity.main.ThumbnailActivity;
+import thumb_activity.main.ThumbnailItem;
 
 import ifm8.main.ImageFileManager8Activity;
 import android.app.Activity;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class ButtonOnClickListener implements OnClickListener {
@@ -25,6 +27,9 @@ public class ButtonOnClickListener implements OnClickListener {
 	
 	//
 	int position;
+	
+	//
+	ListView lv;
 	
 	public ButtonOnClickListener(Activity actv) {
 		//
@@ -45,6 +50,13 @@ public class ButtonOnClickListener implements OnClickListener {
 		
 		
 	}//public ButtonOnClickListener(Activity actv, int position)
+
+	public ButtonOnClickListener(Activity actv, ListView lv) {
+		// 
+		this.actv = actv;
+		this.lv = lv;
+		
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -110,6 +122,44 @@ public class ButtonOnClickListener implements OnClickListener {
 			
 			break;
 		
+		case thumb_activity_ib_bottom: //----------------------------------------------
+			
+			int numOfGroups = ThumbnailActivity.tiList.size() / lv.getChildCount();
+			
+			int indexOfLastChild = lv.getChildCount() * numOfGroups;
+			
+//			// Log
+//			Log.d("ButtonOnClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "numOfGroups => " + numOfGroups);
+//			Log.d("ButtonOnClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "indexOfLastChild => " + indexOfLastChild);
+//			Log.d("ButtonOnClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "ThumbnailItem => " + ((ThumbnailItem) lv.getItemAtPosition(indexOfLastChild)).getFile_name());
+			
+			
+			lv.setSelection(indexOfLastChild);
+			
+//			// Log
+//			Log.d("ButtonOnClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "lv.getFirstVisiblePosition() => " + lv.getFirstVisiblePosition());
+//			Log.d("ButtonOnClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "lv.getChildCount() => " + lv.getChildCount());
+			
+//			lv.setSelection(2);
+//			
+//			// Log
+//			Log.d("ButtonOnClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "lv.getChildCount() => " + lv.getChildCount());
+			
+			
+			break;// case thumb_activity_ib_bottom 
+			
 		default:
 			break;
 		}//switch (tag_name)

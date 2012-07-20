@@ -20,6 +20,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
@@ -97,6 +98,20 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
 		 * 2. ON
 		 * 3. Return view
 			----------------------------*/
+    	
+//    	// Log
+//		Log.d("TIListAdapter.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+////				+ "]", "parent.getClass().getName() => " + parent.getClass().getName());
+//				+ "]", "((ListView)parent).getFirstVisiblePosition() => " + ((ListView)parent).getFirstVisiblePosition());
+//
+//		Log.d("TIListAdapter.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+////				+ "]", "parent.getClass().getName() => " + parent.getClass().getName());
+//				+ "]", 
+//				"((ListView)parent).getChildCount() => " + ((ListView)parent).getChildCount()
+//				);
+
 		
     	// View to return
     	View v;
