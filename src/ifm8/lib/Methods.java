@@ -600,6 +600,8 @@ public class Methods {
 	/*----------------------------
 	 * makeComparator(Comparator comparator)
 	 * 
+	 * => Used 
+	 * 
 	 * REF=> C:\WORKS\WORKSPACES_ANDROID\Sample\09_Matsuoka\プロジェクト
 	 * 					\Step10\10_LiveWallpaper\src\sample\step10\livewallpaper\FilePicker.java
 		----------------------------*/
@@ -649,6 +651,33 @@ public class Methods {
 
 	}//public static void sortFileList(File[] files)
 
+	/****************************************
+	 *ABANDON => Arrays.sort ===> Used for arrays, not list object(?)	20120720_165913
+	 ****************************************/
+//	public static void sortTIList(List<ThumbnailItem> tiList) {
+//		// REF=> http://android-coding.blogspot.jp/2011/10/sort-file-list-in-order-by-implementing.html
+////		Comparator<? super ThumbnailItem> tiListComparator = new Comparator<ThumbnailItem>(){
+//		Comparator<ThumbnailItem> tiListComparator = new Comparator<ThumbnailItem>(){
+//			
+//			public int compare(ThumbnailItem ti1, ThumbnailItem ti2) {
+//				
+//				// Order => files, folders
+////				return pad2-pad1+file1.getName().compareToIgnoreCase(file2.getName());
+//				return (int) (ti1.getDate_added() - ti2.getDate_added());
+//				
+////				return String.valueOf(file1.getName()).compareTo(file2.getName());
+//			} 
+//		 };//Comparator<? super ThumbnailItem> tiListComparator = new Comparator<ThumbnailItem>()
+//		 
+//		 //
+//		Arrays.sort(tiList, tiListComparator);
+//			/* 型 Arrays のメソッド sort(T[], Comparator<? super T>) は引数 (List<ThumbnailItem>, Comparator<ThumbnailItem>) に適用できません */
+//		
+//	}//public static void sortTIList(ThumbnailItem[] files)
+
+//	public static void sortTIli
+	
+	
 	public static void dlg_removeFolder(Activity actv, String folderName) {
 		/*----------------------------
 		 * Steps

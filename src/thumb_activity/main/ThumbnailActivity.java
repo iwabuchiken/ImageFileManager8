@@ -9,6 +9,8 @@ import ifm8.main.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -125,8 +127,25 @@ public class ThumbnailActivity extends ListActivity {
 			----------------------------*/
 		String tableName = Methods.convertPathIntoTableName(this);
 		
+		
+		/*----------------------------
+		 * 2.2. Get ThumbnailItem list
+			----------------------------*/
 //		List<ThumbnailItem> tiList = Methods.getAllData(this, tableName);
 		tiList = Methods.getAllData(this, tableName);
+		
+//		Collections.sort(tiList);
+		
+		Collections.sort(tiList, new Comparator<ThumbnailItem>(){
+
+			@Override
+			public int compare(ThumbnailItem lhs, ThumbnailItem rhs) {
+				// TODO 自動生成されたメソッド・スタブ
+				
+				return (int) (lhs.getDate_added() - rhs.getDate_added());
+			}
+			
+		});
 		
 		// Log
 		Log.d("ThumbnailActivity.java" + "["
