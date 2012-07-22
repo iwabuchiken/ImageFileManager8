@@ -218,6 +218,14 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			Methods.dlg_memo_patterns(actv, dlg);
 			
 			break;
+
+		case dlg_register_patterns_register:// ----------------------------------------------------
+			
+			vib.vibrate(ImageFileManager8Activity.vibLength_click);
+			
+			Methods.dlg_register_patterns_isInputEmpty(actv, dlg);
+			
+			break;
 			
 		default: // ----------------------------------------------------
 			break;

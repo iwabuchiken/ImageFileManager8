@@ -1,23 +1,25 @@
 package ifm8.lib;
 
-import thumb_activity.main.ThumbnailActivity;
 import thumb_activity.main.ThumbnailItem;
-import ifm8.main.ImageFileManager8Activity;
+import ifm8.lib.Methods.DialogTags;
 import ifm8.main.R;
 import android.app.Activity;
 import android.app.Dialog;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Context;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class DialogOnItemClickListener implements OnItemClickListener {
 
 	//
 	Activity actv;
 	Dialog dlg;
+	Dialog dlg2;
 	
 	//
 	Vibrator vib;
@@ -32,6 +34,9 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		// 
 		this.actv = actv;
 		this.dlg = dlg;
+		
+		vib = (Vibrator) actv.getSystemService(Context.VIBRATOR_SERVICE);
+		
 	}//public DialogOnItemClickListener(Activity actv, Dialog dlg)
 
 	public DialogOnItemClickListener(Activity actv, Dialog dlg, Methods.DialogTags dlgTag) {
@@ -41,7 +46,7 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		this.dlgTag = dlgTag;
 		
 		//
-		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
+		vib = (Vibrator) actv.getSystemService(Context.VIBRATOR_SERVICE);
 		
 	}//public DialogOnItemClickListener(Activity actv, Dialog dlg)
 
@@ -54,9 +59,25 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		this.ti = ti;
 		
 		//
-		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
+		vib = (Vibrator) actv.getSystemService(Context.VIBRATOR_SERVICE);
 		
 	}//public DialogOnItemClickListener
+
+	public DialogOnItemClickListener(Activity actv, 
+												Dialog dlg, Dialog dlg2,
+												Methods.DialogTags dlgTag) {
+		// TODO 自動生成されたコンストラクター・スタブ
+		this.actv = actv;
+		this.dlg = dlg;
+		this.dlgTag = dlgTag;
+		this.dlg2 = dlg2;
+		
+		//
+		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
+
+		
+		
+	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -68,6 +89,46 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		 * 0. Vibrate
 			----------------------------*/
 		vib.vibrate(40);
+		
+		if ((DialogTags) parent.getTag() != null) {
+		
+			// Log
+			Log.d("DialogOnItemClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "parent.getTag() => " + parent.getTag());
+			
+			switch ((DialogTags)parent.getTag()) {
+			case dlg_add_memos_gv://----------------------------------------------
+				
+				String word = (String) parent.getItemAtPosition(position);
+				
+				EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
+				
+				String content = et.getText().toString();
+				
+				content += word + " ";
+				
+				et.setText(content);
+				
+				et.setSelection(et.getText().toString().length());
+				
+//				// debug
+//				Toast.makeText(actv, word, 2000).show();
+				
+				break;
+				
+			}//switch (parent.getTag())
+			
+			
+		} else {//if ((DialogTags) parent.getTag() != null)
+			
+			// Log
+			Log.d("DialogOnItemClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "parent.getTag() => null");
+			
+		}//if ((DialogTags) parent.getTag() != null)
+		
 		
 //		String tableName = (String) parent.getItemAtPosition(position);
 //		
@@ -104,7 +165,18 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 			// Log
 			Log.d("DialogOnItemClickListener.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "dlgTag != null");
+					+ "]", "dlgTag == null");
+			
+			if ((DialogTags) v.getTag() != null) {
+				
+				// Log
+				Log.d("DialogOnItemClickListener.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "v.getTag().toString() => " + v.getTag().toString());
+				
+				
+			}//if (v.getTag())
 			
 		} else if (dlgTag != null) {//if (dlgTag != null)
 			
@@ -218,6 +290,44 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 					
 				}//if (opName.equals(actv.getString(R.string.dlg_item_menu_item_delete)))
 				
+				break;
+				
+			case dlg_memo_patterns://------------------------------------------------
+				
+				String word = (String) parent.getItemAtPosition(position);
+//				Cursor c = (Cursor) parent.getItemAtPosition(position);
+				
+				dlg2.dismiss();
+				
+//				// Log
+//				Log.d("DialogOnItemClickListener.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "c.getCount() => " + c.getCount());
+//				
+//				Log.d("DialogOnItemClickListener.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "c.getColumnCount() => " + c.getColumnCount());
+//
+//				Log.d("DialogOnItemClickListener.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "id => " + id);
+
+				EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
+				
+				String text = et.getText().toString();
+				
+				text += word;
+				
+				et.setText(text);
+				
+				et.setSelection(et.getText().toString().length());
+				
+				break;
+
+			default://------------------------------------------------------------------
 				break;
 			}//switch (dlgTag)
 			

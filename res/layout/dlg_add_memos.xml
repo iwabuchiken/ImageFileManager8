@@ -87,4 +87,18 @@
 
     </LinearLayout>
 
+    <GridView
+        android:id="@+id/dlg_add_memos_gv"
+        
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        
+        android:layout_gravity="center_horizontal"
+        
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="30dp"
+        
+        android:numColumns="3" >
+    </GridView>
+
 </LinearLayout>

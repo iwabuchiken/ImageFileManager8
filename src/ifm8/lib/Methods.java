@@ -34,6 +34,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -71,6 +72,7 @@ public class Methods {
 		
 		// dlg_add_memos.xml
 		dlg_add_memos_bt_add, dlg_add_memos_bt_cancel, dlg_add_memos_bt_patterns,
+		dlg_add_memos_gv,
 
 		// dlg_move_files.xml
 		dlg_move_files_move, dlg_move_files,
@@ -85,6 +87,10 @@ public class Methods {
 		dlg_create_table_bt_create,
 
 		// dlg_memo_patterns.xml
+		dlg_memo_patterns,
+		
+		// dlg_register_patterns.xml
+		dlg_register_patterns_register,
 		
 	}//public static enum DialogTags
 	
@@ -1930,8 +1936,10 @@ public class Methods {
 		return counter;
 		
 	}//private static int insertDataIntoDB(Cursor c)
+
 	/*****************************************
-	 *		insertDataIntoDB()
+	
+ *		insertDataIntoDB()
 	 * 
 	 * <Caller> 
 	 * 1. public static boolean refreshMainDB(ListActivity actv)
@@ -2034,6 +2042,62 @@ public class Methods {
 		return counter;
 		
 	}//private static int insertDataIntoDB(Cursor c)
+
+	private static boolean insertDataIntoDB(
+								Activity actv, String tableName, String[] types, String[] values) {
+		/*----------------------------
+		* Steps
+		* 1. Set up db
+		* 2. Insert data
+		* 3. Show message
+		* 4. Close db
+		----------------------------*/
+		/*----------------------------
+		 * 1. Set up db
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+		/*----------------------------
+		 * 2. Insert data
+			----------------------------*/
+		boolean result = dbu.insertData(wdb, tableName, types, values);
+		
+		/*----------------------------
+		 * 3. Show message
+			----------------------------*/
+		if (result == true) {
+			
+			// debug
+			Toast.makeText(actv, "Data stored", 2000).show();
+			
+			/*----------------------------
+			 * 4. Close db
+				----------------------------*/
+			wdb.close();
+			
+			return true;
+			
+		} else {//if (result == true)
+
+			// debug
+			Toast.makeText(actv, "Store data => Failed", 200).show();
+			
+			/*----------------------------
+			 * 4. Close db
+				----------------------------*/
+			wdb.close();
+			
+			return false;
+			
+		}//if (result == true)
+		
+		/*----------------------------
+		 * 4. Close db
+			----------------------------*/
+		
+	}//private static int insertDataIntoDB()
 
 	public static long getMillSeconds(int year, int month, int date) {
 		// Calendar
@@ -2630,6 +2694,11 @@ public class Methods {
 		 * 1-2. Set text to edit text
 		 * 2. Add listeners => OnTouch
 		 * 3. Add listeners => OnClick
+		 * 
+		 * 4. GridView
+		 * 
+		 * 8. Close db
+		 * 9. Show dialog
 			----------------------------*/
 		
 		// 
@@ -2700,7 +2769,85 @@ public class Methods {
 		
 		btn_patterns.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
 		
-		//
+		/*----------------------------
+		 * 4. GridView
+		 * 	1. Set up db
+		 * 	2. Get cursor
+		 * 	3. Get list
+		 * 	4. Adapter
+		 * 	5. Set adapter to view
+		 * 6. Set listener
+			----------------------------*/
+		/*----------------------------
+		 * 1. Set up db
+			----------------------------*/
+		GridView gv = (GridView) dlg.findViewById(R.id.dlg_add_memos_gv);
+		
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		/*----------------------------
+		 * 2. Get cursor
+			----------------------------*/
+		String sql = "SELECT * FROM memo_patterns ORDER BY word ASC";
+		
+		Cursor c = rdb.rawQuery(sql, null);
+		
+		actv.startManagingCursor(c);
+		
+		c.moveToFirst();
+		
+		/*----------------------------
+		 * 3. Get list
+			----------------------------*/
+		List<String> patternList = new ArrayList<String>();
+		
+		if (c.getCount() > 0) {
+			
+			for (int i = 0; i < c.getCount(); i++) {
+				
+				patternList.add(c.getString(1));
+				
+				c.moveToNext();
+				
+			}//for (int i = 0; i < patternList.size(); i++)
+			
+		}//if (c.getCount() > 0)
+		
+		
+		Collections.sort(patternList);
+
+		/*----------------------------
+		 * 4. Adapter
+			----------------------------*/
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+										actv,
+										R.layout.add_memo_grid_view,
+										patternList
+										);
+		
+		/*----------------------------
+		 * 5. Set adapter to view
+			----------------------------*/
+		gv.setAdapter(adapter);
+		
+		/*----------------------------
+		 * 6. Set listener
+			----------------------------*/
+		gv.setTag(DialogTags.dlg_add_memos_gv);
+		
+		gv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg));
+		
+		
+		/*----------------------------
+		 * 8. Close db
+			----------------------------*/
+		rdb.close();
+		
+		/*----------------------------
+		 * 9. Show dialog
+			----------------------------*/
 		dlg.show();
 		
 	}//public static void dlg_addMemo(Activity actv, long file_id, String tableName)
@@ -3726,6 +3873,9 @@ public class Methods {
 		 * 4. Prepare adapter
 		 * 5. Set to list view
 		 * 6. Close db
+		 * 
+		 * 7. Set listener => list view
+		 * 
 		 * 9. Show dialog
 			----------------------------*/
 		Dialog dlg2 = dlg_template_cancel(actv, R.layout.dlg_memo_patterns, R.string.dlg_memo_patterns_title,
@@ -3755,15 +3905,64 @@ public class Methods {
 		
 		Cursor c = rdb.rawQuery(sql, null);
 		
-		String [] from={"word"};
-		int[] to={android.R.id.text1};
+		actv.startManagingCursor(c);
 		
-		SimpleCursorAdapter adapter=new SimpleCursorAdapter(
-				actv, android.R.layout.simple_list_item_1,
-				c, from, to);
+		c.moveToFirst();
+		
+		List<String> patternList = new ArrayList<String>();
+		
+		if (c.getCount() > 0) {
+			
+			for (int i = 0; i < c.getCount(); i++) {
+				
+				patternList.add(c.getString(1));
+				
+				c.moveToNext();
+				
+			}//for (int i = 0; i < patternList.size(); i++)
+			
+		}//if (c.getCount() > 0)
 		
 		
+		Collections.sort(patternList);
+		
+//		String [] from={"word"};
+//		int[] to={android.R.id.text1};
+		
+		/*----------------------------
+		 * 4. Prepare adapter
+			----------------------------*/
+//		SimpleCursorAdapter adapter=new SimpleCursorAdapter(
+//				actv, android.R.layout.simple_list_item_1,
+//				c, from, to);
+		
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(
+									actv, 
+									android.R.layout.simple_list_item_1,
+									patternList);
+		
+		/*----------------------------
+		 * 5. Set to list view
+			----------------------------*/
+		ListView lv = (ListView) dlg2.findViewById(R.id.dlg_memo_patterns_lv_list);
+		
+		lv.setAdapter(adapter);
+		
+		/*----------------------------
+		 * 6. Close db
+			----------------------------*/
 		rdb.close();
+		
+		/*----------------------------
+		 * 7. Set listener => list view
+			----------------------------*/
+		lv.setOnItemClickListener(
+						new DialogOnItemClickListener(
+								actv, 
+								dlg, dlg2,
+								Methods.DialogTags.dlg_memo_patterns));
+		
+		
 		
 		/*----------------------------
 		 * 9. Show dialog
@@ -3864,5 +4063,78 @@ public class Methods {
 		
 		
 	}//public static void dlg_createTable_isInputEmpty(Activity actv, Dialog dlg)
+
+	public static void dlg_register_patterns_isInputEmpty(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get views
+		 * 2. Prepare data
+		 * 3. Register data
+		 * 4. Dismiss dialog
+			----------------------------*/
+		
+		// Get views
+		EditText et_word = (EditText) dlg.findViewById(R.id.dlg_register_patterns_et_word);
+		EditText et_table_name = 
+					(EditText) dlg.findViewById(R.id.dlg_register_patterns_et_table_name);
+		
+		if (et_word.getText().length() == 0) {
+			// debug
+			Toast.makeText(actv, "Œê‹å‚ð“ü‚ê‚Ä‚­‚¾‚³‚¢", 3000).show();
+			
+			return;
+		}// else {//if (et_column_name.getText().length() == 0)
+//			// debug
+//			Toast.makeText(actv, "Input complete", 3000).show();
+//			
+////			dlg.dismiss();
+//		}//if (et_column_name.getText().length() == 0)
+		
+		/*----------------------------
+		 * 2. Prepare data
+			----------------------------*/
+		//
+		String word = et_word.getText().toString();
+		String table_name = et_table_name.getText().toString();
+		
+		/*----------------------------
+		 * 3. Register data
+			----------------------------*/
+		boolean result = insertDataIntoDB(actv, DBUtils.table_name_memo_patterns, 
+								DBUtils.cols_memo_patterns, new String[]{word, table_name});
+		
+		/*----------------------------
+		 * 4. Dismiss dialog
+			----------------------------*/
+		if (result == true) {
+		
+			dlg.dismiss();
+			
+		} else {//if (result == true)
+
+			
+			
+		}//if (result == true)
+		
+		
+	}//public static void dlg_register_patterns_isInputEmpty(Activity actv, Dialog dlg)
+
+	public static void dlg_register_patterns(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Dialog
+		 * 9. Show
+			----------------------------*/
+		Dialog dlg = dlg_template_okCancel(
+					actv, R.layout.dlg_register_patterns, R.string.dlg_register_patterns_title,
+				R.id.dlg_register_patterns_btn_create, R.id.dlg_register_patterns_btn_cancel, 
+				DialogTags.dlg_register_patterns_register, DialogTags.dlg_generic_dismiss);
+		
+		
+		/*----------------------------
+		 * 9. Show
+			----------------------------*/
+		dlg.show();
+	}//public static void dlg_register_patterns(Activity actv)
 
 }//public class Methods

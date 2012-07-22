@@ -12,7 +12,7 @@
         android:id="@+id/dlg_memo_patterns_lv_list"
         
         android:layout_width="250dp"
-        android:layout_height="wrap_content" 
+        android:layout_height="300dp" 
         
         android:layout_weight="1"
         

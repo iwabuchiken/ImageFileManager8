@@ -89,7 +89,7 @@ public class ButtonOnClickListener implements OnClickListener {
 			
 		case db_manager_activity_register_patterns://---------------------------------
 			
-			
+			Methods.dlg_register_patterns(actv);
 			
 			break;
 			

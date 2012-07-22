@@ -92,6 +92,9 @@ public class DBUtils extends SQLiteOpenHelper{
 	static String[] col_types_refresh_log = {
 		"INTEGER", 			"INTEGER"
 	};
+
+	static String[] cols_memo_patterns = {"word", "table_name"};
+	static String table_name_memo_patterns = "memo_patterns";
 	
 	/*****************************************************************
 	 * Constructor
@@ -315,6 +318,23 @@ public class DBUtils extends SQLiteOpenHelper{
 
 	public boolean insertData(SQLiteDatabase db, String tableName, 
 												String[] columnNames, String[] values) {
+		
+////		String sql = "SELECT * FROM TABLE " + DBUtils.table_name_memo_patterns;
+//		String sql = "SELECT * FROM " + DBUtils.table_name_memo_patterns;
+//		
+//		Cursor c = db.rawQuery(sql, null);
+//		
+//		
+//		
+//		// Log
+//		Log.d("DBUtils.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "c.getCount() => " + c.getCount() + " / " +
+//				"c.getColumnCount() => " + c.getColumnCount());
+//		
+//		c.close();
+		
+		
 		/*----------------------------
 		* 1. Insert data
 		----------------------------*/
@@ -340,10 +360,10 @@ public class DBUtils extends SQLiteOpenHelper{
 			db.endTransaction();
 			
 			// Log
-			Log.d("DBUtils.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "Data inserted => " + "(" + columnNames[0] + " => " + values[0] + 
-				" / " + columnNames[3] + " => " + values[3] + ")");
+//			Log.d("DBUtils.java" + "["
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//				+ "]", "Data inserted => " + "(" + columnNames[0] + " => " + values[0] + 
+//				" / " + columnNames[3] + " => " + values[3] + ")");
 			
 			return true;
 		} catch (Exception e) {
@@ -354,6 +374,10 @@ public class DBUtils extends SQLiteOpenHelper{
 			
 			return false;
 		}//try
+		
+//		//debug
+//		return false;
+		
 	}//public insertData(String tableName, String[] columnNames, String[] values)
 
 	public boolean insertData(SQLiteDatabase db, String tableName, 

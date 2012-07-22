@@ -6,6 +6,7 @@
     <string name="generic_bt_cancel">キャンセル</string>
     <string name="generic_tv_confirm">確認</string>
     <string name="generic_tv_menu">メニュー</string>
+    <string name="generic_tv_register">登録</string>
     
     <string name="hello">Hello World, ImageFileManager8Activity!</string>
     <string name="app_name">ImageFileManager8</string>
@@ -73,5 +74,8 @@
     	<string name="dlg_memo_patterns_title">定型</string>
     
     <!-- dlg_register_patterns.xml -->
-    	<string name="dlg_register_patterns_title">定型</string>
+    	<string name="dlg_register_patterns_title">定型句登録</string>
+    	<string name="dlg_register_patterns_tv_word">語句</string>
+    	<string name="dlg_register_patterns_tv_table_name">テーブル名</string>
+    	
 </resources>
