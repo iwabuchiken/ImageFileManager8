@@ -80,6 +80,8 @@ public class Methods {
 		// dlg_item_menu.xml
 		dlg_item_menu_bt_cancel, dlg_item_menu,
 
+		// dlg_create_table.xml
+		dlg_create_table_bt_create,
 		
 	}//public static enum DialogTags
 	
@@ -3594,5 +3596,95 @@ public class Methods {
 		return index;
 		
 	}//public static int findIndexFromArray(String[] ary, String target)
-	
+
+	public static void dlg_createTable(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Dialog
+			----------------------------*/
+		
+		Dialog dlg = dlg_template_okCancel(
+						actv, R.layout.dlg_create_table, R.string.dlg_create_table_title,
+						R.id.dlg_create_table_btn_create, R.id.dlg_create_table_btn_cancel, 
+						DialogTags.dlg_create_table_bt_create, DialogTags.dlg_generic_dismiss);
+		
+//		/*----------------------------
+//		 * 2. Add listeners => OnTouch
+//			----------------------------*/
+//		//
+//		Button btn_ok = (Button) dlg.findViewById(R.id.dlg_create_table_btn_create);
+//		Button btn_cancel = (Button) dlg.findViewById(R.id.dlg_create_table_btn_cancel);
+//		
+//		//
+//		btn_ok.setTag(DialogTags.dlg_create_table_bt_create);
+//		btn_cancel.setTag(DialogTags.dlg_create_table_cancel);
+//		
+//		//
+//		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+//		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+//		
+//		/*----------------------------
+//		 * 3. Add listeners => OnClick
+//			----------------------------*/
+//		//
+//		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+//		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+//		
+		
+		//
+		dlg.show();
+		
+	}//public static void dlg_createTable(Activity actv)
+
+//	public static void createTable_FromDialog(Activity actv, Dialog dlg) {
+//		/*----------------------------
+//		 * Steps
+//		 * 1. DBManager
+//		 * 2. Table exists?
+//		 * 3. Create table
+//			----------------------------*/
+//		// 
+//		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+//		
+//		SQLiteDatabase db = dbu.getWritableDatabase();
+//		
+//		/*----------------------------
+//		 * 2. Table exists?
+//			----------------------------*/
+//		// Get table name
+//		
+//		
+//		
+//		if (dbm.tableExists(db, tableName)) {
+//			//
+////			dbm.createTable(db, tableName);
+//			// Log
+//			Log.d("Methods.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Table exists => " + tableName);
+//
+//			return;
+//		}//if (dbm.tableExists(db, tableName))
+//		
+//		/*----------------------------
+//		 * 3. Create table
+//			----------------------------*/
+//		boolean result = dbm.createTable_generic(db, tableName, columns, types);
+//		
+//		if (result == true) {
+//			// debug
+//			Toast.makeText(actv, "Table created => " + tableName, 3000).show();
+//			
+//			//
+//			dlg.dismiss();
+//			
+//		} else {//if (result == true)
+//			// debug
+//			Toast.makeText(actv, "Create table => failed: " + tableName, 3000).show();
+//		}//if (result == true)
+//		
+//		
+//		
+//	}//public static void createTable_FromDialog(Activity actv, Dialog dlg)
+
 }//public class Methods

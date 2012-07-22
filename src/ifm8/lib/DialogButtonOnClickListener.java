@@ -54,6 +54,8 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		
 		this.file_id = file_id;
 		
+		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
+		
 	}//public DialogButtonOnClickListener(Activity actv, Dialog dlg, long file_id, String tableName)
 
 	@Override
@@ -119,6 +121,8 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			break;
 
 		case dlg_drop_table_btn_cancel:
+
+			vib.vibrate(Methods.vibLength_click);
 			
 			dlg.dismiss();
 			
@@ -126,11 +130,15 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			
 		case dlg_confirm_drop_table_btn_ok:
 			
+			vib.vibrate(Methods.vibLength_click);
+			
 			Methods.dropTable(actv, dlg, dlg2);
 			
 			break;
 			
 		case dlg_confirm_drop_table_btn_cancel: // ----------------------------------------------------
+			
+			vib.vibrate(Methods.vibLength_click);
 			
 			dlg2.dismiss();
 			
@@ -149,6 +157,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "Calling => Methods.addMemo()");
 			
+			vib.vibrate(Methods.vibLength_click);
 			
 			Methods.addMemo(actv, dlg, file_id, tableName);
 			
@@ -156,17 +165,23 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			
 		case dlg_add_memos_bt_cancel: // ----------------------------------------------------
 			
+			vib.vibrate(Methods.vibLength_click);
+			
 			dlg.dismiss();
 			
 			break;
 			
 		case dlg_generic_dismiss: // ----------------------------------------------------
 			
+			vib.vibrate(Methods.vibLength_click);
+			
 			dlg.dismiss();
 			
 			break;
 
 		case dlg_generic_dismiss_second_dialog: // ----------------------------------------------------
+			
+			vib.vibrate(Methods.vibLength_click);
 			
 			dlg2.dismiss();
 			
@@ -182,6 +197,12 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		case dlg_confirm_move_files_ok: // ----------------------------------------------------
 			
 			Methods.moveFiles(actv, dlg, dlg2);
+			
+			break;
+
+		case dlg_create_table_bt_create:// ----------------------------------------------------
+			
+//			Methods.createTable_FromDialog(actv, dlg);
 			
 			break;
 			

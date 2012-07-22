@@ -61,4 +61,11 @@
     <string name="dlg_item_menu_item_delete">削除</string>
     <string name="dlg_item_menu_item_move">移動</string>
     
+    <!-- dlg_create_table.xml -->
+	    <string name="dlg_create_table_title">テーブル作成</string>
+	    <string name="dlg_create_table_label_column_name">カラム名</string>
+	    <string name="dlg_create_table_label_data_type">データ・タイプ</string>
+	    <string name="dlg_create_table_label_table_name">テーブル名</string>
+	    
+    
 </resources>
