@@ -207,6 +207,8 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			
 //			Methods.createTable_FromDialog(actv, dlg);
 			
+			Methods.dlg_createTable_isInputEmpty(actv, dlg);
+			
 			break;
 
 		case dlg_add_memos_bt_patterns:// ----------------------------------------------------

@@ -35,6 +35,7 @@
     <!-- db_manager.xml -->
     <string name="db_manager_btn_create_table">テーブル作成</string>
     <string name="db_manager_btn_drop_table">テーブル削除</string>
+    <string name="db_manager_btn_register_patterns">定型句登録</string>
     
     <!-- dlg_drop_table.xml -->
     <string name="dlg_drop_table_title">テーブル削除</string>
@@ -71,4 +72,6 @@
     <!-- dlg_memo_patterns.xml -->
     	<string name="dlg_memo_patterns_title">定型</string>
     
+    <!-- dlg_register_patterns.xml -->
+    	<string name="dlg_register_patterns_title">定型</string>
 </resources>

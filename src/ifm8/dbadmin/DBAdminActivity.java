@@ -41,12 +41,15 @@ public class DBAdminActivity extends Activity {
 		//
     	Button bt_create = (Button) findViewById(R.id.db_manager_btn_create_table);
     	Button bt_drop = (Button) findViewById(R.id.db_manager_btn_drop_table);
+    	Button bt_register_patterns = 
+    						(Button) findViewById(R.id.db_manager_btn_register_patterns);
     	
     	/*----------------------------
 		 * 2. Tags
 			----------------------------*/
     	bt_create.setTag(Methods.ButtonTags.db_manager_activity_create_table);
     	bt_drop.setTag(Methods.ButtonTags.db_manager_activity_drop_table);
+    	bt_register_patterns.setTag(Methods.ButtonTags.db_manager_activity_register_patterns);
     	
     	/*----------------------------
 		 * 3. Listeners
@@ -59,6 +62,7 @@ public class DBAdminActivity extends Activity {
     	//
     	bt_create.setOnClickListener(new ButtonOnClickListener(this));
     	bt_drop.setOnClickListener(new ButtonOnClickListener(this));
+    	bt_register_patterns.setOnClickListener(new ButtonOnClickListener(this));
     	
     	/*----------------------------
 		 * 3.2. OnTouch
@@ -66,6 +70,7 @@ public class DBAdminActivity extends Activity {
     	//
     	bt_create.setOnTouchListener(new ButtonOnTouchListener(this));
     	bt_drop.setOnTouchListener(new ButtonOnTouchListener(this));
+    	bt_register_patterns.setOnTouchListener(new ButtonOnTouchListener(this));
     	
     	/*----------------------------
 		 * 4. Disenable => "Create table"

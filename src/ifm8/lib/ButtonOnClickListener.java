@@ -66,12 +66,12 @@ public class ButtonOnClickListener implements OnClickListener {
 
 		//
 		switch (tag_name) {
-		case ib_up:
+		case ib_up://-------------------------------------------------------------
 			Methods.upDirectory(actv);
 			
 			break;// case ib_up
 			
-		case db_manager_activity_create_table:
+		case db_manager_activity_create_table://---------------------------------
 			
 			vib.vibrate(Methods.vibLength_click);
 			
@@ -79,7 +79,7 @@ public class ButtonOnClickListener implements OnClickListener {
 			
 			break;
 			
-		case db_manager_activity_drop_table:
+		case db_manager_activity_drop_table://---------------------------------
 			
 			vib.vibrate(Methods.vibLength_click);
 			
@@ -87,7 +87,13 @@ public class ButtonOnClickListener implements OnClickListener {
 			
 			break;
 			
-		case thumb_activity_ib_back:
+		case db_manager_activity_register_patterns://---------------------------------
+			
+			
+			
+			break;
+			
+		case thumb_activity_ib_back://------------------------------------------------------
 			
 			vib.vibrate(Methods.vibLength_click);
 			
@@ -95,7 +101,7 @@ public class ButtonOnClickListener implements OnClickListener {
 			
 			break;
 			
-		case image_activity_back:
+		case image_activity_back://--------------------------------------------------------
 			
 			vib.vibrate(Methods.vibLength_click);
 			
@@ -103,7 +109,7 @@ public class ButtonOnClickListener implements OnClickListener {
 			
 			break;
 
-		case tilist_cb:
+		case tilist_cb://------------------------------------------------------------------------------
 			/*----------------------------
 			 * Steps
 			 * 1. If already checked, unlist from ThumbnailActivity.checkedPositions
@@ -212,6 +218,7 @@ public class ButtonOnClickListener implements OnClickListener {
 			lv.setSelection(0);
 			
 			break;// thumb_activity_ib_top
+
 			
 		default:
 			break;

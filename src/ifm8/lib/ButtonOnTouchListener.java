@@ -67,7 +67,7 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				
 			case db_manager_activity_create_table://----------------------------------------------------
 			case db_manager_activity_drop_table:
-			
+			case db_manager_activity_register_patterns:
 			
 				v.setBackgroundColor(Color.GRAY);
 			
@@ -105,7 +105,8 @@ public class ButtonOnTouchListener implements OnTouchListener {
 				
 			case db_manager_activity_create_table://----------------------------------------------------
 			case db_manager_activity_drop_table:
-
+			case db_manager_activity_register_patterns:
+				
 				v.setBackgroundColor(Color.WHITE);
 				
 				break;

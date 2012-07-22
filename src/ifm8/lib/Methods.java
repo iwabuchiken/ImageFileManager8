@@ -93,7 +93,8 @@ public class Methods {
 		ib_up,
 		
 		// DBAdminActivity.java
-		db_manager_activity_create_table, db_manager_activity_drop_table,
+		db_manager_activity_create_table, db_manager_activity_drop_table, 
+		db_manager_activity_register_patterns,
 		
 		// thumb_activity.xml
 		thumb_activity_ib_back, thumb_activity_ib_bottom, thumb_activity_ib_top,
@@ -3647,56 +3648,74 @@ public class Methods {
 		
 	}//public static void dlg_createTable(Activity actv)
 
-//	public static void createTable_FromDialog(Activity actv, Dialog dlg) {
-//		/*----------------------------
-//		 * Steps
-//		 * 1. DBManager
-//		 * 2. Table exists?
-//		 * 3. Create table
-//			----------------------------*/
-//		// 
-//		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
-//		
-//		SQLiteDatabase db = dbu.getWritableDatabase();
-//		
-//		/*----------------------------
-//		 * 2. Table exists?
-//			----------------------------*/
-//		// Get table name
-//		
-//		
-//		
-//		if (dbm.tableExists(db, tableName)) {
-//			//
-////			dbm.createTable(db, tableName);
-//			// Log
-//			Log.d("Methods.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "Table exists => " + tableName);
-//
-//			return;
-//		}//if (dbm.tableExists(db, tableName))
-//		
-//		/*----------------------------
-//		 * 3. Create table
-//			----------------------------*/
-//		boolean result = dbm.createTable_generic(db, tableName, columns, types);
-//		
-//		if (result == true) {
-//			// debug
-//			Toast.makeText(actv, "Table created => " + tableName, 3000).show();
-//			
-//			//
-//			dlg.dismiss();
-//			
-//		} else {//if (result == true)
-//			// debug
-//			Toast.makeText(actv, "Create table => failed: " + tableName, 3000).show();
-//		}//if (result == true)
-//		
-//		
-//		
-//	}//public static void createTable_FromDialog(Activity actv, Dialog dlg)
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 
+	 * 1. dlg_createTable_isInputEmpty(Activity actv, Dialog dlg)
+	 * 
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static void createTable_FromDialog(Activity actv, Dialog dlg, String tableName, String[] columns, String[] types) {
+		/*----------------------------
+		 * Steps
+		 * 1. DBManager
+		 * 2. Table exists?
+		 * 3. Create table
+		 * 4. Close db
+			----------------------------*/
+		// 
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+		
+		/*----------------------------
+		 * 2. Table exists?
+			----------------------------*/
+		// Get table name
+		
+		
+		
+		if (dbu.tableExists(wdb, tableName)) {
+			//
+//			dbm.createTable(db, tableName);
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table exists => " + tableName);
+
+			return;
+		}//if (dbm.tableExists(db, tableName))
+		
+		/*----------------------------
+		 * 3. Create table
+			----------------------------*/
+//		boolean result = dbu.createTable_generic(wdb, tableName, columns, types);
+		boolean result = dbu.createTable(wdb, tableName, columns, types);
+		
+		if (result == true) {
+			// debug
+			Toast.makeText(actv, "Table created => " + tableName, 3000).show();
+			
+			//
+			dlg.dismiss();
+			
+		} else {//if (result == true)
+			// debug
+			Toast.makeText(actv, "Create table => failed: " + tableName, 3000).show();
+		}//if (result == true)
+		
+		/*----------------------------
+		 * 4. Close db
+			----------------------------*/
+		wdb.close();
+		
+	}//public static void createTable_FromDialog(Activity actv, Dialog dlg, String tableName, String[] columns, String[] types)
 
 	public static void dlg_memo_patterns(Activity actv, Dialog dlg) {
 		/*----------------------------
@@ -3752,5 +3771,98 @@ public class Methods {
 		dlg2.show();
 		
 	}//public static void dlg_memo_patterns(Activity actv, Dialog dlg)
-	
+
+	public static void dlg_createTable_isInputEmpty(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get views
+		 * 2. Prepare data
+		 * 3. Data valid?
+		 * 4. Send data to other method
+			----------------------------*/
+		
+		// Get views
+		EditText et_table_name = (EditText) dlg.findViewById(R.id.dlg_create_table_et_table_name);
+		EditText et_column_name = (EditText) dlg.findViewById(R.id.dlg_create_table_et_column_name);
+		EditText et_data_type = (EditText) dlg.findViewById(R.id.dlg_create_table_et_data_type);
+		
+		if (et_table_name.getText().length() == 0 ||
+			et_column_name.getText().length() == 0 ||
+			et_data_type.getText().length() == 0
+				) {
+			// debug
+			Toast.makeText(actv, "Empty box", 3000).show();
+			
+			return;
+		}// else {//if (et_column_name.getText().length() == 0)
+//			// debug
+//			Toast.makeText(actv, "Input complete", 3000).show();
+//			
+////			dlg.dismiss();
+//		}//if (et_column_name.getText().length() == 0)
+		
+		/*----------------------------
+		 * 2. Prepare data
+			----------------------------*/
+		//
+		String[] columns = et_column_name.getText().toString().split(" ");
+		String[] types = et_data_type.getText().toString().split(" ");
+		
+		/*----------------------------
+		 * 3. Data valid?
+		 * 		1. Length => colums and types
+		 * 		2. types strings
+			----------------------------*/
+		if (columns.length != types.length) {
+			// debug
+			Toast.makeText(actv, "Columns and data types don't match", 3000).show();
+			
+			return;
+		}//if (columns.length != types.length)
+		
+		/*----------------------------
+		 * 3.2. types strings
+			----------------------------*/
+		String[] formats = {"TEXT", "INTEGER"};
+		
+		boolean flag;
+		
+		for (String type : types) {
+//		for (String format : typesFormats) {
+			
+			flag = false;
+			
+			for (String format : formats) {
+//			for (String type : types) {
+				
+				if (type.toLowerCase().equals(format.toLowerCase())) {
+					
+					flag = true;
+					break;
+					
+				}//if (flag)
+				
+			}
+			
+			if (flag == false) {
+				
+				// debug
+				Toast.makeText(actv, "Invalid data types => " + type, 3000).show();
+				
+				return;
+				
+			}//if (flag == false)
+		}
+		
+		// debug
+		Toast.makeText(actv, "Input complete", 3000).show();
+		
+		/*----------------------------
+		 * 4. Send data to other method
+			----------------------------*/
+		createTable_FromDialog(actv, dlg, et_table_name.getText().toString(), columns, types);
+		
+		
+	}//public static void dlg_createTable_isInputEmpty(Activity actv, Dialog dlg)
+
 }//public class Methods
