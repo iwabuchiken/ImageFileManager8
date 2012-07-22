@@ -48,6 +48,7 @@
     
     <!-- dlg_add_memos.xml -->
     <string name="dlg_add_memos_tv_title">メモ</string>
+    <string name="dlg_add_memos_bt_patterns">定型</string>
     
     <!-- thumb_actv_menu.xml -->
     <string name="thumb_actv_menu_move_mode">移動モード</string>
@@ -67,5 +68,7 @@
 	    <string name="dlg_create_table_label_data_type">データ・タイプ</string>
 	    <string name="dlg_create_table_label_table_name">テーブル名</string>
 	    
+    <!-- dlg_memo_patterns.xml -->
+    	<string name="dlg_memo_patterns_title">定型</string>
     
 </resources>

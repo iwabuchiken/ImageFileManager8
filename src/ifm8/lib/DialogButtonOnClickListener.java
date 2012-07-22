@@ -1,5 +1,6 @@
 package ifm8.lib;
 
+import ifm8.main.ImageFileManager8Activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Vibrator;
@@ -124,6 +125,8 @@ public class DialogButtonOnClickListener implements OnClickListener {
 
 			vib.vibrate(Methods.vibLength_click);
 			
+			vib.vibrate(Methods.vibLength_click);
+			
 			dlg.dismiss();
 			
 			break;
@@ -203,6 +206,14 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		case dlg_create_table_bt_create:// ----------------------------------------------------
 			
 //			Methods.createTable_FromDialog(actv, dlg);
+			
+			break;
+
+		case dlg_add_memos_bt_patterns:// ----------------------------------------------------
+			
+			vib.vibrate(ImageFileManager8Activity.vibLength_click);
+			
+			Methods.dlg_memo_patterns(actv, dlg);
 			
 			break;
 			

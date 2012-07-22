@@ -50,6 +50,8 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 				case dlg_add_memos_bt_cancel:
 				
 				case dlg_generic_dismiss:
+					
+				case dlg_add_memos_bt_patterns:
 					//
 					v.setBackgroundColor(Color.GRAY);
 					
@@ -75,6 +77,8 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 				case dlg_add_memos_bt_cancel:
 					
 				case dlg_generic_dismiss:
+					
+				case dlg_add_memos_bt_patterns:
 					//
 					v.setBackgroundColor(Color.WHITE);
 					

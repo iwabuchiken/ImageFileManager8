@@ -68,6 +68,7 @@ public class ButtonOnTouchListener implements OnTouchListener {
 			case db_manager_activity_create_table://----------------------------------------------------
 			case db_manager_activity_drop_table:
 			
+			
 				v.setBackgroundColor(Color.GRAY);
 			
 			break;

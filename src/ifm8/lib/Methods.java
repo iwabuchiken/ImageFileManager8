@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,7 +70,7 @@ public class Methods {
 		dlg_confirm_drop_table_btn_ok, dlg_confirm_drop_table_btn_cancel,
 		
 		// dlg_add_memos.xml
-		dlg_add_memos_bt_add, dlg_add_memos_bt_cancel,
+		dlg_add_memos_bt_add, dlg_add_memos_bt_cancel, dlg_add_memos_bt_patterns,
 
 		// dlg_move_files.xml
 		dlg_move_files_move, dlg_move_files,
@@ -82,6 +83,8 @@ public class Methods {
 
 		// dlg_create_table.xml
 		dlg_create_table_bt_create,
+
+		// dlg_memo_patterns.xml
 		
 	}//public static enum DialogTags
 	
@@ -2665,13 +2668,19 @@ public class Methods {
 		Button btn_add = (Button) dlg.findViewById(R.id.dlg_add_memos_bt_add);
 		Button btn_cancel = (Button) dlg.findViewById(R.id.dlg_add_memos_cancel);
 		
+		Button btn_patterns = (Button) dlg.findViewById(R.id.dlg_add_memos_bt_patterns);
+		
 		// Tags
 		btn_add.setTag(DialogTags.dlg_add_memos_bt_add);
 		btn_cancel.setTag(DialogTags.dlg_generic_dismiss);
 		
+		btn_patterns.setTag(DialogTags.dlg_add_memos_bt_patterns);
+		
 		//
 		btn_add.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
 		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
+		
+		btn_patterns.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg));
 		
 		/*----------------------------
 		 * 3. Add listeners => OnClick
@@ -2687,6 +2696,8 @@ public class Methods {
 //		btn_add.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
 		btn_add.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, file_id, tableName));
 		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		
+		btn_patterns.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
 		
 		//
 		dlg.show();
@@ -3687,4 +3698,59 @@ public class Methods {
 //		
 //	}//public static void createTable_FromDialog(Activity actv, Dialog dlg)
 
+	public static void dlg_memo_patterns(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get dialog
+		 * 2. Get text from dlg's edit text view
+		 * 3. Prepare data => for list
+		 * 4. Prepare adapter
+		 * 5. Set to list view
+		 * 6. Close db
+		 * 9. Show dialog
+			----------------------------*/
+		Dialog dlg2 = dlg_template_cancel(actv, R.layout.dlg_memo_patterns, R.string.dlg_memo_patterns_title,
+				R.id.dlg_memo_patterns_btn_cancel, DialogTags.dlg_generic_dismiss);
+		
+		/*----------------------------
+		 * 2. Get text from dlg's edit text view
+			----------------------------*/
+		EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
+		
+		String content = et.getText().toString();
+		
+//		content += "NICE";
+//		
+//		et.setText(content);
+		
+		/*----------------------------
+		 * 3. Prepare data => for list
+		 * 		1. Open db
+		 * 		2. Get cursor
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		String sql = "SELECT * FROM memo_patterns ORDER BY word ASC";
+		
+		Cursor c = rdb.rawQuery(sql, null);
+		
+		String [] from={"word"};
+		int[] to={android.R.id.text1};
+		
+		SimpleCursorAdapter adapter=new SimpleCursorAdapter(
+				actv, android.R.layout.simple_list_item_1,
+				c, from, to);
+		
+		
+		rdb.close();
+		
+		/*----------------------------
+		 * 9. Show dialog
+			----------------------------*/
+		dlg2.show();
+		
+	}//public static void dlg_memo_patterns(Activity actv, Dialog dlg)
+	
 }//public class Methods

@@ -75,7 +75,6 @@ public class ButtonOnClickListener implements OnClickListener {
 			
 			vib.vibrate(Methods.vibLength_click);
 			
-//			Methods.dlg_dropTable(actv);
 			Methods.dlg_createTable(actv);
 			
 			break;
