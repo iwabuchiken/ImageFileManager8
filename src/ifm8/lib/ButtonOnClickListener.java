@@ -73,11 +73,15 @@ public class ButtonOnClickListener implements OnClickListener {
 			
 		case db_manager_activity_create_table:
 			
+			vib.vibrate(Methods.vibLength_click);
+			
 			Methods.dlg_dropTable(actv);
 			
 			break;
 			
 		case db_manager_activity_drop_table:
+			
+			vib.vibrate(Methods.vibLength_click);
 			
 			Methods.dlg_dropTable(actv);
 			

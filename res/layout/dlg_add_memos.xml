@@ -38,12 +38,12 @@
         <Button
             android:id="@+id/dlg_add_memos_bt_add"
             
-            android:layout_width="150dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             
             android:text="@string/generic_bt_ok"
-            android:textSize="25dp" 
+            android:textSize="20dp" 
             android:textColor="@color/blue1"
             
             android:layout_marginLeft="10dp"
@@ -56,19 +56,35 @@
         <Button
             android:id="@+id/dlg_add_memos_cancel"
 
-            android:layout_width="150dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
 
             android:layout_marginLeft="4dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="4dp"
             
 
             android:text="@string/generic_bt_cancel"
-            android:textSize="25dp" 
+            android:textSize="15dp" 
             
             android:textColor="@color/red"
             />
+
+        <Button
+            android:id="@+id/dlg_add_memos_bt_patterns"
+            
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            
+            android:layout_weight="1"
+            
+            android:text="@string/dlg_add_memos_bt_patterns"
+            android:textSize="20dp" 
+            
+            android:layout_marginLeft="4dp"
+            
+            />
+
     </LinearLayout>
 
 </LinearLayout>

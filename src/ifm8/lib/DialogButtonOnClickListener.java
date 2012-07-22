@@ -1,5 +1,6 @@
 package ifm8.lib;
 
+import ifm8.main.ImageFileManager8Activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Vibrator;
@@ -120,17 +121,23 @@ public class DialogButtonOnClickListener implements OnClickListener {
 
 		case dlg_drop_table_btn_cancel:
 			
+			vib.vibrate(Methods.vibLength_click);
+			
 			dlg.dismiss();
 			
 			break;
 			
 		case dlg_confirm_drop_table_btn_ok:
 			
+			vib.vibrate(Methods.vibLength_click);
+			
 			Methods.dropTable(actv, dlg, dlg2);
 			
 			break;
 			
 		case dlg_confirm_drop_table_btn_cancel: // ----------------------------------------------------
+			
+			vib.vibrate(Methods.vibLength_click);
 			
 			dlg2.dismiss();
 			
@@ -182,6 +189,14 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		case dlg_confirm_move_files_ok: // ----------------------------------------------------
 			
 			Methods.moveFiles(actv, dlg, dlg2);
+			
+			break;
+
+		case dlg_add_memos_bt_patterns:// ----------------------------------------------------
+			
+			vib.vibrate(ImageFileManager8Activity.vibLength_click);
+			
+			Methods.dlg_memo_patterns(actv, dlg);
 			
 			break;
 			

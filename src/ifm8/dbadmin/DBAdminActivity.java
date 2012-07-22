@@ -70,7 +70,7 @@ public class DBAdminActivity extends Activity {
     	/*----------------------------
 		 * 4. Disenable => "Create table"
 			----------------------------*/
-    	bt_create.setEnabled(false);
+//    	bt_create.setEnabled(false);
     	
 	}//private void setListeners()
 	
