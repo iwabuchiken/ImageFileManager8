@@ -33,6 +33,9 @@ public class ImageActivity extends Activity {
 	//
 	long file_id;
 	
+	//
+	Bitmap bm;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		/*----------------------------
@@ -89,7 +92,8 @@ public class ImageActivity extends Activity {
 		/*----------------------------
 		 * 2. Prepare image
 			----------------------------*/
-		Bitmap bm = BitmapFactory.decodeFile(file_path);
+//		Bitmap bm = BitmapFactory.decodeFile(file_path);
+		bm = BitmapFactory.decodeFile(file_path);
 		
 		/*----------------------------
 		 * 3. Set image to the view
@@ -156,7 +160,7 @@ public class ImageActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
 		switch (item.getItemId()) {
-		case R.id.image_actv_menu_add_memo:
+		case R.id.image_actv_menu_add_memo://------------------------------------
 			
 			// Log
 			Log.d("ImageActivity.java" + "["
@@ -167,6 +171,12 @@ public class ImageActivity extends Activity {
 			Methods.dlg_addMemo(this, file_id, Methods.convertPathIntoTableName(this));
 			
 //			Methods.addMemo(this, file_id, Methods.convertPathIntoTableName(this));
+			
+			break;
+			
+		case R.id.image_actv_menu_add_patterns://------------------------------------
+			
+			Methods.dlg_register_patterns(this);
 			
 			break;
 		}//switch (item.getItemId())
@@ -203,6 +213,19 @@ public class ImageActivity extends Activity {
 	protected void onDestroy() {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onDestroy();
+		
+		// REF=> http://ameblo.jp/yolluca/entry-10725668557.html
+		if (bm != null) {
+			bm.recycle();
+			
+			// Log
+			Log.d("ImageActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "bm => recycled");
+			
+			
+		}//if (bm != null)
+		
 	}
 
 }//public class ImageActivity extends Activity

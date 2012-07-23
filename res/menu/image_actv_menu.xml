@@ -8,5 +8,12 @@
         
     </item>
     
-
+    <item 
+        android:id="@+id/image_actv_menu_add_patterns" 
+        android:title="@string/image_actv_menu_add_patterns" 
+        android:icon="@drawable/ifm8_image_actv_opt_menu_add_pattern_30x30_v3"
+        >
+        
+    </item>
+    
 </menu>
