@@ -16,6 +16,7 @@
     <string name="main_opt_menu_create_folder">フォルダ作成</string>
     <string name="main_opt_menu_refresh_db">DBリフレッシュ</string>
     <string name="main_opt_menu_db_activity">データベース</string>
+    <string name="main_opt_menu_search">探す</string>
 
     <!-- dlg_create_folder.xml -->
     <string name="dlg_create_folder_title">フォルダ作成</string>
@@ -79,4 +80,8 @@
     	<string name="dlg_register_patterns_tv_word">語句</string>
     	<string name="dlg_register_patterns_tv_table_name">テーブル名</string>
     	
+    <!-- dlg_search.xml -->
+    	<string name="dlg_search_title">サーチ</string>
+    	<string name="dlg_search_tv_message">サーチする語句を入れてください（複数の場合、スペースで区切ります）</string>
+    
 </resources>

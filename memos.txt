@@ -1,9 +1,9 @@
 a
 cd C:\WORKS\WORKSPACES_ANDROID\ImageFileManager8
-C:\WORKS\WORKSPACES_ANDROID\FM\a
 C:\WORKS\PROGRAMS\FreeMind\FreeMind.exe C:\WORKS\WORKSPACES_ANDROID\FM\ImageFileManager8\ImageFileManager8.mm
 gitk
 
+C:\WORKS\WORKSPACES_ANDROID\FM\a
 
 
 [Git]

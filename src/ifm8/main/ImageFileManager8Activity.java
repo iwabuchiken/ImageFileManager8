@@ -511,12 +511,12 @@ public class ImageFileManager8Activity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.main_opt_menu_create_folder:
+		case R.id.main_opt_menu_create_folder://----------------------------------
 			
 			Methods.dlg_createFolder(this);
 			
 			break;
-		case R.id.main_opt_menu_refresh_db:
+		case R.id.main_opt_menu_refresh_db://---------------------------------------
 			/*----------------------------
 			 * Steps
 			 * 1. Vibrate
@@ -556,11 +556,18 @@ public class ImageFileManager8Activity extends ListActivity {
 			
 			break;
 			
-		case R.id.main_opt_menu_db_activity:
+		case R.id.main_opt_menu_db_activity://-----------------------------------------------
 			
 			Methods.startDBAdminActivity(this);
 
 			break;
+			
+		case R.id.main_opt_menu_search://-----------------------------------------------
+			
+			Methods.dlg_seratchItem(this);
+			
+			break;
+			
 		}//switch (item.getItemId())
 		
 		return super.onOptionsItemSelected(item);

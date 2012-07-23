@@ -91,6 +91,10 @@ public class Methods {
 		
 		// dlg_register_patterns.xml
 		dlg_register_patterns_register,
+
+		// dlg_search.xml
+		dlg_search, dlg_search_ok,
+		
 		
 	}//public static enum DialogTags
 	
@@ -4137,4 +4141,89 @@ public class Methods {
 		dlg.show();
 	}//public static void dlg_register_patterns(Activity actv)
 
+	public static void dlg_seratchItem(Activity actv) {
+		/*----------------------------
+		 * Steps
+		 * 1. Dialog
+		 * 9. Show
+			----------------------------*/
+		Dialog dlg = dlg_template_okCancel(
+								actv, R.layout.dlg_search, R.string.dlg_search_title,
+				R.id.dlg_search_bt_ok, R.id.dlg_search_cancel, DialogTags.dlg_search_ok, DialogTags.dlg_generic_dismiss);
+
+		
+		
+		/*----------------------------
+		 * 9. Show
+			----------------------------*/
+		dlg.show();
+		
+	}//public static void dlg_seratchItem(Activity actv)
+
+	public static void searchItem(Activity actv, Dialog dlg) {
+		/*----------------------------
+		 * Steps
+		 * 1. Get search words
+		 * 2. Format words
+		 * 3. Search task
+		 * 
+		 * 9. Dismiss dialog
+			----------------------------*/
+		EditText et = (EditText) dlg.findViewById(R.id.dlg_search_et);
+		
+		String words = et.getText().toString();
+		
+		if (words.equals("")) {
+			
+			// debug
+			Toast.makeText(actv, "Œê‹å‚ð“ü‚ê‚Ä‚È‚¢‚æ", 2000).show();
+			
+			return;
+			
+		}//if (words.equals(""))
+		
+		/*----------------------------
+		 * 2. Format words
+			----------------------------*/
+		words = words.replace('@', ' ');
+		
+		String[] a_words = words.split(" ");
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "a_words.length => " + a_words.length);
+		
+		/*----------------------------
+		 * 3. Search task
+			----------------------------*/
+		SearchTask st = new SearchTask(actv);
+		
+		st.execute(a_words);
+		
+		/*----------------------------
+		 * 9. Dismiss dialog
+			----------------------------*/
+		dlg.dismiss();
+		
+	}//public static void searchItem(Activity actv, Dialog dlg)
+
+	public static ThumbnailItem convertCursorToThumbnailItem(Cursor c) {
+		/*----------------------------
+		 * Steps
+		 * 1. 
+			----------------------------*/
+		return new ThumbnailItem(
+				c.getLong(1),	// file_id
+				c.getString(2),	// file_path
+				c.getString(3),	// file_name
+				c.getLong(4),	// date_added
+//				c.getLong(5)		// date_modified
+				c.getLong(5),		// date_modified
+				c.getString(6),	// memos
+				c.getString(7)	// tags
+		);
+		
+		
+	}//public static ThumbnailItem convertCursorToThumbnailItem(Cursor c)
 }//public class Methods
