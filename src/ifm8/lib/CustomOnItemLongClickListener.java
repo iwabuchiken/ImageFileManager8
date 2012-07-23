@@ -143,100 +143,100 @@ public class CustomOnItemLongClickListener implements OnItemLongClickListener {
 				
 				break;
 				
+			/*----------------------------
+			 * 5.2. dir_list_thumb_actv
+				----------------------------*/
+			case dir_list_thumb_actv:
+				
+				ThumbnailItem ti = (ThumbnailItem) parent.getItemAtPosition(position);
+				
+				// Log
+				Log.d("CustomOnItemLongClickListener.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "ti.getFile_name() => " + ti.getFile_name());
+				
+				
+				Methods.dlg_thumb_actv_item_menu(actv, ti);
+				
+				break;
+			/*----------------------------
+			 * 5.3. dir_list_move_files
+				----------------------------*/
+			case dir_list_move_files:
 				/*----------------------------
-				 * 5.2. dir_list_thumb_actv
+				 * Steps
+				 * 1. Get folder name from dialog view
+				 * 2. Create a new file object, using => 
 					----------------------------*/
-				case dir_list_thumb_actv:
-					
-					ThumbnailItem ti = (ThumbnailItem) parent.getItemAtPosition(position);
-					
-					// Log
-					Log.d("CustomOnItemLongClickListener.java"
-							+ "["
-							+ Thread.currentThread().getStackTrace()[2]
-									.getLineNumber() + "]", "ti.getFile_name() => " + ti.getFile_name());
-					
-					
-					Methods.dlg_thumb_actv_item_menu(actv, ti);
-					
-					break;
-				/*----------------------------
-				 * 5.3. dir_list_move_files
-					----------------------------*/
-				case dir_list_move_files:
-					/*----------------------------
-					 * Steps
-					 * 1. Get folder name from dialog view
-					 * 2. Create a new file object, using => 
-						----------------------------*/
-					
-					folderName = (String) parent.getItemAtPosition(position);
-					
+				
+				folderName = (String) parent.getItemAtPosition(position);
+				
 //					// debug
 //					Toast.makeText(actv, folderName, 2000).show();
-					
+				
 //					File f = new File(ImageFileManager8Activity.currentDirPath, folderName);
 //					File f = new File(ImageFileManager8Activity.currentDirPath, folderName + "/abcde");
-					
+				
 //					File f = new File(ImageFileManager8Activity.currentDirPath, folderName);
-					File f = new File(ImageFileManager8Activity.baseDirPath, folderName);
+				File f = new File(ImageFileManager8Activity.baseDirPath, folderName);
+				
+				// Log
+				Log.d("CustomOnItemLongClickListener.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "f.getAbsolutePath() => " + f.getAbsolutePath());
+				
+				
+				if (!f.exists()) {
 					
-					// Log
-					Log.d("CustomOnItemLongClickListener.java"
-							+ "["
-							+ Thread.currentThread().getStackTrace()[2]
-									.getLineNumber() + "]", "f.getAbsolutePath() => " + f.getAbsolutePath());
+					// debug
+					Toast.makeText(actv, "File doesn't exist", 3000).show();
 					
+					return false;
 					
-					if (!f.exists()) {
-						
-						// debug
-						Toast.makeText(actv, "File doesn't exist", 3000).show();
-						
-						return false;
-						
-					} else if (f.isFile()) {
-						
-						// debug
-						Toast.makeText(actv, "The item is a file", 3000).show();
-						
-						return false;
-						
-					}//if (f.isFile())
+				} else if (f.isFile()) {
 					
-					File[] files = new File(f.getAbsolutePath()).listFiles(new FileFilter(){
+					// debug
+					Toast.makeText(actv, "The item is a file", 3000).show();
+					
+					return false;
+					
+				}//if (f.isFile())
+				
+				File[] files = new File(f.getAbsolutePath()).listFiles(new FileFilter(){
 
-						@Override
-						public boolean accept(File pathname) {
-							// TODO 自動生成されたメソッド・スタブ
-							
-							return pathname.isDirectory();
-						}
+					@Override
+					public boolean accept(File pathname) {
+						// TODO 自動生成されたメソッド・スタブ
 						
-					});//File[] files
+						return pathname.isDirectory();
+					}
 					
-					fileNameList.clear();
-					
+				});//File[] files
+				
+				fileNameList.clear();
+				
 //					for (String fileName : fileNames) {
-					for (File eachFile : files) {
-						
+				for (File eachFile : files) {
+					
 //						fileNameList.add(fileName);
 //						fileNameList.add(eachFile.getName());
 //						fileNameList.add(eachFile.getAbsolutePath());
-						fileNameList.add(Methods.convertAbsolutePathIntoPath(actv, eachFile.getAbsolutePath()));
-						
-					}//for (String fileName : fileNames)
+					fileNameList.add(Methods.convertAbsolutePathIntoPath(actv, eachFile.getAbsolutePath()));
 					
-					Collections.sort(fileNameList);
+				}//for (String fileName : fileNames)
+				
+				Collections.sort(fileNameList);
 
-					dirListAdapter.notifyDataSetChanged();
+				dirListAdapter.notifyDataSetChanged();
 
-					
+				
 //					// debug
 //					Toast.makeText(actv, f.getAbsolutePath(), 2000).show();
-					
-					
-					break;
+				
+				
+				break;
 					
 			}//switch (itemTag)
 			

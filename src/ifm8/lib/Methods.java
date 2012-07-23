@@ -2686,7 +2686,23 @@ public class Methods {
 		
 //		ThumbnailActivity.tiList = Methods.getAllData(actv, tableName);
 		
-		ThumbnailActivity.tiList.addAll(Methods.getAllData(actv, tableName));
+//		ThumbnailActivity.tiList.addAll(Methods.getAllData(actv, tableName));aaa
+		if (ThumbnailActivity.long_searchedItems == null) {
+
+			ThumbnailActivity.tiList.addAll(Methods.getAllData(actv, tableName));
+//			tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+			
+		} else {//if (long_searchedItems == null)
+
+//			tiList = Methods.getAllData(this, tableName);
+			ThumbnailActivity.tiList.addAll(
+								Methods.convert_fileIdArray2tiList(
+											actv, 
+											"IFM8", 
+											ThumbnailActivity.long_searchedItems));
+			
+		}//if (long_searchedItems == null)
+
 		
 		ThumbnailActivity.aAdapter.notifyDataSetChanged();
 	}
@@ -4208,6 +4224,21 @@ public class Methods {
 		
 	}//public static void searchItem(Activity actv, Dialog dlg)
 
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1. 
+	 * 
+	 * <Desc> 
+	 * 1. Originally, SearchTask.java was calling this method.
+	 * 		But I changed the starategy, ending up not using this method (20120723_145553) 
+	 * 
+	 * <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
 	public static ThumbnailItem convertCursorToThumbnailItem(Cursor c) {
 		/*----------------------------
 		 * Steps
@@ -4226,4 +4257,61 @@ public class Methods {
 		
 		
 	}//public static ThumbnailItem convertCursorToThumbnailItem(Cursor c)
+
+	public static List<ThumbnailItem> convert_fileIdArray2tiList(
+											Activity actv, String tableName, long[] long_file_id) {
+		/*----------------------------
+		 * Steps
+		 * 1. DB setup
+		 * 2. Get ti list
+		 * 3. Close db
+		 * 4. Return
+			----------------------------*/
+		/*----------------------------
+		 * 1. DB setup
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, ImageFileManager8Activity.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		/*----------------------------
+		 * 2. Get ti list
+			----------------------------*/
+		List<ThumbnailItem> tilist = new ArrayList<ThumbnailItem>();
+		
+		for (long file_id : long_file_id) {
+			
+			String sql = "SELECT * FROM " + tableName + " WHERE file_id = '" + String.valueOf(file_id) + "'";
+			
+			Cursor c = rdb.rawQuery(sql, null);
+			
+			if (c.getCount() > 0) {
+				
+				c.moveToFirst();
+				
+				tilist.add(Methods.convertCursorToThumbnailItem(c));
+				
+				c.moveToNext();
+				
+			}//if (c.getCount() > 0)
+		}
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tilist.size() => " + tilist.size());
+		
+		/*----------------------------
+		 * 3. Close db
+			----------------------------*/
+		rdb.close();
+		
+		
+		/*----------------------------
+		 * 4. Return
+			----------------------------*/
+		return tilist;
+		
+	}//public static List<ThumbnailItem> convert_fileIdArray2tiList(Activity actv, String tableName, long[] long_file_id)
+
 }//public class Methods

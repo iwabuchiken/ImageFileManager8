@@ -52,6 +52,9 @@ public class ThumbnailActivity extends ListActivity {
 	//
 	public static boolean move_mode = false;
 
+	// 
+	public static long[] long_searchedItems; //=> Used in initial_setup()
+	
 	/*------------------------------------------------------------------------------------
 	 * Methods
 	------------------------------------------------------------------------------------*/
@@ -130,9 +133,54 @@ public class ThumbnailActivity extends ListActivity {
 		
 		/*----------------------------
 		 * 2.2. Get ThumbnailItem list
+		 * 		1. Get intent data
+		 * 		2. Build tiList
 			----------------------------*/
+		/*----------------------------
+		 * 2.2.1. Get intent data
+			----------------------------*/
+		Intent i = this.getIntent();
+		
+//		long[] long_searchedItems = i.getLongArrayExtra("long_searchedItems");
+		long_searchedItems = i.getLongArrayExtra("long_searchedItems");
+		
+		if (long_searchedItems == null) {
+			
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "long_searchedItems => null");
+			
+		} else {//if (long_searchedItems == null)
+
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "long_searchedItems.length => " + long_searchedItems.length);
+			
+		}//if (long_searchedItems == null)
+		
+		/*----------------------------
+		 * 2.2.2. Build tiList
+			----------------------------*/
+		if (long_searchedItems == null) {
+
+			tiList = Methods.getAllData(this, tableName);
+//			tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+			
+		} else {//if (long_searchedItems == null)
+
+//			tiList = Methods.getAllData(this, tableName);
+			tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+			
+		}//if (long_searchedItems == null)
+		
+		// Log
+		Log.d("ThumbnailActivity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "tiList.size(): " + tiList.size());
+		
+		
 //		List<ThumbnailItem> tiList = Methods.getAllData(this, tableName);
-		tiList = Methods.getAllData(this, tableName);
+//		tiList = Methods.getAllData(this, tableName);
 		
 //		Collections.sort(tiList);
 		
@@ -405,7 +453,19 @@ public class ThumbnailActivity extends ListActivity {
 
 //				ThumbnailActivity.tiList = Methods.getAllData(actv, tableName);
 				
-				tiList.addAll(Methods.getAllData(this, tableName));
+//				tiList.addAll(Methods.getAllData(this, tableName));
+				if (long_searchedItems == null) {
+
+					tiList = Methods.getAllData(this, tableName);
+//					tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+					
+				} else {//if (long_searchedItems == null)
+
+//					tiList = Methods.getAllData(this, tableName);
+					tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+					
+				}//if (long_searchedItems == null)
+
 
 				// Log
 				Log.d("ThumbnailActivity.java"
@@ -469,7 +529,19 @@ public class ThumbnailActivity extends ListActivity {
 
 //				ThumbnailActivity.tiList = Methods.getAllData(actv, tableName);
 				
-				tiList.addAll(Methods.getAllData(this, tableName));
+//				tiList.addAll(Methods.getAllData(this, tableName));
+				if (long_searchedItems == null) {
+
+					tiList = Methods.getAllData(this, tableName);
+//					tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+					
+				} else {//if (long_searchedItems == null)
+
+//					tiList = Methods.getAllData(this, tableName);
+					tiList = Methods.convert_fileIdArray2tiList(this, "IFM8", long_searchedItems);
+					
+				}//if (long_searchedItems == null)
+
 
 				// Log
 				Log.d("ThumbnailActivity.java"

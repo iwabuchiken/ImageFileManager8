@@ -90,44 +90,51 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 			----------------------------*/
 		vib.vibrate(40);
 		
-		if ((DialogTags) parent.getTag() != null) {
+		if (parent.getTag() instanceof Methods.DialogTags) {
+			
+//			this.parentTagIsDialogTag(parent, position);
+			parentTagIsDialogTag(parent, position);
+			
+		}//if (parent.getTag() instanceof Methods.DialogTags)
 		
-			// Log
-			Log.d("DialogOnItemClickListener.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "parent.getTag() => " + parent.getTag());
-			
-			switch ((DialogTags)parent.getTag()) {
-			case dlg_add_memos_gv://----------------------------------------------
-				
-				String word = (String) parent.getItemAtPosition(position);
-				
-				EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
-				
-				String content = et.getText().toString();
-				
-				content += word + " ";
-				
-				et.setText(content);
-				
-				et.setSelection(et.getText().toString().length());
-				
-//				// debug
-//				Toast.makeText(actv, word, 2000).show();
-				
-				break;
-				
-			}//switch (parent.getTag())
-			
-			
-		} else {//if ((DialogTags) parent.getTag() != null)
-			
-			// Log
-			Log.d("DialogOnItemClickListener.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "parent.getTag() => null");
-			
-		}//if ((DialogTags) parent.getTag() != null)
+//		if ((DialogTags) parent.getTag() != null) {
+//		
+//			// Log
+//			Log.d("DialogOnItemClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "parent.getTag() => " + parent.getTag());
+//			
+//			switch ((DialogTags)parent.getTag()) {
+//			case dlg_add_memos_gv://----------------------------------------------
+//				
+//				String word = (String) parent.getItemAtPosition(position);
+//				
+//				EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
+//				
+//				String content = et.getText().toString();
+//				
+//				content += word + " ";
+//				
+//				et.setText(content);
+//				
+//				et.setSelection(et.getText().toString().length());
+//				
+////				// debug
+////				Toast.makeText(actv, word, 2000).show();
+//				
+//				break;
+//				
+//			}//switch (parent.getTag())
+//			
+//			
+//		} else {//if ((DialogTags) parent.getTag() != null)
+//			
+//			// Log
+//			Log.d("DialogOnItemClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "parent.getTag() => null");
+//			
+//		}//if ((DialogTags) parent.getTag() != null)
 		
 		
 //		String tableName = (String) parent.getItemAtPosition(position);
@@ -343,4 +350,45 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		
 	}//public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 
+	private void parentTagIsDialogTag(AdapterView<?> parent, int position) {
+//		if ((DialogTags) parent.getTag() != null) {
+			
+			// Log
+			Log.d("DialogOnItemClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "parent.getTag() => " + parent.getTag());
+			
+			switch ((DialogTags)parent.getTag()) {
+			case dlg_add_memos_gv://----------------------------------------------
+				
+				String word = (String) parent.getItemAtPosition(position);
+				
+				EditText et = (EditText) dlg.findViewById(R.id.dlg_add_memos_et_content);
+				
+				String content = et.getText().toString();
+				
+				content += word + " ";
+				
+				et.setText(content);
+				
+				et.setSelection(et.getText().toString().length());
+				
+//				// debug
+//				Toast.makeText(actv, word, 2000).show();
+				
+				break;
+				
+			}//switch (parent.getTag())
+			
+			
+//		} else {//if ((DialogTags) parent.getTag() != null)
+//			
+//			// Log
+//			Log.d("DialogOnItemClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "parent.getTag() => null");
+//			
+//		}//if ((DialogTags) parent.getTag() != null)
+		
+	}//private void parentTagIsDialogTag(AdapterView<?> parent, int position)
 }
