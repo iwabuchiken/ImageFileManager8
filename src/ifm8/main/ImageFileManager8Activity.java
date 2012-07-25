@@ -17,12 +17,17 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -665,5 +670,68 @@ public class ImageFileManager8Activity extends ListActivity {
 		
 		super.onListItemClick(lv, v, position, id);
 	}//protected void onListItemClick(ListView l, View v, int position, long id)
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO 自動生成されたメソッド・スタブ
+		if (keyCode==KeyEvent.KEYCODE_BACK) {
+			
+			AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+			
+	        dialog.setTitle("アプリの終了");
+	        dialog.setMessage("アプリを終了しますか？");
+	        
+	        dialog.setPositiveButton("終了",new DialogListener(this, dialog, 0));
+	        dialog.setNegativeButton("キャンセル",new DialogListener(this, dialog, 1));
+	        
+	        dialog.create();
+	        dialog.show();
+			
+		}//if (keyCode==KeyEvent.KEYCODE_BACK)
+		
+		
+		return super.onKeyDown(keyCode, event);
+	}
+
+	class DialogListener implements DialogInterface.OnClickListener {
+
+		Activity actv;
+//		Dialog dlg;
+		Builder dialog;
+		int type;
+		
+		public DialogListener(Activity actv, Builder dialog, int type) {
+			
+			this.actv = actv;
+			this.dialog = dialog;
+			this.type = type;
+		}
+		
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			/*----------------------------
+			 * Steps
+				----------------------------*/
+			switch (type) {
+			
+			case 0:	// OK
+				
+				dialog.dismiss();
+				actv.finish();
+				
+				break;
+				
+			case 1: // Cancel
+				
+				dialog.dismiss();
+				
+				break;
+			
+			}//switch (type)
+			
+		}//public void onClick(DialogInterface dialog, int which)
+		
+	}//class DialogListener implements DialogInterface.OnClickListener
+
 }//public class ImageFileManager8Activity extends ListActivity
 
