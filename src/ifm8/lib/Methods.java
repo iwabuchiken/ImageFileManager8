@@ -128,6 +128,10 @@ public class Methods {
 		// Methods.java
 		dir_list_move_files,
 		
+		// TIListAdapter.java
+		tilist_checkbox,
+		
+		
 	}//public static enum ItemTags
 
 	public static enum MoveMode {

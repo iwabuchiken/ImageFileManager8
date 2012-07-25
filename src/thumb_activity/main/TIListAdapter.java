@@ -323,6 +323,9 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
 			
 			/*----------------------------
 			 * 2.6. CheckedBox => Set listener
+			 * 		1. Set up
+			 * 		2. OnClick
+			 * 		3. 
 				----------------------------*/
 			CheckBox cb = (CheckBox) v.findViewById(R.id.list_row_checked_box_checkBox1);
 			
@@ -347,6 +350,11 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
 			}//if (ThumbnailActivity.checkedPositions.contains((Integer) position)
 			
 			cb.setOnClickListener(new ButtonOnClickListener((Activity) con, position));
+			
+			
+			cb.setOnLongClickListener(
+						new CustomOnLongClickListener(
+										(Activity) con, position, Methods.ItemTags.tilist_checkbox));
 			
 		}////if (moveMode != null) -----------------------------------------------------------------
     	
