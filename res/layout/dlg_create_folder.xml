@@ -48,6 +48,35 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/dlg_create_folder_tv_folder_set"
+            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="4dp"
+            
+            android:text="@string/dlg_create_folder_tv_folder_set"
+            android:textSize="25dp" />
+
+        <CheckBox
+            android:id="@+id/dlg_create_folder_cb_folder_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         
         android:layout_marginBottom="10dp"

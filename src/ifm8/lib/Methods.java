@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -148,6 +149,8 @@ public class Methods {
 		 * 1. Set up
 		 * 2. Add listeners => OnTouch
 		 * 3. Add listeners => OnClick
+		 * 
+		 * 4. CheckBox
 			----------------------------*/
 		
 		// 
@@ -183,6 +186,11 @@ public class Methods {
 		//
 		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
 		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg));
+		
+		/*----------------------------
+		 * 4. CheckBox
+			----------------------------*/
+//		CheckBox cb = (CheckBox) dlg.findViewById(R.id.dlg_create_folder_cb_folder_set);
 		
 		//
 		dlg.show();
@@ -329,12 +337,16 @@ public class Methods {
 		/*----------------------------
 		 * Steps
 		 * 1. Get folder name from dlg2
+		 * 1-1. CheckBox => Checked?
 		 * 1-2. Dismiss dlg2
 		 * 2. Get current directory path
 		 * 3. Create a file object
 		 * 4. Create a dir
+
 		 * 5. If successful, dismiss dialog. Otherwise, toast a message
 		 * 6. Create a "list.txt"
+		 * 6-2. Create a folder set if checked
+		 * 
 		 * 7. Refresh list view 
 		 * 
 		 * 8. Create a new table
@@ -347,6 +359,11 @@ public class Methods {
 		Log.d("Methods.java" + "["
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "Folder name => " + tv_folderName.getText().toString());
+		
+		/*----------------------------
+		 * 1-1. CheckBox => Checked?
+			----------------------------*/
+		CheckBox cb = (CheckBox) dlg.findViewById(R.id.dlg_create_folder_cb_folder_set);		
 		
 		/*----------------------------
 		 * 1-2. Dismiss dlg2
@@ -443,6 +460,71 @@ public class Methods {
 				Toast.makeText(actv, "list.txt => çÏê¨Ç≈Ç´Ç‹ÇπÇÒÇ≈ÇµÇΩ", 3000).show();
 			}
 		}//if (listFile.exists())
+		
+		/*----------------------------
+		 * 6-2. Create a folder set if checked
+			----------------------------*/
+		boolean checked = cb.isChecked();
+		
+		if (checked) {
+			
+			String[] folder_set = {"DO", "DONE", "LATER"};
+			
+			for (String eachFolder : folder_set) {
+				/*----------------------------
+				 * 1. Create a folder
+				 * 2. list.txt
+					----------------------------*/
+				/*----------------------------
+				 * 1. Create a folder
+					----------------------------*/
+				File f = new File(newDir, eachFolder);
+				
+				boolean res = f.mkdir();
+				
+				/*----------------------------
+				 * 2. list.txt
+					----------------------------*/
+				if (res) {
+					// Log
+					Log.d("Methods.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "Folder set: " + f.getAbsolutePath());
+					
+					
+					listFile = new File(f, ImageFileManager8Activity.listFileName);
+					
+					try {
+						BufferedWriter br = new BufferedWriter(new FileWriter(listFile));
+						
+						br.close();
+						
+						// Log
+						Log.d("Methods.java"
+								+ "["
+								+ Thread.currentThread().getStackTrace()[2]
+										.getLineNumber() + "]", "listFile => Created");
+						
+						// debug
+						Toast.makeText(actv, "list.txt => çÏê¨Ç≥ÇÍÇ‹ÇµÇΩ", 3000).show();
+						
+					} catch (IOException e) {
+						// Log
+						Log.d("Methods.java"
+								+ "["
+								+ Thread.currentThread().getStackTrace()[2]
+										.getLineNumber() + "]", "Create listFile => Failed: " + listFile.getAbsolutePath());
+						// debug
+						Toast.makeText(actv, "list.txt => çÏê¨Ç≈Ç´Ç‹ÇπÇÒÇ≈ÇµÇΩ", 3000).show();
+					}
+					
+				}//if (res)
+				
+				
+			}//for (String eachFolder : folder_set)
+			
+		}//if (checked)
 		
 		/*----------------------------
 		 * 7. Refresh list view
@@ -2803,7 +2885,7 @@ public class Methods {
 		 * 6. Set listener
 			----------------------------*/
 		/*----------------------------
-		 * 1. Set up db
+		 * 4.1. Set up db
 			----------------------------*/
 		GridView gv = (GridView) dlg.findViewById(R.id.dlg_add_memos_gv);
 		
@@ -2812,7 +2894,7 @@ public class Methods {
 		SQLiteDatabase rdb = dbu.getReadableDatabase();
 
 		/*----------------------------
-		 * 2. Get cursor
+		 * 4.2. Get cursor
 			----------------------------*/
 		String sql = "SELECT * FROM memo_patterns ORDER BY word ASC";
 		
@@ -2823,7 +2905,7 @@ public class Methods {
 		c.moveToFirst();
 		
 		/*----------------------------
-		 * 3. Get list
+		 * 4.3. Get list
 			----------------------------*/
 		List<String> patternList = new ArrayList<String>();
 		
@@ -2843,7 +2925,7 @@ public class Methods {
 		Collections.sort(patternList);
 
 		/*----------------------------
-		 * 4. Adapter
+		 * 4.4. Adapter
 			----------------------------*/
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 										actv,
@@ -2852,12 +2934,12 @@ public class Methods {
 										);
 		
 		/*----------------------------
-		 * 5. Set adapter to view
+		 * 4.5. Set adapter to view
 			----------------------------*/
 		gv.setAdapter(adapter);
 		
 		/*----------------------------
-		 * 6. Set listener
+		 * 4.6. Set listener
 			----------------------------*/
 		gv.setTag(DialogTags.dlg_add_memos_gv);
 		

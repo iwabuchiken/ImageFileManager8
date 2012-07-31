@@ -21,6 +21,7 @@
     <!-- dlg_create_folder.xml -->
     <string name="dlg_create_folder_title">フォルダ作成</string>
     <string name="dlg_create_folder_tv_message">フォルダ名を入れてください</string>
+    <string name="dlg_create_folder_tv_folder_set">フォルダセットの作成</string>
     
     <!-- dlg_input_empty.xml -->
     <string name="dlg_input_empty_title">注意！</string>

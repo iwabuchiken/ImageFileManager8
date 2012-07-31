@@ -68,20 +68,20 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		switch (tag_name) {
 		
 		// dlg_create_folder.xml
-		case dlg_create_folder_cancel:
+		case dlg_create_folder_cancel://---------------------------------------------
 			
 			dlg.dismiss();
 			
 			break;
 			
-		case dlg_create_folder_ok:
+		case dlg_create_folder_ok://--------------------------------------------------
 			
 			Methods.dlg_isEmpty(actv, dlg);
 			
 			break;
 		
 		// dlg_input_empty.xml
-		case dlg_input_empty_reenter:
+		case dlg_input_empty_reenter://----------------------------------------------
 			
 			dlg2.dismiss();
 //			dlg.dismiss();
@@ -89,7 +89,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			
 			
 			break;
-		case dlg_input_empty_cancel:
+		case dlg_input_empty_cancel://---------------------------------------------
 			
 			dlg2.dismiss();
 			dlg.dismiss();
@@ -97,19 +97,19 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			break;
 		
 		// dlg_confirm_create_folder.xml
-		case dlg_confirm_create_folder_ok:
+		case dlg_confirm_create_folder_ok://---------------------------------------------
 			
 			Methods.createFolder(actv, dlg, dlg2);
 			
 			break;
-		case dlg_confirm_create_folder_cancel:
+		case dlg_confirm_create_folder_cancel://---------------------------------------------
 			
 			dlg2.dismiss();
 			
 			break;
 
 		// dlg_confirm_remove_folder.xml
-		case dlg_confirm_remove_folder_ok:
+		case dlg_confirm_remove_folder_ok://---------------------------------------------
 			
 			Methods.removeFolder(actv, dlg);
 			
