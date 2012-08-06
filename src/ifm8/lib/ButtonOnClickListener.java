@@ -168,6 +168,7 @@ public class ButtonOnClickListener implements OnClickListener {
 			 * 3. Then, notify to adapter
 				----------------------------*/
 			ThumbnailActivity.aAdapter.notifyDataSetChanged();
+			ThumbnailActivity.bAdapter.notifyDataSetChanged();
 			
 			break;
 		

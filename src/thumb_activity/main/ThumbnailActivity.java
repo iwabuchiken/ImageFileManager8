@@ -42,6 +42,7 @@ public class ThumbnailActivity extends ListActivity {
 
 	//
 	public static TIListAdapter aAdapter;
+	public static TIListAdapter bAdapter;
 
 	//
 	public static ArrayList<Integer> checkedPositions;
@@ -376,6 +377,12 @@ public class ThumbnailActivity extends ListActivity {
 			
 			checkedPositions.add(position);
 			
+			if (bAdapter != null) {
+				
+				bAdapter.notifyDataSetChanged();
+				
+			}//if (bAdapter != null)
+			
 			// Log
 			Log.d("ThumbnailActivity.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
@@ -425,7 +432,7 @@ public class ThumbnailActivity extends ListActivity {
 			----------------------------*/
 		
 		
-		case R.id.thumb_actv_menu_move_mode:
+		case R.id.thumb_actv_menu_move_mode://---------------------------------------
 			
 			if (move_mode == true) {
 				/*----------------------------
@@ -493,6 +500,8 @@ public class ThumbnailActivity extends ListActivity {
 					----------------------------*/
 //				aAdapter.clear();
 				
+				Methods.sort_tiList(tiList);
+				
 				aAdapter = 
 						new TIListAdapter(
 								this, 
@@ -504,7 +513,7 @@ public class ThumbnailActivity extends ListActivity {
 				
 				setListAdapter(aAdapter);
 
-			} else {//if (move_mode)
+			} else {//if (move_mode)		// move_mode is currently false
 				/*----------------------------
 				 * Steps: Current mode => false
 				 * 1. Set icon => On
@@ -569,7 +578,11 @@ public class ThumbnailActivity extends ListActivity {
 					----------------------------*/
 //				aAdapter.clear();
 				
-				aAdapter = 
+//				aAdapter = 
+				
+				Methods.sort_tiList(tiList);
+				
+				bAdapter =
 						new TIListAdapter(
 								this, 
 								ifm8.main.R.layout.thumb_activity, 
@@ -579,7 +592,8 @@ public class ThumbnailActivity extends ListActivity {
 //								Methods.MoveMode.ON, this);
 				
 				
-				setListAdapter(aAdapter);
+//				setListAdapter(aAdapter);
+				setListAdapter(bAdapter);
 				
 				
 			}//if (move_mode)

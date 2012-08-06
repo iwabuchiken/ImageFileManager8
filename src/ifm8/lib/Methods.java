@@ -808,6 +808,23 @@ public class Methods {
 
 	}//public static void sortFileList(File[] files)
 
+	public static void sort_tiList(List<ThumbnailItem> tiList) {
+		
+		Collections.sort(tiList, new Comparator<ThumbnailItem>(){
+
+			@Override
+			public int compare(ThumbnailItem lhs, ThumbnailItem rhs) {
+				// TODO 自動生成されたメソッド・スタブ
+				
+//				return (int) (lhs.getDate_added() - rhs.getDate_added());
+				
+				return (int) (lhs.getFile_name().compareToIgnoreCase(rhs.getFile_name()));
+			}
+			
+		});
+
+	}//public static void sort_tiList(List<ThumbnailItem> tiList)
+
 	/****************************************
 	 *ABANDON => Arrays.sort ===> Used for arrays, not list object(?)	20120720_165913
 	 ****************************************/
@@ -3592,6 +3609,19 @@ public class Methods {
 				ThumbnailActivity.checkedPositions.size());
 		
 		ThumbnailActivity.aAdapter.notifyDataSetChanged();
+		
+//		ThumbnailActivity.bAdapter.notifyDataSetChanged();
+		ThumbnailActivity.bAdapter =
+				new TIListAdapter(
+						actv, 
+						ifm8.main.R.layout.thumb_activity, 
+//						ThumbnailActivity.tiList);
+						ThumbnailActivity.tiList,
+						Methods.MoveMode.ON);
+
+		((ListActivity) actv).setListAdapter(ThumbnailActivity.bAdapter);
+		
+		
 		
 		// Log
 		Log.d("Methods.java" + "["
