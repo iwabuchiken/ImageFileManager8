@@ -190,10 +190,14 @@ public class ThumbnailActivity extends ListActivity {
 			public int compare(ThumbnailItem lhs, ThumbnailItem rhs) {
 				// TODO 自動生成されたメソッド・スタブ
 				
-				return (int) (lhs.getDate_added() - rhs.getDate_added());
+//				return (int) (lhs.getDate_added() - rhs.getDate_added());
+				
+				return (int) (lhs.getFile_name().compareToIgnoreCase(rhs.getFile_name()));
 			}
 			
 		});
+		
+		
 		
 		// Log
 		Log.d("ThumbnailActivity.java" + "["
@@ -352,7 +356,18 @@ public class ThumbnailActivity extends ListActivity {
 			i.putExtra("file_path", ti.getFile_path());
 			i.putExtra("file_name", ti.getFile_name());
 			
-			this.startActivity(i);		
+			SharedPreferences preference = 
+								getSharedPreferences(
+										Methods.PrefenceLabels.CURRENT_PATH.name(), 
+										MODE_PRIVATE);
+			
+			SharedPreferences.Editor editor = preference.edit();
+			
+			editor.putString(Methods.PrefenceLabels.CURRENT_PATH.name(), ImageFileManager8Activity.currentDirPath);
+			editor.commit();
+			
+			
+			this.startActivity(i);
 		} else if (move_mode == true) {//if (move_mode == false)
 			
 			/*----------------------------

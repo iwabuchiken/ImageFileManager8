@@ -633,6 +633,11 @@ public class ImageFileManager8Activity extends ListActivity {
 			----------------------------*/
 		File target = new File(this.currentDirPath, itemName);
 		
+		// Log
+		Log.d("ImageFileManager8Activity.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "this.currentDirPath: " + this.currentDirPath);
+		
 		
 		/*----------------------------
 		 * 3. Is a directory?
@@ -640,6 +645,7 @@ public class ImageFileManager8Activity extends ListActivity {
 		if (!target.exists()) {
 			// debug
 			Toast.makeText(ImageFileManager8Activity.this, 
+					
 					"This item doesn't exist in the directory: " + itemName, 
 					2000)
 					.show();

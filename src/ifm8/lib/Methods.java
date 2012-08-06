@@ -23,6 +23,7 @@ import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -46,8 +47,12 @@ import org.apache.commons.lang.StringUtils;
 
 public class Methods {
 
-	static int tempRecordNum = 20;
+	static int counter;		// Used => sortFileList()
 	
+	
+	/****************************************
+	 * Enums
+	 ****************************************/
 	public static enum DialogTags {
 		// Generics
 		dlg_generic_dismiss, dlg_generic_dismiss_second_dialog,
@@ -140,9 +145,23 @@ public class Methods {
 		ON, OFF,
 		
 	}//public static enum MoveMode
-	//
-	public static final int vibLength_click = 35;
+
+	public static enum PrefenceLabels {
+		
+		CURRENT_PATH,
+		
+	}//public static enum PrefenceLabels
 	
+	/****************************************
+	 * Vars
+	 ****************************************/
+	public static final int vibLength_click = 35;
+
+	static int tempRecordNum = 20;
+
+	/****************************************
+	 * Methods
+	 ****************************************/
 	public static void dlg_createFolder(Activity actv) {
 		/*----------------------------
 		 * Steps
@@ -447,8 +466,8 @@ public class Methods {
 						+ Thread.currentThread().getStackTrace()[2]
 								.getLineNumber() + "]", "listFile => Created");
 				
-				// debug
-				Toast.makeText(actv, "list.txt => ì¬‚³‚ê‚Ü‚µ‚½", 3000).show();
+//				// debug
+//				Toast.makeText(actv, "list.txt => ì¬‚³‚ê‚Ü‚µ‚½", 3000).show();
 				
 			} catch (IOException e) {
 				// Log
@@ -468,7 +487,7 @@ public class Methods {
 		
 		if (checked) {
 			
-			String[] folder_set = {"DO", "DONE", "LATER"};
+			String[] folder_set = {"DO", "DONE", "LATER", "SENT_TO_PC"};
 			
 			for (String eachFolder : folder_set) {
 				/*----------------------------
@@ -742,7 +761,43 @@ public class Methods {
 //				return pad1-pad2+file1.getName().compareToIgnoreCase(file2.getName());
 				
 				// Order => files, folders
-				return pad2-pad1+file1.getName().compareToIgnoreCase(file2.getName());
+				
+				int res = pad2-pad1+file1.getName().compareToIgnoreCase(file2.getName());
+//				int res = pad2-pad1+ (int) (file1.lastModified() - file2.lastModified());
+				
+//				//debug
+//				counter = 0;
+//				
+//				if(counter % 40 == 0) {
+//					
+//					// Log
+//					Log.d("Methods.java"
+//							+ "["
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getLineNumber() + "]", "file1: " + file1.getName() + 
+//									"/" + file1.lastModified() + 
+//					
+//					// Log
+//					Log.d("Methods.java"
+//							+ "["
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getLineNumber() + "]", 
+//								"		file2: " + file2.getName() + "/" + file2.lastModified() 
+//					));
+//					
+//					// Log
+//					Log.d("Methods.java"
+//							+ "["
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getLineNumber() + "]", 
+//									"result: " + (pad2-pad1+ (int) (file1.lastModified() - file2.lastModified())));
+//					
+//				}
+//				
+//				counter += 1;
+				
+				return res;
+//				return pad2-pad1+file1.getName().compareToIgnoreCase(file2.getName());
 				
 //				return String.valueOf(file1.getName()).compareTo(file2.getName());
 			} 
@@ -1339,7 +1394,36 @@ public class Methods {
 
 	public static String getCurrentPathLabel(Activity actv) {
 		// 
-		String[] pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);		
+//		SharedPreferences preference = 
+//				actv.getSharedPreferences(
+//						Methods.PrefenceLabels.CURRENT_PATH.name(), 
+//						actv.MODE_PRIVATE);
+		
+//		String path = preference.getString(Methods.PrefenceLabels.CURRENT_PATH.name(), null);
+		
+//		String[] pathArray;
+//		
+//		if (path != null) {
+//			
+//			pathArray = path.split(new File("abc").separator);
+//			
+//		} else if (ImageFileManager8Activity.currentDirPath != null) {//if (path != null)
+			
+//			pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);
+			
+			String[] pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);
+			
+//		} else {//if (path != null)
+//			
+//			File dir = new File("/mnt/sdcard-ext");
+//			File file = new File(dir, ImageFileManager8Activity.baseDirName);
+//			pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);
+//			
+////			baseDirPath = file.getAbsolutePath();
+//		}////if (path != null)
+		
+//			pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);
+		
 		String currentBaseDirName = pathArray[pathArray.length - 1];
 		
 		
