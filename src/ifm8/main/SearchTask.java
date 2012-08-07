@@ -208,7 +208,12 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 		super.onPostExecute(result);
 
 		// debug
-		Toast.makeText(actv, result, 2000).show();
+//		Toast.makeText(actv, result, 2000).show();
+		// Log
+		Log.d("SearchTask.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", result);
+		
 
 		/*----------------------------
 		 * 1. Set up intent
@@ -218,20 +223,28 @@ public class SearchTask extends AsyncTask<String[], Integer, String>{
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "long_searchedItems.length => " + long_searchedItems.length);
 		
-		Log.d("SearchTask.java" + "["
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "]", "long_searchedItems[0] => " + long_searchedItems[0]);
-		
-		Intent i = new Intent();
-		
-		i.setClass(actv, ThumbnailActivity.class);
-		
-		i.putExtra("long_searchedItems", long_searchedItems);
-		
-		/*----------------------------
-		 * 2. Start activity
-			----------------------------*/
-		actv.startActivity(i);
+		if(long_searchedItems.length > 0) {
+			
+			Log.d("SearchTask.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "long_searchedItems[0] => " + long_searchedItems[0]);
+			
+			Intent i = new Intent();
+			
+			i.setClass(actv, ThumbnailActivity.class);
+			
+			i.putExtra("long_searchedItems", long_searchedItems);
+			
+			/*----------------------------
+			 * 2. Start activity
+				----------------------------*/
+			actv.startActivity(i);
+			
+		} else {
+			
+			// debug
+			Toast.makeText(actv, "Œ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½", 2000).show();
+		}
 
 	}//protected void onPostExecute(String result)
 	
