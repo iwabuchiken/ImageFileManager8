@@ -9,6 +9,7 @@ import ifm8.main.*;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.provider.MediaStore;
@@ -188,6 +189,8 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
 	    	
 	    	/*----------------------------
 			 * 1.5. Get memo, or, file name
+			 * 		1. File name
+			 * 		2. Memo
 				----------------------------*/
 			TextView tv = (TextView) v.findViewById(R.id.textView1);
 			
@@ -203,8 +206,46 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
 //				
 //			}//if (ThumbnailActivity.move_mode == true)
 
+			SharedPreferences prefs = 
+							((Activity) con).getSharedPreferences(
+//											"thumb_actv", 
+											Methods.PrefenceLabels.thumb_actv.name(),
+											ThumbnailActivity.MODE_PRIVATE);
+	
+//			Methods.PrefenceLabels.thumb_actv.name()
+			
+//			int savedPosition = prefs.getInt("chosen_list_item", -1);
+			int savedPosition = prefs.getInt(Methods.PrefenceLabels.chosen_list_item.name(), -1);
+			
+			// Log
+			Log.d("TIListAdapter.java"
+					+ "["
+					+ Thread.currentThread().getStackTrace()[2]
+							.getLineNumber() + "]", "savedPosition: " + savedPosition);
 			
 			
+			if (savedPosition == position) {
+				
+				// Log
+				Log.d("TIListAdapter.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "savedPosition == position");
+				
+//				tv.setBackgroundColor(Color.GREEN);
+				tv.setBackgroundResource(R.color.gold2);
+				tv.setTextColor(Color.BLACK);
+				
+			} else {//if (savedPosition == position)
+				
+				tv.setBackgroundColor(Color.BLACK);
+				tv.setTextColor(Color.WHITE);
+				
+			}//if (savedPosition == position)
+
+			/*----------------------------
+			 * 1.5.2. Memo
+				----------------------------*/
 			TextView tv_memo = (TextView) v.findViewById(R.id.textView2);
 			
 			tv_memo.setTextColor(Color.BLACK);
@@ -305,7 +346,35 @@ public class TIListAdapter extends ArrayAdapter<ThumbnailItem> {
 				
 			} else {//if (ThumbnailActivity.move_mode == true)
 				
-				tv.setBackgroundColor(Color.BLACK);
+//				SharedPreferences prefs = 
+//						((Activity) con).getSharedPreferences("thumb_actv", ThumbnailActivity.MODE_PRIVATE);
+//				
+//				int savedPosition = prefs.getInt("chosen_list_item", -1);
+//				
+//				// Log
+//				Log.d("TIListAdapter.java"
+//						+ "["
+//						+ Thread.currentThread().getStackTrace()[2]
+//								.getLineNumber() + "]", "savedPosition: " + savedPosition);
+//				
+//				
+//				if (savedPosition == position) {
+//					
+//					// Log
+//					Log.d("TIListAdapter.java"
+//							+ "["
+//							+ Thread.currentThread().getStackTrace()[2]
+//									.getLineNumber() + "]", "savedPosition == position");
+//					
+//					tv.setBackgroundColor(Color.GREEN);
+					
+//				} else {//if (savedPosition == position)
+					
+					tv.setBackgroundColor(Color.BLACK);
+					
+//				}//if (savedPosition == position)
+				
+//				tv.setBackgroundColor(Color.BLACK);
 			}
 			
 			

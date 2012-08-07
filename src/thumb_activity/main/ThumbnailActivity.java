@@ -357,16 +357,39 @@ public class ThumbnailActivity extends ListActivity {
 			i.putExtra("file_path", ti.getFile_path());
 			i.putExtra("file_name", ti.getFile_name());
 			
+//			SharedPreferences preference = 
+//								getSharedPreferences(
+//										Methods.PrefenceLabels.CURRENT_PATH.name(), 
+//										MODE_PRIVATE);
+//			
+//			SharedPreferences.Editor editor = preference.edit();
+//			
+//			editor.putString(Methods.PrefenceLabels.CURRENT_PATH.name(), ImageFileManager8Activity.currentDirPath);
+//			editor.commit();
+
 			SharedPreferences preference = 
-								getSharedPreferences(
-										Methods.PrefenceLabels.CURRENT_PATH.name(), 
-										MODE_PRIVATE);
-			
+					getSharedPreferences(
+//							"thumb_actv", 
+							Methods.PrefenceLabels.thumb_actv.name(),
+							MODE_PRIVATE);
+
 			SharedPreferences.Editor editor = preference.edit();
 			
-			editor.putString(Methods.PrefenceLabels.CURRENT_PATH.name(), ImageFileManager8Activity.currentDirPath);
+//			editor.putInt("chosen_list_item", position);
+			editor.putInt(Methods.PrefenceLabels.chosen_list_item.name(), position);
 			editor.commit();
+
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Prefs set");
 			
+//			aAdapter.notifyDataSetChanged();
+			
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "aAdapter notified");
 			
 			this.startActivity(i);
 		} else if (move_mode == true) {//if (move_mode == false)
@@ -663,43 +686,54 @@ public class ThumbnailActivity extends ListActivity {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "onDestroy");
 
-		SharedPreferences prefs = 
-		getSharedPreferences("ifm8_thumb_actv_checked_items", MODE_PRIVATE);
-		
-		SharedPreferences.Editor editor = prefs.edit();
+		SharedPreferences preference = 
+				getSharedPreferences(
+						"thumb_actv", 
+						MODE_PRIVATE);
 
-		if (checkedPositions.size() > 0) {
-			
-//			Integer[] positions = (Integer[]) checkedPositions.toArray();
-			Object[] positions = checkedPositions.toArray();
-			
-			String s_positions = StringUtils.join(positions, "/");
-			
-			// Log
-			Log.d("ThumbnailActivity.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "s_positions => " + s_positions);
-			
-			//
-			editor.putString("checkd_positions", s_positions);
-			
-			editor.commit();
-			
-			// Log
-			Log.d("ThumbnailActivity.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "Preferences => Stored");
-			
-			
-			
-		} else {//if (tiList.size() > 0)
-			
-			// Log
-			Log.d("ThumbnailActivity.java" + "["
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "]", "checkedPositions.size() => equal to or less than 0");
-			
-		}//if (tiList.size() > 0)
+		SharedPreferences.Editor editor = preference.edit();
+
+		editor.clear();
+		editor.commit();
+		
+		
+//		SharedPreferences prefs = 
+//		getSharedPreferences("ifm8_thumb_actv_checked_items", MODE_PRIVATE);
+//		
+//		SharedPreferences.Editor editor = prefs.edit();
+//
+//		if (checkedPositions.size() > 0) {
+//			
+////			Integer[] positions = (Integer[]) checkedPositions.toArray();
+//			Object[] positions = checkedPositions.toArray();
+//			
+//			String s_positions = StringUtils.join(positions, "/");
+//			
+//			// Log
+//			Log.d("ThumbnailActivity.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "s_positions => " + s_positions);
+//			
+//			//
+//			editor.putString("checkd_positions", s_positions);
+//			
+//			editor.commit();
+//			
+//			// Log
+//			Log.d("ThumbnailActivity.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "Preferences => Stored");
+//			
+//			
+//			
+//		} else {//if (tiList.size() > 0)
+//			
+//			// Log
+//			Log.d("ThumbnailActivity.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "checkedPositions.size() => equal to or less than 0");
+//			
+//		}//if (tiList.size() > 0)
 
 		/*----------------------------
 		 * 3. move_mode => false
@@ -719,7 +753,7 @@ public class ThumbnailActivity extends ListActivity {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "onResume");
 		
-		
+		aAdapter.notifyDataSetChanged();
 		
 	}
 

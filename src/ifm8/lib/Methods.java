@@ -150,6 +150,10 @@ public class Methods {
 		
 		CURRENT_PATH,
 		
+		thumb_actv,
+		
+		chosen_list_item,
+		
 	}//public static enum PrefenceLabels
 	
 	/****************************************
@@ -3435,6 +3439,7 @@ public class Methods {
 		 * Steps
 		 * 1. Move files
 		 * 2. Update the list view
+		 * 2-2. Update preference for highlighting a chosen item
 		 * 3. Dismiss dialogues
 			----------------------------*/
 		/*----------------------------
@@ -3444,6 +3449,44 @@ public class Methods {
 		 * 		1.3. Insert items in toMoveFiles to the new table
 		 * 		1.4. Delete the items from the source table
 			----------------------------*/
+		// Prep prefs
+		SharedPreferences prefs = 
+				actv.getSharedPreferences(
+//						"thumb_actv", 
+						Methods.PrefenceLabels.thumb_actv.name(),
+						ThumbnailActivity.MODE_PRIVATE);
+
+		SharedPreferences.Editor editor = prefs.edit();
+
+		int savedPosition = prefs.getInt(Methods.PrefenceLabels.chosen_list_item.name(), -1);
+		
+		int counter_modify_prefs = 0;
+		
+		for (int position : ThumbnailActivity.checkedPositions) {
+			
+			if(position < savedPosition) {
+				
+				counter_modify_prefs += 1;
+				
+			}//if(position < savedPosition)
+			
+		}//for (int position : ThumbnailActivity.checkedPositions)
+
+		// If those moved items are located in the list before the chosen item, then
+		//		count the number of them, and when moved, decrement the value of 
+		//		savedPosition variable
+		if (counter_modify_prefs > 0) {
+			
+			savedPosition -= counter_modify_prefs;
+			
+			editor.putInt(Methods.PrefenceLabels.chosen_list_item.name(), savedPosition);
+			editor.commit();
+			
+			ThumbnailActivity.aAdapter.notifyDataSetChanged();
+			
+		}//if (counter_modify_prefs > 0)
+		
+		//
 		List<ThumbnailItem> toMoveFiles = new ArrayList<ThumbnailItem>();
 		
 		for (int position : ThumbnailActivity.checkedPositions) {
@@ -3628,6 +3671,18 @@ public class Methods {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "aAdapter => Notified");
 		
+		/*----------------------------
+		 * 2-2. Update preference for highlighting a chosen item
+			----------------------------*/
+//		SharedPreferences prefs = 
+//				actv.getSharedPreferences(
+////						"thumb_actv", 
+//						Methods.PrefenceLabels.thumb_actv.name(),
+//						ThumbnailActivity.MODE_PRIVATE);
+//
+//		SharedPreferences.Editor editor = prefs.edit();
+//
+//		int savedPosition = prefs.getInt(Methods.PrefenceLabels.chosen_list_item.name(), -1);
 		
 		/*----------------------------
 		 * 3. Dismiss dialogues
