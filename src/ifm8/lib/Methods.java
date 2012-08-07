@@ -1381,11 +1381,20 @@ public class Methods {
 	public static void enterDir(Activity actv, File newDir) {
 		/*----------------------------
 		 * Steps
+		 * 0. Preference
 		 * 1. Update the current path
 		 * 2. Refresh list view
 		 * 3. "Up" button => Enable
 		 * 
 		 * 4. Update path view
+			----------------------------*/
+		/*----------------------------
+		 * 0. Preference
+			----------------------------*/
+		Methods.save_path2Preference(actv, newDir.getAbsolutePath());
+		
+		/*----------------------------
+		 * 1. Update the current path
 			----------------------------*/
 		ImageFileManager8Activity.currentDirPath = newDir.getAbsolutePath();
 		
@@ -1432,7 +1441,30 @@ public class Methods {
 			
 //			pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);
 			
-			String[] pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);
+//			String[] pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);
+		
+//		String[] pathArray;
+		
+//		if (ImageFileManager8Activity.currentDirPath != null) {
+//			
+//			pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);
+//			
+//		} else {//if (ImageFileManager8Activity.currentDirPath != null)
+//			
+//			Methods.load_currentPath_from_Preference(actv);
+//			
+//			pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);
+//			
+//		}//if (ImageFileManager8Activity.currentDirPath != null)
+		
+		if (ImageFileManager8Activity.currentDirPath != null) {
+		
+			Methods.load_currentPath_from_Preference(actv);
+			
+		}//if (ImageFileManager8Activity.currentDirPath != null)
+		
+//		String[] pathArray = ImageFileManager8Activity.currentDirPath.split(new File("abc").separator);
+		String[] pathArray = ImageFileManager8Activity.currentDirPath.split(File.separator);
 			
 //		} else {//if (path != null)
 //			
@@ -1523,6 +1555,9 @@ public class Methods {
 		 * 4. Refresh list
 		 * 5. Update path view
 			----------------------------*/
+		/*----------------------------
+		 * 1. Vibrate
+			----------------------------*/
 		ImageFileManager8Activity.vib.vibrate(ImageFileManager8Activity.vibLength_click);
 		
 		/*----------------------------
@@ -1546,6 +1581,11 @@ public class Methods {
 		ImageFileManager8Activity.currentDirPath = f.getParent();
 		
 //		Methods.toastAndLog(actv, "f.getParent() => " + f.getParent(), 3000);
+		
+		/*----------------------------
+		 * 0. Preference
+			----------------------------*/
+		Methods.save_path2Preference(actv, ImageFileManager8Activity.currentDirPath);
 		
 		/*----------------------------
 		 * 3-2. New path => Equal to base dir path?
@@ -4568,5 +4608,101 @@ public class Methods {
 		return tilist;
 		
 	}//public static List<ThumbnailItem> convert_fileIdArray2tiList(Activity actv, String tableName, long[] long_file_id)
+
+	/****************************************
+	 * 
+	 * <Caller> 1. ThumbnailActivity.initial_setup()
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static void save_currentPath2Preference(Activity actv) {
+		SharedPreferences prefs = 
+								actv.getSharedPreferences(
+									Methods.PrefenceLabels.CURRENT_PATH.name(), 
+									ThumbnailActivity.MODE_PRIVATE);
+		
+		SharedPreferences.Editor editor = prefs.edit();
+		
+		editor.putString(
+					Methods.PrefenceLabels.CURRENT_PATH.name(), 
+					ImageFileManager8Activity.currentDirPath);
+		
+		editor.commit();
+		
+	}//public static void save_preference(Activity actv)
+
+	/****************************************
+	 * 
+	 * <Caller> 1. 
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static void save_path2Preference(Activity actv, String path) {
+		SharedPreferences prefs = 
+								actv.getSharedPreferences(
+									Methods.PrefenceLabels.CURRENT_PATH.name(), 
+									ThumbnailActivity.MODE_PRIVATE);
+		
+		SharedPreferences.Editor editor = prefs.edit();
+		
+		editor.putString(
+					Methods.PrefenceLabels.CURRENT_PATH.name(), 
+					path);
+//					ImageFileManager8Activity.currentDirPath);
+		
+		editor.commit();
+		
+	}//public static void save_preference(Activity actv)
+
+	public static void load_currentPath_from_Preference(Activity actv) {
+		SharedPreferences prefs = 
+										actv.getSharedPreferences(
+											Methods.PrefenceLabels.CURRENT_PATH.name(), 
+											ThumbnailActivity.MODE_PRIVATE);
+
+//		SharedPreferences.Editor editor = preference.edit();
+
+		File dir = new File(ImageFileManager8Activity.dirSDCard);
+		
+		File file = new File(dir, ImageFileManager8Activity.baseDirName);
+		
+		ImageFileManager8Activity.currentDirPath = 
+												prefs.getString(
+															Methods.PrefenceLabels.CURRENT_PATH.name(), 
+															file.getAbsolutePath());
+		
+	}//public static void load_currentPath_from_Preference(Activity actv)
+
+	/****************************************
+	 * 
+	 * <Caller> 1. 
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static void clearPreference_currentPath(Activity actv) {
+		SharedPreferences prefs = 
+								actv.getSharedPreferences(
+									Methods.PrefenceLabels.CURRENT_PATH.name(), 
+									ThumbnailActivity.MODE_PRIVATE);
+		
+		SharedPreferences.Editor editor = prefs.edit();
+		
+		editor.clear();
+		
+		editor.commit();
+		
+	}//public static void clearPreference_currentPath(Activity actv)
 
 }//public class Methods

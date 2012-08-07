@@ -111,6 +111,7 @@ public class ThumbnailActivity extends ListActivity {
 	private void initial_setup() {
 		/*----------------------------
 		 * Steps
+		 * 0. Preference
 		 * 1. Set listeners
 		 * 2. Show list
 		 * 		2.1. Get table name
@@ -118,6 +119,21 @@ public class ThumbnailActivity extends ListActivity {
 		 * 		2.3. Prepare adapter
 		 * 		2.4. Set adapter to the list
 			----------------------------*/
+		/*----------------------------
+		 * 0. Preference
+			----------------------------*/
+		if (ImageFileManager8Activity.currentDirPath != null) {
+			
+			Methods.save_currentPath2Preference(this);
+			
+		} else {//if (ImageFileManager8Activity.currentDirPath != null)
+			
+			Methods.load_currentPath_from_Preference(this);
+			
+		}//if (ImageFileManager8Activity.currentDirPath != null)
+		
+//		Methods.save_currentPath2Preference(this);
+
 		
 		//==> Move to after 2. 
 //		/*----------------------------

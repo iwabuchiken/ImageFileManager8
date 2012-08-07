@@ -48,7 +48,8 @@ public class ImageFileManager8Activity extends ListActivity {
 	 * baseDirPath => "/mnt/sdcard-ext", baseDirName
 		----------------------------*/
 	public static String baseDirPath = null;
-	
+
+	public static String dirSDCard = "/mnt/sdcard-ext";
 	
 	public static String baseDirName = "IFM8";
 	public static String listFileName = "list.txt";
@@ -502,7 +503,10 @@ public class ImageFileManager8Activity extends ListActivity {
 	protected void onDestroy() {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onDestroy();
-	}
+		
+		Methods.clearPreference_currentPath(this);
+		
+	}//protected void onDestroy()
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
